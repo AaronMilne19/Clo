@@ -3,3 +3,36 @@
 h1 {
 	color:green;
 }
+
+.nav-link{
+	color:#BCBCBC;
+}
+
+.nav-link:hover{
+	color:#383838
+}
+
+.navbar {
+	height:auto;
+}
+
+.main {
+	margin-top: 50pt;
+}
+
+.nav-col {
+	padding-bottom:5pt;
+}
+
+/**
+	use this to edit css when using small screen ie mobile device
+
+@media only screen and (max-width: 462px) {
+	#search {
+		display: none;
+	}
+	body {
+		background-color: blue;
+	}
+}
+*/

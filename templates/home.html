@@ -5,9 +5,20 @@
 Home
 {% endblock %}
 
+<!--see navbar.html for navbar code-->
+{% block navbar %}
+{% include "navbar.html" %}
+{% endblock %}
 
 {% block content %}
-
-<h1>Hello World - test</h1>
-
+<div class="container main">
+    <div class="row">
+        <div class="col border border-primary">
+            <p class="p-2">hi</p>
+        </div>
+        <div class="col border border-primary">
+            <p class="p-2">there</p>
+        </div>
+    </div>
+</div>
 {% endblock %}	
