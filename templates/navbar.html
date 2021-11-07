@@ -5,8 +5,8 @@
 
             <div class="d-inline-flex nav-col top-links">
                 <div class="links d-inline-flex">
-                    <a class="nav-link px-auto" href="">Log In</a>
-                    <a class="nav-link px-auto" href="">Sign Up</a>
+                    <a class="nav-link px-auto" href="{% url 'home:login' %}">Log In</a>
+                    <a class="nav-link px-auto" href="{% url 'home:signup' %}">Sign Up</a>
                 </div>
             </div>
 
@@ -27,8 +27,8 @@
             </button>
 
             <div class="dropdown-menu mt-5 px-3 mr-3 small-links" aria-labelledby="navbarDropdownMenuLink">    
-                <a class="nav-link px-auto" href="">Log In</a>
-                <a class="nav-link px-auto" href="">Sign Up</a>
+                <a class="nav-link px-auto" href="{% url 'home:login' %}">Log In</a>
+                <a class="nav-link px-auto" href="{% url 'home:signup' %}">Sign Up</a>
 
                 <form class="d-inline-flex" id="sbar-drop">
                     <input class="form-control" type="search" placeholder="Search" aria-label="Search">
