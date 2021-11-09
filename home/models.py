@@ -26,6 +26,7 @@ class UserProfile(models.Model):
     username = models.CharField(max_length = 30)
 
     picture = models.ImageField(upload_to='profile_pictures', blank=True, default = None, null=True)
+    degreeprogram = models.CharField(max_length = 14)
 
 
     def __str__(self):
