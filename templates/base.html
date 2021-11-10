@@ -17,18 +17,21 @@
 	<!--Arizona font-->
 	<link href="{% static 'fonts/ABC-Arizona-Text/ABCArizonaText-Regular-Trial.otf' %}" rel="stylesheet" media="screen">
 
+	<link rel="shortcut icon" href="/static/icon/favicon-32x32.png" sizes="32x32" type="image/png">
+
 	<style>
 		@font-face {
 			font-family: 'ABCArizonaText';
 			src: local('ABCArizonaText-Regular-Trial.otf'), url("{% static 'fonts/ABC-Arizona-Text/ABCArizonaText-Regular-Trial.otf' %} format('truetype')");
 		}
-
-		{% block css %}
-		{% endblock %}
 	</style>
 
+	{% block css %}
+	{% endblock %}
+
+
 	<title>
-		Magazine Hub -
+		CLO -
 		{% block title %}
 		{% endblock %}
 	</title>
