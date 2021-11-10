@@ -1,9 +1,12 @@
 from django.shortcuts import render, redirect
+from home.models import Magazine, UserProfile
 
 
 def home(request):
     ctx = {}
     
+    ctx['magazines'] = Magazine.objects.all()
+
     return render(request, 'home.html', context=ctx)
 
 

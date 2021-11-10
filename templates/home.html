@@ -1,6 +1,10 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block css %}
+<link rel="stylesheet" type="text/css" href="/static/styles/home.css">
+{% endblock %}
+
 {% block title %}
 Home
 {% endblock %}
@@ -12,11 +16,15 @@ Home
 
 {% block content %}
 <div class="container">
-    <div class="row">
-        <div class="col border border-primary">
-            <p class="p-2">hi</p>
+    <div class="d-flex">
+        <div class="col-6">
+            {% for magazine in magazines %}
+                <div class="border border-primary">
+                    <p class="p-2">{{ magazine.title }}</p>
+                </div>
+            {% endfor %}
         </div>
-        <div class="col border border-primary">
+        <div class="col-6 border border-primary mag-box d-none d-sm-block">
             <p class="p-2">there</p>
         </div>
     </div>
