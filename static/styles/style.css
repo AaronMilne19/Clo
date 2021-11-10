@@ -21,6 +21,10 @@
 
 * {
 	border-radius:0 !important;
+	font-family:ABCArizonaText;
+}
+.logo {
+	max-height: 100%;
 }
 
 

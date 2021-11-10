@@ -16,17 +16,18 @@ Home
 
 {% block content %}
 <div class="container">
-    <div class="d-flex">
-        <div class="col-6">
+    <div class="row">
+        <div class="col-sm-6 border border-primary">
             {% for magazine in magazines %}
-                <div class="border border-primary">
-                    <p class="p-2">{{ magazine.title }}</p>
-                </div>
+            <div class="border border-secondary">
+                <p class="p-2">{{ magazine.title }}</p>
+            </div>
             {% endfor %}
         </div>
-        <div class="col-6 border border-primary mag-box d-none d-sm-block">
+        <div class="col-sm-6 border border-primary mag-box d-fixed-top">
             <p class="p-2">there</p>
         </div>
     </div>
+
 </div>
 {% endblock %}	
