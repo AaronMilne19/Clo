@@ -1,5 +1,46 @@
 
-/**remove this later*/
-h1 {
-	color:green;
+.nav-link{
+	color:#BCBCBC;
+}
+
+.nav-link:hover{
+	color:#383838
+}
+
+.navbar {
+	height:auto;
+}
+
+.main {
+	margin-top: 50px;
+}
+
+.nav-col {
+	padding-bottom:5pt;
+}
+
+* {
+	border-radius:0 !important;
+}
+
+
+/**use this to edit css when using small screen ie mobile device*/
+
+@media only screen and (max-width: 470px) {
+	#sbar {
+		display: none !important;
+	}
+
+	#navbarDropdownMenuLink {
+		display: inline-flex !important;
+		border:none !important;
+	}
+
+	.top-links{
+		display:none !important;
+	}
+
+	.small-links{
+		text-align:center !important;
+	}
 }

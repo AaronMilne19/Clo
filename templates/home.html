@@ -1,13 +1,32 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block css %}
+<link rel="stylesheet" type="text/css" href="/static/styles/home.css">
+{% endblock %}
+
 {% block title %}
 Home
 {% endblock %}
 
+<!--see navbar.html for navbar code-->
+{% block navbar %}
+{% include "navbar.html" %}
+{% endblock %}
 
 {% block content %}
-
-<h1>Hello World</h1>
-
+<div class="container">
+    <div class="d-flex">
+        <div class="col-6">
+            {% for magazine in magazines %}
+                <div class="border border-primary">
+                    <p class="p-2">{{ magazine.title }}</p>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="col-6 border border-primary mag-box d-none d-sm-block">
+            <p class="p-2">there</p>
+        </div>
+    </div>
+</div>
 {% endblock %}	
