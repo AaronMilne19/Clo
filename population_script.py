@@ -16,7 +16,7 @@ def add_magazine(mag_title, id, description_short, description_long, price, disc
 
 def add_issue(magazine, cover, date):
     i = MagazineIssue.objects.get_or_create(date=date, cover=cover, magazine=magazine)[0]
-    i.save
+    i.save()
     return i
 
 
