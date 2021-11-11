@@ -1,3 +1,14 @@
 .info-box {
     height: 85vh !important;
 }
+
+.mag-title{
+    text-align: center;
+    text-decoration:none;
+    color:black;
+}
+
+.mag-title:hover {
+    color: #ffcf01;
+    transition: color 0.2s ease
+}

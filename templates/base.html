@@ -19,12 +19,14 @@
 
 	<link rel="shortcut icon" href="/static/icon/favicon-32x32.png" sizes="32x32" type="image/png">
 
+	<!--Registering Font-->
 	<style>
 		@font-face {
-			font-family: 'ABCArizonaText';
+			font-family: 'ABCArizonaText-Regular-Trial';
 			src: local('ABCArizonaText-Regular-Trial.otf'), url("{% static 'fonts/ABC-Arizona-Text/ABCArizonaText-Regular-Trial.otf' %} format('truetype')");
 		}
 	</style>
+	
 
 	{% block css %}
 	{% endblock %}
@@ -38,7 +40,7 @@
 
 </head>
 
-	<body class="mx-2">
+	<body class="mx-1">
 		
 		{% block navbar %}
 		{% endblock %}

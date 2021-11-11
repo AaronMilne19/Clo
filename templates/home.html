@@ -17,12 +17,10 @@ Home
 {% block content %}
 <div class="container">
     <div class="row">
-        <div class="col-sm-6">
+        <div class="col-sm-4">
             {% for magazine in magazines %}
             <div class="card border border-secondary mb-3">
-                <div class="col-4">
-                    <h3 class="px-2 py-2 card-title">{{ magazine.title }}</h3>
-                </div>
+                <a class="card-title mag-title">{{ magazine.title }}</a>
             </div>
             {% endfor %}
             <h3>Hi</h3>
@@ -43,9 +41,11 @@ Home
             <h3>Hi</h3>
             <h3>Hi</h3>
         </div>
-        <div class="col-sm-6">
-            <div style="top:74px" class="border border-secondary info-box sticky-top">
-                <p class="p-2">there</p>
+        <div class="col-sm-8 border-start border-dark border-1">
+            <div style="top:74px" class="info-box sticky-top">
+                <div class="about border-bottom border-dark border-1 mx-2">
+                    Hello
+                </div>
             </div>
         </div>
     </div>

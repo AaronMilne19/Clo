@@ -1,6 +1,7 @@
 
-.nav-link{
-	color:#BCBCBC;
+.nav-link {
+	color: #BCBCBC;
+	font-size: 18pt !important;
 }
 
 .nav-link:hover{
@@ -12,7 +13,7 @@
 }
 
 .main {
-	margin-top: 50px;
+	margin-top: 25px;
 }
 
 .nav-col {
@@ -21,10 +22,18 @@
 
 * {
 	border-radius:0 !important;
-	font-family:ABCArizonaText;
+	font-family:'ABCArizonaText-Regular-Trial';
 }
 .logo {
 	max-height: 100%;
+}
+
+h1 {
+	font-size: 36pt;
+}
+
+body {
+	font-size: 24pt;
 }
 
 
