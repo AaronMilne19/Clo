@@ -101,7 +101,7 @@ def populate():
 
 
 if __name__ == '__main__':
-    print('Starting Rango population script...')
+    print('Starting Clo population script...')
     populate()
 
 
