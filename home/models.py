@@ -1,34 +1,50 @@
 from django.db import models
+from django.template.defaultfilters import slugify
 
 from django.contrib.auth.models import User
-
+import datetime
 
 
 class Magazine(models.Model):
 
-    title = models.CharField(max_length=300, unique=True)
-    description_short = models.CharField(max_length=600)
-    description_long = models.CharField(max_length=1200)
+    id = models.IntegerField(unique=True, primary_key=True)
+    title = models.CharField(max_length=100, unique=True)
+    description_short = models.CharField(max_length=1000)
+
+    #long - in case we have seperate pages for each magzine
+    description_long = models.CharField(max_length=2000)
     price = models.IntegerField(default = 0 )
     discount = models.IntegerField(default=0)
-    photo1 = models.ImageField(upload_to='magazine_pictures', blank=True, default = None)
-    photo2 = models.ImageField(upload_to='magazine_pictures', blank=True, default=None)
+    cover = models.ImageField(upload_to='magazine_pictures', default = None)
     link_to_publishers_site = models.URLField(max_length=300)
+    #slug - again, in case we have seperate pages for each magzine
+    slug = models.SlugField(unique=True)
 
     def __str__(self):
         return self.title
 
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.title)
+        super(Magazine, self).save(*args, **kwargs)
+
+    def calculate_discounted_price(self):
+        return self.price * (1 - self.discount)
+
+
+
+
+
+
+class MagazineIssue (models.Model):
+    magazine = models.ForeignKey(Magazine, on_delete=models.CASCADE)
+    cover = models.ImageField(upload_to='magazine_pictures', default=None)
+    description_short = models.CharField(max_length=1000, default=None, null=True)
+    date =  models.DateField(("Date"), default=datetime.date.today)
+
 
 class UserProfile(models.Model):
-    #Links UserProfile to a User model instance
-    user = models.OneToOneField(User, on_delete=models.CASCADE, unique=True)
-    #The other attributes to include for the user
-    email = models.CharField(max_length = 254)
-    username = models.CharField(max_length = 30)
 
-    picture = models.ImageField(upload_to='profile_pictures', blank=True, default = None, null=True)
-
-
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.username
+        return self.user.username
