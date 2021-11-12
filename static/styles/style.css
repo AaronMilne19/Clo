@@ -1,7 +1,7 @@
 
 .nav-link {
 	color: #BCBCBC;
-	font-size: 18pt !important;
+	font-size: 18px !important;
 }
 
 .nav-link:hover{
@@ -13,7 +13,7 @@
 }
 
 .main {
-	margin-top: 25px;
+	margin-top: 30px;
 }
 
 .nav-col {
@@ -29,11 +29,19 @@
 }
 
 h1 {
-	font-size: 36pt;
+	font-size: 36px;
+}
+
+.sml-txt {
+	font-size: 18px;
+}
+
+.gry-txt {
+	color: rgb(0 0 0 / 30%);
 }
 
 body {
-	font-size: 24pt;
+	font-size: 24px;
 }
 
 @font-face {

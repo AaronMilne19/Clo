@@ -1,5 +1,5 @@
 .info-box {
-    height: 85vh !important;
+    height: 90vh !important;
 }
 
 .mag-title{
@@ -10,5 +10,17 @@
 
 .mag-title:hover {
     color: #ffcf01;
-    transition: color 0.2s ease
+    transition: color 0.1s ease
+}
+
+.mag-box {
+    background-color: blue;
+    min-height: 100px;
+    display:flex;
+    align-content: center;
+}
+
+.about {
+    display:flex;
+    justify-content:space-between;
 }
