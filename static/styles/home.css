@@ -14,13 +14,16 @@
 }
 
 .mag-box {
-    background-color: blue;
     min-height: 100px;
     display:flex;
-    align-content: center;
 }
 
 .about {
     display:flex;
     justify-content:space-between;
+}
+
+.info {
+    position: absolute;
+    bottom: 0;
 }
