@@ -25,7 +25,7 @@ Home
             </div>
             {% for magazine in magazines %}
             <div class="card mb-3 border-0 mag-box">
-                <a href="{% url 'home:magazine' magazine.slug %}"class="card-title mag-title" id="{{magazine.id}}">{{magazine.title}}</a>
+                <a href="{% url 'home:magazine' magazine.slug %}" class="card-title mag-title" id="{{magazine.id}}">{{magazine.title}}</a>
             </div>
             {% endfor %}
 
@@ -33,7 +33,7 @@ Home
         <div style="height: 100vh; background-color: #8b9e6c;" class="col-sm border-start border-dark border-1 d-flex justify-content-center">
             <div style="width:100%; top:60px;" class="info-box sticky-top pr-3">
                 <div class="about border-bottom border-dark border-1 pt-3 mx-2 d-flex align-items-end">
-                    <div>About Cl&ograve</div>
+                    <div>{{this.title}}</div>
                     <div class="d-inline-flex align-items-end">
                         <div class="xsml-txt gry-txt">Supporting independent Scottish magazines</div>
                         <img style="max-height:45px" src="{% static 'logos/clo-logomark.png' %}" />

@@ -31,10 +31,6 @@ class Magazine(models.Model):
         return self.price * (1 - self.discount)
 
 
-
-
-
-
 class MagazineIssue (models.Model):
     magazine = models.ForeignKey(Magazine, on_delete=models.CASCADE)
     cover = models.ImageField(upload_to='magazine_pictures', default=None)

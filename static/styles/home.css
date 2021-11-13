@@ -1,5 +1,6 @@
 .info-box {
-    height: 90vh !important;
+    height: 85vh !important;
+    max-width: 95%;
 }
 
 .mag-title{
@@ -26,4 +27,8 @@
 .info {
     position: absolute;
     bottom: 0;
+}
+
+.selected {
+    color: #ffcf01;
 }
