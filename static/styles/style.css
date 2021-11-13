@@ -4,9 +4,9 @@
 	font-size: 18px !important;
 }
 
-	.nav-link:hover {
-		color: #ffcf01;
-	}
+.nav-link:hover {
+	color: #ffcf01;
+}
 
 .navbar {
 	height:auto;
@@ -20,6 +20,7 @@
 	border-radius:0 !important;
 	font-family:'ABCArizonaText-Regular-Trial';
 }
+
 .logo {
 	max-height: 100%;
 }
