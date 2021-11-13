@@ -4,9 +4,9 @@
 	font-size: 18px !important;
 }
 
-.nav-link:hover{
-	color:#383838
-}
+	.nav-link:hover {
+		color: #ffcf01;
+	}
 
 .navbar {
 	height:auto;
