@@ -11,6 +11,7 @@ class Magazine(models.Model):
     title = models.CharField(max_length=100, unique=True)
     description_short = models.CharField(max_length=1000)
 
+
     #long - in case we have seperate pages for each magzine
     description_long = models.CharField(max_length=2000)
     price = models.IntegerField(default = 0 )
@@ -44,3 +45,11 @@ class UserProfile(models.Model):
 
     def __str__(self):
         return self.user.username
+
+
+class Hashtag(models.Model):
+    text = models.CharField(max_length=20)
+    magazines = models.ManyToManyField(Magazine)
+
+    def __str__(self):
+        return self.text

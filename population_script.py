@@ -5,7 +5,7 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE',
 import django
 import datetime
 django.setup()
-from home.models import Magazine, MagazineIssue
+from home.models import Magazine, MagazineIssue,Hashtag
 
 
 def add_magazine(mag_title, id, description_short, description_long, price, discount, cover, link_to_publishers_site):
@@ -90,13 +90,24 @@ def populate():
             }
 
 
+
+
+
     for mag, mag_data in mags.items():
         m = add_magazine(mag_title=mag, id=mag_data['id'], description_short=mag_data['description_short'], description_long=mag_data['description_long'],
                          price=mag_data['price'], discount=mag_data['discount'], cover=mag_data['cover'], link_to_publishers_site=mag_data['link_to_publishers_site'])
         for i in mag_data['issues']:
             add_issue(magazine=m, cover=i['cover'], date=i['date'])
 
-
+    h1 = Hashtag.objects.get_or_create(text="#PhotoEssays")[0]
+    h1.save()
+    h1.magazines.add(1,2)
+    h2 = Hashtag.objects.get_or_create(text="#Music")[0]
+    h2.save()
+    h2.magazines.add(1)
+    h3 = Hashtag.objects.get_or_create(text="#Theatre")[0]
+    h3.save()
+    h3.magazines.add(2)
 
 
 
