@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block title %}
-Home
+{{this.title}}
 {% endblock %}
 
 <!--see navbar.html for navbar code-->
@@ -24,20 +24,38 @@ Home
                 </div>
             </div>
             {% for magazine in magazines %}
-            <div class="card mb-3 border-0 mag-box">
-                <a href="{% url 'home:magazine' magazine.id %}" class="card-title mag-title" id="{{magazine.id}}">{{magazine.title}}</a>
+            <div class="card text-center mb-3 border-0 mag-box">
+                <div class="card-body">
+                    {% if magazine.id != this.id %}
+                        <a href="{% url 'home:magazine' magazine.id %}" class="card-title mag-title" id="{{magazine.id}}">{{magazine.title}}</a>
+                    {% else %}
+                        <a href="{% url 'home:home' %}" class="card-title mag-title" id="{{magazine.id}}">{{magazine.title}}</a>
+                    {% endif %}
+
+                    <div class="card-text gry-txt sml-txt">
+                        Tags
+                    </div>
+                </div>
             </div>
             {% endfor %}
 
         </div>
         <div style="min-height: 100vh; background-color: #8b9e6c;" class="col-sm border-start border-dark border-1 d-flex justify-content-center" id="mainbox">
-            <div style="width:100%; top:60px;" class="info-box sticky-top pr-3">
-                <div class="about border-bottom border-dark border-1 pt-3 mx-2 d-flex align-items-end">
+            <div style="width:100%; top:60px;" class="info-box sticky-top mx-2">
+                <div class="about border-bottom border-dark border-1 pt-3 d-flex align-items-end">
                     <div>{{this.title}}</div>
-                    <div class="d-inline-flex align-items-end">
-                        <div class="xsml-txt gry-txt">Supporting independent Scottish magazines</div>
+                    <div class="logo-tag d-inline-flex justify-content-between align-items-end ms-5">
+                        <div class="sml-txt gry-txt">Tags</div>
                         <img style="max-height:45px" src="{% static 'logos/clo-logomark.png' %}" />
                     </div>
+                </div>
+
+                <div class="issues mt-4">
+                    {% for issue in issues %}
+                        <div class="py-1">
+                            <a class="mag-title">Issue</a>
+                        </div>
+                    {% endfor %}
                 </div>
 
                 <div class="info sml-txt pt-3 mx-2 d-flex">

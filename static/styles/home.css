@@ -24,6 +24,11 @@
     justify-content:space-between;
 }
 
+.logo-tag {
+    max-width: 150px;
+    width: 150px;
+}
+
 .info {
     position: absolute;
     bottom: 0;

@@ -1,11 +1,12 @@
 from django.shortcuts import render, redirect
-from home.models import Magazine, UserProfile
+from home.models import Magazine, UserProfile, Hashtag, MagazineIssue
 
 
 def home(request):
     ctx = {}
     
     ctx['magazines'] = Magazine.objects.all()
+    ctx['hashtags'] = Hashtag.objects.all()
 
     return render(request, 'home.html', context=ctx)
 
@@ -25,7 +26,10 @@ def signup(request):
 def magazine(request, id):
     ctx = {}
 
-    ctx['this'] = Magazine.objects.get(id=id)
+    mag = Magazine.objects.get(id=id)
+
+    ctx['this'] = mag
     ctx['magazines'] = Magazine.objects.all()
+    ctx['issues'] = MagazineIssue.objects.filter(magazine=mag)
 
     return render(request, 'magazine.html', context=ctx)

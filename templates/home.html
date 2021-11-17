@@ -24,8 +24,13 @@ Home
                 </div>
             </div>
             {% for magazine in magazines %}
-            <div class="card mb-3 border-0 mag-box">
-                <a href="{% url 'home:magazine' magazine.id %}"class="card-title mag-title" id="{{magazine.id}}">{{magazine.title}}</a>
+            <div class="card text-center mb-3 border-0 mag-box">
+                <div class="card-body">
+                    <a href="{% url 'home:magazine' magazine.id %}"class="card-title mag-title" id="{{magazine.id}}">{{magazine.title}}</a>
+                    <div class="card-text gry-txt sml-txt">
+                        Tags
+                    </div>
+                </div>
             </div>
             {% endfor %}
 
