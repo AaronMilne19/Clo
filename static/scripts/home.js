@@ -1,11 +1,12 @@
 var titles = document.getElementsByClassName('mag-title');
+var infoBox = document.getElementById('mainbox');
 
-for (const title of titles) {
-
-    title.addEventListener('click', function () {select(event.target)});
+if (screen.width <= 575) {
+    infoBox.scrollIntoView(alignToTop = true);
 }
 
-
-function select(magazine) {
-    
+for (const title of titles) {
+    if ("/" + title.id + "/" === window.location.pathname) {
+        title.classList.add("yellow");
+    }
 }
