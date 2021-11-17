@@ -1,6 +1,9 @@
 .info-box {
-    height: 85vh !important;
+    top: 60px;
+    height: 85vh;
     max-width: 95%;
+    width: 95%;
+    flex-direction: column;
 }
 
 .mag-title{
@@ -30,8 +33,11 @@
 }
 
 .info {
-    position: absolute;
-    bottom: 0;
+    overflow-y:auto;
+}
+
+.issues {
+    flex-grow: 1;
 }
 
 .yellow {
@@ -40,4 +46,11 @@
 
 body{
     overflow-x:hidden;
+}
+
+#mainbox {
+    flex-direction:column;
+    min-height: 100vh;
+    background-color: #8b9e6c;
+    height:auto;
 }
