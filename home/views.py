@@ -22,10 +22,10 @@ def signup(request):
     return render(request, 'signup.html', context=ctx)
 
 
-def magazine(request, slug):
+def magazine(request, id):
     ctx = {}
 
-    ctx['this'] = Magazine.objects.get(slug=slug)
+    ctx['this'] = Magazine.objects.get(id=id)
     ctx['magazines'] = Magazine.objects.all()
 
     return render(request, 'magazine.html', context=ctx)
