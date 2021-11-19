@@ -20,3 +20,9 @@ def signup(request):
     ctx = {}
 
     return render(request, 'signup.html', context=ctx)
+    
+
+def myprofile(request):
+    ctx = {}
+
+    return render(request, 'myprofile.html', context=ctx)
