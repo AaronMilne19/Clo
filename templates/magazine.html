@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block title %}
-Home
+{{this.title}}
 {% endblock %}
 
 <!--see navbar.html for navbar code-->
@@ -17,7 +17,7 @@ Home
 {% block content %}
 <div class="container py-0 px-0 mr-0 d-inline">
     <div class="row">
-        <div style="margin-top: 50px; min-height: 100vh;" class="col-sm-4 pt-3 px-0">
+        <div style="margin-top:50px; min-height:100vh;" class="col-sm-4 pt-3 px-0">
             <div class="d-flex justify-content-center">
                 <div style="min-width:80%;" class="border-bottom border-dark border-1 mx-2 mb-4 py-0 d-flex align-items-end justify-content-center">
                     <div style="text-align:center;" class="card-title mb-0 xsml-txt gry-txt">Type to search magazines, topics and categories</div>
@@ -26,7 +26,12 @@ Home
             {% for magazine in magazines %}
             <div class="card text-center mb-3 border-0 mag-box">
                 <div class="card-body">
-                    <a href="{% url 'home:magazine' magazine.id %}"class="card-title mag-title" id="{{magazine.id}}">{{magazine.title}}</a>
+                    {% if magazine.id != this.id %}
+                        <a href="{% url 'home:magazine' magazine.id %}" class="card-title mag-title" id="{{magazine.id}}">{{magazine.title}}</a>
+                    {% else %}
+                        <a href="{% url 'home:home' %}" class="card-title mag-title" id="{{magazine.id}}">{{magazine.title}}</a>
+                    {% endif %}
+
                     <div class="card-text gry-txt sml-txt">
                         Tags
                     </div>
@@ -36,22 +41,28 @@ Home
 
         </div>
         <div class="col-sm border-start border-dark border-1 d-flex" id="mainbox">
-            <div class="info-box sticky-top pr-3 d-flex mx-4 pe-4">
-                <div class="about border-bottom border-dark border-1 pt-3  d-flex align-items-end">
-                    <div>About Cl&ograve</div>
-                    <div class="d-inline-flex align-items-end">
-                        <div class="xsml-txt gry-txt">Supporting independent Scottish magazines</div>
+            <div class="info-box sticky-top mx-4 pe-4 d-flex ">
+                <div class="about border-bottom border-dark border-1 pt-3 d-flex align-items-end">
+                    <div>{{this.title}}</div>
+                    <div class="logo-tag d-inline-flex justify-content-between align-items-end ms-5">
+                        <div class="sml-txt gry-txt">Tags</div>
                         <img style="max-height:45px" src="{% static 'logos/clo-logomark.png' %}" />
                     </div>
                 </div>
 
                 <div class="issues mt-4">
-                    test
+                    {% for issue in issues %}
+                        <div class="py-1">
+                            <a class="mag-title">Issue {{forloop.revcounter}}</a>
+                        </div>
+                    {% endfor %}
                 </div>
 
-                <div class="info sml-txt pt-3 d-flex">
-                    aaaaa aaaaaaaaaaa aaaaaaaaaaa aaaaaaaaaaa aaaaaaaaaaa aaaaaaaaaaa aaaaaaaaaaa aaaaaaaaaaa aaaaaaaaaaa aaaaaaaaaaa aaaaaaaaaaa aaaaaa
+                <div class="info sml-txt mt-3 d-inline">
+                    {{this.description_long}}
                 </div>
+
+                
             </div>
         </div>
     </div>
