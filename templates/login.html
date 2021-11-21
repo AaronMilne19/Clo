@@ -1,4 +1,10 @@
 {% extends 'base.html' %}
+{% load static %}
+
+{% block css %}
+
+<link rel="stylesheet" type="text/css" href="/static/styles/login.css">
+{% endblock %}
 
 {% block title %}
 Log In
@@ -10,5 +16,29 @@ Log In
 {% endblock %}
 
 {% block content %}
-<p>hi</p>
+<div class="info-box py-0 px-0 mr-0 d-inline">
+	<div class="boxed text-dark bg-white my-5 py-4 text-center">
+			<div class="card-body">
+			<h1 class="card-title">Log In</h1>
+			<br></br>
+
+			<form id="login_form" method="post" action="{%url 'home:login' %}">
+				{% csrf_token %}
+				<div class="container sml-txt mt-3 d-inline">
+				<label>Username: </label>
+				<input type="text" name="username" value="" /><br></br>
+				<label>Password :</label>
+				 <input type="password" name="password" value="" /><br></br>
+				 </div>
+				 <div class="sml-txt">
+				<input type="submit" value="Log In" /><br></br>
+				
+			</form>
+			<div class="info sml-txt">
+			<p>Don't have an account?</p>
+			<a  href="{% url 'home:signup' %}">Sign Up</a>
+			</div>
+</div>
+</div>
+<script src="{% static 'scripts/home.js' %}"></script>	
 {% endblock %}
