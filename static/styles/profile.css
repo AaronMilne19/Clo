@@ -1,0 +1,51 @@
+.info-box {
+    top: 60px;
+    height: 85vh;
+    max-width: 95%;
+    width: 95%;
+    flex-direction: column;
+}
+
+.page-title{
+    text-align: center;
+    text-decoration:none;
+    color:black;
+}
+
+.page-title:hover {
+    color: #ffcf01;
+    transition: color 0.1s ease
+}
+
+.page-list {
+    min-height: 100px;
+    display:flex;
+}
+
+.about {
+    display:flex;
+    justify-content:space-between;
+}
+
+.info {
+    overflow-y:auto;
+}
+
+.issues {
+    flex-grow: 1;
+}
+
+.yellow {
+    color: #ffcf01;
+}
+
+body{
+    overflow-x:hidden;
+}
+
+#mainbox {
+    flex-direction:column;
+    min-height: 100vh;
+    background-color: white;
+    height:auto;
+}
