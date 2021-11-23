@@ -40,6 +40,23 @@
     flex-grow: 1;
 }
 
+.issue-box{
+    position:absolute;
+    background-color: white;
+    height: 0px;
+    width: 0px;
+    right: 150px;
+    top: 80px;
+    opacity:0;
+}
+
+.show-issue {
+    height: 450px;
+    width: 350px;
+    opacity: 1;
+    transition: opacity 0.3s ease;
+}
+
 .yellow {
     color: #ffcf01;
 }
