@@ -33,7 +33,9 @@
                     {% endif %}
 
                     <div class="card-text gry-txt sml-txt">
-                        Tags
+                        {% for hashtag in magazine.hashtag_set.all%}
+                            {{ hashtag }} &#160
+                        {%  endfor %}
                     </div>
                 </div>
             </div>
