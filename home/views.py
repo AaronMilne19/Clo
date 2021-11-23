@@ -6,7 +6,7 @@ def home(request):
     ctx = {}
     
     ctx['magazines'] = Magazine.objects.all()
-    ctx['hashtags'] = Hashtag.objects.all()
+
 
     return render(request, 'home.html', context=ctx)
 
@@ -37,5 +37,5 @@ def magazine(request, id):
     ctx['this'] = mag
     ctx['magazines'] = Magazine.objects.all()
     ctx['issues'] = MagazineIssue.objects.filter(magazine=mag)
-
+    
     return render(request, 'magazine.html', context=ctx)
