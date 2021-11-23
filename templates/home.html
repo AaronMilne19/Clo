@@ -28,7 +28,9 @@ Home
                 <div class="card-body">
                     <a href="{% url 'home:magazine' magazine.id %}"class="card-title mag-title" id="{{magazine.id}}">{{magazine.title}}</a>
                     <div class="card-text gry-txt sml-txt">
-                        {{ magazine.hashtag_set.all}}
+                        {% for hashtag in magazine.hashtag_set.all%}
+                            {{ hashtag }} &#160
+                        {%  endfor %}
 
                     </div>
                 </div>
