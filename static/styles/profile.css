@@ -22,11 +22,6 @@
     display:flex;
 }
 
-.about {
-    display:flex;
-    justify-content:space-between;
-}
-
 .info {
     overflow-y:auto;
 }
@@ -48,4 +43,16 @@ body{
     min-height: 100vh;
     background-color: white;
     height:auto;
+}
+
+.container{
+	width:500px;
+	clear:both;
+	margin-left:auto;
+	margin-right:auto;
+}
+
+.container input{
+	width:100%;
+	clear:both;
 }
