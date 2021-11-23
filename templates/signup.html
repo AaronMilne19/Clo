@@ -1,5 +1,9 @@
 {% extends 'base.html' %}
+{% load static %}
 
+{% block css %}
+<link rel="stylesheet" type="text/css" href="/static/styles/login.css">
+{% endblock %}
 {% block title %}
 Sign Up
 {% endblock %}
@@ -10,5 +14,48 @@ Sign Up
 {% endblock %}
 
 {% block content %}
-    <p>hi</p>
+    <div class="info-box py-0 px-0 mr-0 d-inline">
+	<div class="boxed text-dark bg-white my-5 py-4 text-center">
+			
+			<div class="card-body">
+			<h1 class="card-title">Sign Up</h1>
+			<br></br>
+			
+			
+			<form id=signup_form" method="post" action="{%url 'home:signup' %}">
+				{% csrf_token %}
+				
+				
+				<div class="container sml-txt mt-3 d-inline">
+					
+					<label>Username:</label>
+					<input type="text" name="username" value="" /><br></br>				
+					<label>Email address:</label>
+					<input type="text" name="email" value=""/><br></br>
+				
+					<label>Password:</label>
+					<input type="password" name="password" value="" /><br></br>
+				
+					<label>Confirm Password:</label>
+					<input type="password" name="password" value="" /><br></br>
+				
+				
+				</div>
+				
+				
+				<div class="info xsml-txt gry-txt">
+			
+				<p>I accept the terms and conditions of use. <input type="checkbox"></p>
+				</div>
+				<div class="info sml-txt">
+				<input type="submit" value="Sign Up" href="{% url 'home:login' %}" /><br></br>
+				</div>
+				
+			</form>
+			</div>
+			
+			
+</div>
+</div>
+<script src="{% static 'scripts/home.js' %}"></script>
 {% endblock %}
