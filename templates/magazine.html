@@ -55,7 +55,7 @@
                 <div class="issues mt-4">
                     {% for issue in issues %}
                         <div class="py-1">
-                            <a onmouseover="showIssueBox({{ issue. }})" onmouseleave="hideIssueBox()" class="mag-title issue-link">Issue {{forloop.revcounter}}</a>
+                            <a onmouseover="showIssueBox({{ issue. }})" onmouseleave="hideIssueBox()" class="mag-title issue-link">Issue {{forloop.revcounter}}: {{issue.title}}</a>
                         </div>
                     {% endfor %}
                 </div>
