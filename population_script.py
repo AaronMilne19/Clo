@@ -14,8 +14,8 @@ def add_magazine(mag_title, id, description_short, description_long, price, disc
     m.save()
     return m
 
-def add_issue(magazine, cover, date):
-    i = MagazineIssue.objects.get_or_create(date=date, cover=cover, magazine=magazine)[0]
+def add_issue(magazine, cover, date, title):
+    i = MagazineIssue.objects.get_or_create(date=date, cover=cover, magazine=magazine, title=title)[0]
     i.save()
     return i
 
@@ -97,7 +97,7 @@ def populate():
         m = add_magazine(mag_title=mag, id=mag_data['id'], description_short=mag_data['description_short'], description_long=mag_data['description_long'],
                          price=mag_data['price'], discount=mag_data['discount'], cover=mag_data['cover'], link_to_publishers_site=mag_data['link_to_publishers_site'])
         for i in mag_data['issues']:
-            add_issue(magazine=m, cover=i['cover'], date=i['date'])
+            add_issue(magazine=m, cover=i['cover'], date=i['date'], title=i['title'])
 
     h1 = Hashtag.objects.get_or_create(text="#PhotoEssays")[0]
     h1.save()
