@@ -76,10 +76,42 @@
     color: #2F52E0;
 }
 
-.accordian {
-    display:flex;
+.accordion {
     flex-direction:column;
-    justify-content:space-around;
+    justify-content:center;
+    align-content:space-between;
+}
+
+.accordion-item {
+    display: flex;
+    align-content: center;
+    justify-content:center;
+    flex-direction:column;
+    border: 1;
+    background-color: #E8E5E2 !important;
+    margin-bottom: 20px;
+    width: 100%;
+    height: 100px;
+}
+
+.accordion-link {
+    text-align:center;
+    text-decoration: none;
+    color: black;
+    width: 100%;
+}
+
+.answer{
+    text-align:center;
+    max-height:0;
+    overflow: hidden;
+    position:relative; 
+    transition: max-height 0.5s;
+}
+
+.accordion-item:target .answer {
+    max-height:100px;
+
 }
 
 body{
