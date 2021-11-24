@@ -37,6 +37,7 @@
 .button{
     color:white;
     border:none;
+    padding: 5px 15px;
     border-radius: 4px !important;
     background:#4d79ff;
 }
@@ -45,6 +46,12 @@
     color: white;
     background-color: #99b3ff;
     transition: background-color 0.5s ease
+}
+
+.textbox{
+    border-radius: 4px !important;
+    background-color: #E8E5E2;
+    border-color:
 }
 
 .sign-out{

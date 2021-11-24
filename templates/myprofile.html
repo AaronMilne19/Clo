@@ -42,19 +42,26 @@ My Profile
                 <form method="post">
                     {% csrf_token %}
                     <div class="container">
-                        <label>Email: </label>
-                        <input type="text" name="email" value="" />
+                        <div style="">
+                        <label>Email Address: </label>
+                        <input class="textbox" type="text" name="email" value="" />
+                        </div>
                         <input class="button" style = "float: right; margin-top: 20px; width: 50%;" type="submit" name="Save" value="Change Email" />
 
-                        <label style="margin-top: 100px";>Password :</label>
-                        <input type="text" name="username" value="" />
+                        <label style="margin-top: 100px">Password :</label>
+                        <input class="textbox" type="text" name="username" value="" placeholder="New Password" />
+                        <input class="textbox" style="margin-top: 15px" type="text" name="username" value="" placeholder="Confirm Password" />
+                        <input class="button" style = "float: right; margin-top: 20px; width: 50%;" type="submit" name="Save" value="Change Password" />
 
-                        <label>Subscription :</label>
-                        <input type="text" name="subscription" placeholder="Basic" disabled/>
 
+                        <label style="margin-top: 100px" >Subscription :</label>
+                        <label style="color:#4d79ff" >Enabled <br> purchased 23-11-2021 <br> active 24-11-2021</label>
                     </div>
                 </form>
             </div>
+        </div>
+
+        <!--<div class="col-sm border-start border-dark border-1">-->
         </div>
     </div>
 </div>
