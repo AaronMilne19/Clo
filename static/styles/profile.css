@@ -14,7 +14,7 @@
 
 .page-title:hover {
     color: #ffcf01;
-    transition: color 0.1s ease
+    transition: color 0.1s ease;
 }
 
 .page-list {
@@ -32,6 +32,31 @@
 
 .yellow {
     color: #ffcf01;
+}
+
+.button{
+    color:white;
+    border:none;
+    border-radius: 4px !important;
+    background:#4d79ff;
+}
+
+.button:hover{
+    color: white;
+    background-color: #99b3ff;
+    transition: background-color 0.5s ease
+}
+
+.sign-out{
+    text-align: center;
+    text-decoration:none;
+    color:grey;
+    text-decoration:underline;
+}
+
+.sign-out:hover{
+    color: #ff6666;
+    transition: color 0.1s ease;
 }
 
 body{

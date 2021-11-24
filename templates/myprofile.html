@@ -28,7 +28,10 @@ My Profile
 				<div class="card-body mb-3 page-title">
 				Subscriptions
                 </div>
-                <div style="color:red" class="card-body mb-3 page-title">
+                <div class="card-body mb-3 page-title">
+				Contact
+                </div>
+                <div class="card-body mb-3 sign-out">
 				Sign Out
                 </div>
             </div>
@@ -41,10 +44,14 @@ My Profile
                     <div class="container">
                         <label>Email: </label>
                         <input type="text" name="email" value="" />
-                        <label>Username: </label>
+                        <input class="button" style = "float: right; margin-top: 20px; width: 50%;" type="submit" name="Save" value="Change Email" />
+
+                        <label style="margin-top: 100px";>Password :</label>
                         <input type="text" name="username" value="" />
-                        <label>Password :</label>
-                        <input type="password" name="password" value="" />
+
+                        <label>Subscription :</label>
+                        <input type="text" name="subscription" placeholder="Basic" disabled/>
+
                     </div>
                 </form>
             </div>
