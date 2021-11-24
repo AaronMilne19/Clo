@@ -13,8 +13,9 @@ for (const title of titles) {
     }
 }
 
-function showIssueBox() {
+function showIssueBox(issue) {
     issueBox.classList.add('show-issue');
+    
 }
 
 function hideIssueBox() {
