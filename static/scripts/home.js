@@ -14,8 +14,7 @@ for (const title of titles) {
 }
 
 function showIssueBox(issue) {
-    issueBox.classList.add('show-issue');
-    
+    issueBox.classList.add('show-issue', issue);
 }
 
 function hideIssueBox() {

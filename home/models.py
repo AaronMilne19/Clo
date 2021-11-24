@@ -33,13 +33,18 @@ class Magazine(models.Model):
 
 class MagazineIssue (models.Model):
     magazine = models.ForeignKey(Magazine, on_delete=models.CASCADE)
-    title = models.CharField(max_length =1000, default="No title")
+    title = models.CharField(max_length =1000, default="No title", unique=True)
     cover = models.ImageField(upload_to='magazine_pictures', default=None)
     description_short = models.CharField(max_length=1000, default=None, null=True)
     date =  models.DateField(("Date"), default=datetime.date.today)
+    slug = models.SlugField(unique=True)
 
     def __str__(self):
         return self.title
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.title)
+        super(MagazineIssue, self).save(*args, **kwargs)
 
 
 class UserProfile(models.Model):
