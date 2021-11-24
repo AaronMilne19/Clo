@@ -13,7 +13,7 @@
 }
 
 .mag-title:hover {
-    color: #ffcf01;
+    color: #2F52E0;
     transition: color 0.1s ease
 }
 
@@ -28,8 +28,8 @@
 }
 
 .logo-tag {
-    max-width: 150px;
-    width: 150px;
+    width: auto;
+    float: right;
 }
 
 .info {
@@ -40,8 +40,40 @@
     flex-grow: 1;
 }
 
+.issue-link {
+    text-align: center;
+    text-decoration: none;
+    color: black;
+}
+
+.issue-link:hover {
+    color: #2F52E0;
+    transition: color 0.1s ease
+}
+
+.issue-box {
+    position: absolute;
+    background-color: white;
+    height: 0px;
+    width: 0px;
+    right: 8vw;
+    top: 11vh;
+    opacity: 0;
+}
+
+.show-issue {
+    display: flex;
+    flex-direction: column;
+    height: 550px;
+    width: 450px;
+    opacity: 1;
+    transition: opacity 0.4s ease;
+    padding: 10px;
+    box-shadow: 5px 5px 8px rgb(0 0 0 / 0.75);
+}
+
 .yellow {
-    color: #ffcf01;
+    color: #2F52E0;
 }
 
 body{
@@ -51,6 +83,13 @@ body{
 #mainbox {
     flex-direction:column;
     min-height: 100vh;
-    background-color: #8b9e6c;
     height:auto;
+}
+
+@media only screen and (max-width: 470px) {
+
+    .logo-tag {
+        display:none !important;
+    }
+
 }

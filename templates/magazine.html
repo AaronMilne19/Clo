@@ -40,22 +40,26 @@
                 </div>
             </div>
             {% endfor %}
-
         </div>
+
         <div class="col-sm border-start border-dark border-1 d-flex" id="mainbox">
             <div class="info-box sticky-top mx-4 pe-4 d-flex ">
                 <div class="about border-bottom border-dark border-1 pt-3 d-flex align-items-end">
                     <div>{{this.title}}</div>
-                    <div class="logo-tag d-inline-flex justify-content-between align-items-end ms-5">
-                        <div class="sml-txt gry-txt">Tags</div>
+                    <div class="logo-tag d-flex align-items-end ms-1">
+                        {% for hashtag in this.hashtag_set.all%}
+                        <div class="tag sml-txt gry-txt d-inline-flex mx-1">
+                            {{ hashtag }}
+                        </div>
+                        {% endfor %}
                         <img style="max-height:45px" src="{% static 'logos/clo-logomark.png' %}" />
                     </div>
                 </div>
 
                 <div class="issues mt-4">
-                    {% for issue in issues %}
+                    {% for issue in issues reversed %}
                         <div class="py-1">
-                            <a class="mag-title">Issue {{forloop.revcounter}}: {{ issue.title }}</a>
+                            <a href="{% url 'home:issue' this.id issue.slug %}" onmouseover="showIssueBox('{{issue.slug}}')" onmouseleave="hideIssueBox('{{issue.slug}}')" class="issue-link">Issue {{forloop.revcounter}}: {{issue.title}}</a>
                         </div>
                     {% endfor %}
                 </div>
@@ -64,11 +68,16 @@
                     {{this.description_long}}
                 </div>
 
+                {% for issue in issues reversed %}
+                <div class="issue-box" id="IssueBox{{issue.slug}}">
+                    <img src="{{MEDIA_URL}}{{issue.cover}}" />   
+                </div>
+                {% endfor %}
                 
             </div>
         </div>
     </div>
 </div>
 
-<script src="{% static 'scripts/home.js' %}"></script>
+<script src="{% static 'scripts/home.js' %}" defer></script>
 {% endblock %}	

@@ -37,5 +37,20 @@ def magazine(request, id):
     ctx['this'] = mag
     ctx['magazines'] = Magazine.objects.all()
     ctx['issues'] = MagazineIssue.objects.filter(magazine=mag)
-    
+
+
     return render(request, 'magazine.html', context=ctx)
+
+
+def issue(request, id, slug):
+    ctx = {}
+
+    mag = Magazine.objects.get(id=id)
+    issue = MagazineIssue.objects.get(slug=slug)
+
+    ctx['this'] = mag
+    ctx['thisIssue'] = issue
+    ctx['magazines'] = Magazine.objects.all()
+    ctx['issues'] = MagazineIssue.objects.filter(magazine=mag)
+
+    return render(request, 'issue.html', context=ctx)
