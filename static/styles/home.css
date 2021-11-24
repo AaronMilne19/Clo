@@ -76,6 +76,12 @@
     color: #2F52E0;
 }
 
+.accordian {
+    display:flex;
+    flex-direction:column;
+    justify-content:space-around;
+}
+
 body{
     overflow-x:hidden;
 }
