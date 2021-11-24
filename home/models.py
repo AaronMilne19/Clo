@@ -11,7 +11,6 @@ class Magazine(models.Model):
     title = models.CharField(max_length=100, unique=True)
     description_short = models.CharField(max_length=1000)
 
-
     #long - in case we have seperate pages for each magzine
     description_long = models.CharField(max_length=2000)
     price = models.IntegerField(default = 0 )
@@ -34,9 +33,13 @@ class Magazine(models.Model):
 
 class MagazineIssue (models.Model):
     magazine = models.ForeignKey(Magazine, on_delete=models.CASCADE)
+    title = models.CharField(max_length =1000, default="No title")
     cover = models.ImageField(upload_to='magazine_pictures', default=None)
     description_short = models.CharField(max_length=1000, default=None, null=True)
     date =  models.DateField(("Date"), default=datetime.date.today)
+
+    def __str__(self):
+        return self.title
 
 
 class UserProfile(models.Model):
