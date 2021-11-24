@@ -40,6 +40,17 @@
     flex-grow: 1;
 }
 
+.issue-link {
+    text-align: center;
+    text-decoration: none;
+    color: black;
+}
+
+.issue-link:hover {
+    color: #ffcf01;
+    transition: color 0.1s ease
+}
+
 .issue-box {
     position: absolute;
     background-color: white;
@@ -51,10 +62,14 @@
 }
 
 .show-issue {
+    display: flex;
+    flex-direction: column;
     height: 550px;
     width: 450px;
     opacity: 1;
     transition: opacity 0.4s ease;
+    padding: 10px;
+    box-shadow: 5px 5px 8px rgb(0 0 0 / 0.75);
 }
 
 .yellow {

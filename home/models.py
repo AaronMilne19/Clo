@@ -34,7 +34,7 @@ class Magazine(models.Model):
 class MagazineIssue (models.Model):
     magazine = models.ForeignKey(Magazine, on_delete=models.CASCADE)
     title = models.CharField(max_length =1000, default="No title", unique=True)
-    cover = models.ImageField(upload_to='magazine_pictures', default=None)
+    cover = models.ImageField(upload_to='magazine_pictures/', default=None)
     description_short = models.CharField(max_length=1000, default=None, null=True)
     date =  models.DateField(("Date"), default=datetime.date.today)
     slug = models.SlugField(unique=True)
