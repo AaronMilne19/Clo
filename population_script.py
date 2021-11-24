@@ -24,11 +24,11 @@ def add_issue(magazine, cover, date):
 
 
 def populate():
-    mag1_issues = [{'cover': 'cover11.jpg', 'date': datetime.date.today()},
-                   {'cover': 'cover12.jpg', 'date': datetime.date(2002, 5, 1) }]
+    mag1_issues = [{'cover': 'cover11.jpg', 'date': datetime.date.today(), 'title': "Issue title 1"},
+                   {'cover': 'cover12.jpg', 'date': datetime.date(2002, 5, 1), 'title': "Issue title 2" }]
 
-    mag2_issues = [{'cover': 'cover21.jpg', 'date': datetime.date.today()},
-                   {'cover': 'cover22.jpg', 'date': datetime.date(2003, 5, 1)}]
+    mag2_issues = [{'cover': 'cover21.jpg', 'date': datetime.date.today(), 'title': "Issue title 3"},
+                   {'cover': 'cover22.jpg', 'date': datetime.date(2003, 5, 1), 'title': "Issue title 4"}]
 
     mags = {'MagazineTitle1' : {'issues': mag1_issues, 'id' : 1, 'description_short': 'Lorem ipsum dolor sit amet, consectetur adipiscing' \
                                                                                      ' elit, sed do eiusmod tempor incididunt ut labore et ' \

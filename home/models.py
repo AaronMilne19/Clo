@@ -9,7 +9,6 @@ class Magazine(models.Model):
 
     id = models.IntegerField(unique=True, primary_key=True)
     title = models.CharField(max_length=100, unique=True)
-    description_short = models.CharField(max_length=1000)
 
 
     #long - in case we have seperate pages for each magzine
@@ -34,6 +33,7 @@ class Magazine(models.Model):
 
 class MagazineIssue (models.Model):
     magazine = models.ForeignKey(Magazine, on_delete=models.CASCADE)
+    title = models.CharField(max_length =1000, default="No title")
     cover = models.ImageField(upload_to='magazine_pictures', default=None)
     description_short = models.CharField(max_length=1000, default=None, null=True)
     date =  models.DateField(("Date"), default=datetime.date.today)
