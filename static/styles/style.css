@@ -9,7 +9,8 @@
 }
 
 .navbar {
-	height:auto;
+	height: auto;
+	background-color: #E8E5E2 !important;
 }
 
 .nav-col {
@@ -17,8 +18,8 @@
 }
 
 * {
-	border-radius:0 !important;
-	font-family:'ABCArizonaText-Regular-Trial';
+	border-radius: 0 !important;
+	font-family: 'ABCArizonaText-Regular-Trial';
 }
 
 .logo {
@@ -41,8 +42,13 @@ h1 {
 	color: rgb(0 0 0 / 30%);
 }
 
+.card {
+	background-color: #E8E5E2 !important;
+}
+
 body {
 	font-size: 24px;
+	background-color: #E8E5E2;
 }
 
 

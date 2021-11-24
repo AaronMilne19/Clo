@@ -13,7 +13,7 @@
 }
 
 .mag-title:hover {
-    color: #ffcf01;
+    color: #2F52E0;
     transition: color 0.1s ease
 }
 
@@ -47,7 +47,7 @@
 }
 
 .issue-link:hover {
-    color: #ffcf01;
+    color: #2F52E0;
     transition: color 0.1s ease
 }
 
@@ -73,7 +73,7 @@
 }
 
 .yellow {
-    color: #ffcf01;
+    color: #2F52E0;
 }
 
 body{
@@ -83,7 +83,6 @@ body{
 #mainbox {
     flex-direction:column;
     min-height: 100vh;
-    background-color: #8b9e6c;
     height:auto;
 }
 
