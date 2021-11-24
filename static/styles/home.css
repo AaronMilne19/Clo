@@ -28,8 +28,8 @@
 }
 
 .logo-tag {
-    max-width: 150px;
-    width: 150px;
+    width: auto;
+    float: right;
 }
 
 .info {
@@ -85,4 +85,12 @@ body{
     min-height: 100vh;
     background-color: #8b9e6c;
     height:auto;
+}
+
+@media only screen and (max-width: 470px) {
+
+    .logo-tag {
+        display:none !important;
+    }
+
 }
