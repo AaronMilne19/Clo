@@ -106,11 +106,12 @@
     max-height:0;
     overflow: hidden;
     position:relative; 
-    transition: max-height 0.5s;
+    transition: max-height 650ms;
 }
 
 .accordion-item:target .answer {
-    max-height:100px;
+    min-height:100px;
+    overflow-y:auto;
 
 }
 
@@ -120,7 +121,7 @@ body{
 
 #mainbox {
     flex-direction:column;
-    min-height: 100vh;
+    max-height: 100vh;
     height:auto;
 }
 
