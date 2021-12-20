@@ -123,6 +123,22 @@
     color: #2F52E0;
 }
 
+.login {
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    height:90px;
+    margin-bottom:20px;
+}
+
+.lin {
+    color: #2F52E0;
+}
+
+.lout {
+    color: gray;
+}
+
 body{
     overflow-x:hidden;
 }
