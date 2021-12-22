@@ -41,10 +41,10 @@ My Profile
             <div style="margin-top:50px" class="info-box sticky-top pr-3 d-flex mx-4 pe-4">
                 <form method="post">
                     {% csrf_token %}
-                    <div class="container">
+                    <div class="container" id = "content">
                         <div style="">
                             <label>Email Address: </label>
-                            <input class="textbox" type="text" name="email" value="" />
+                            <input class="textbox" type="text" name="email" value="" placeholder="example@email.com" />
                         </div>
                         <input class="button" style = "float: right; margin-top: 20px; width: 50%;" type="submit" name="Save" value="Change Email" />
 
