@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block css %}
+
+<link rel="stylesheet" type="text/css" href="/static/styles/sidebar.css">
+{% endblock %}
+
+{% block title %}
+Contact
+{% endblock %}
+
+<!--see navbar.html for navbar code-->
+{% block navbar %}
+{% include "navbar.html" %}
+
+{% endblock %}
+
+{% block content %}
+
+
+
+<div class="info-box py-0 px-0 mr-0 d-inline">
+
+<div class="row">
+  <div class="column">
+	<div class="sidebar">
+	
+	<a  href="{% url 'home:home' %}">All Magazines</a>
+
+	<a href="#">Membership</a>
+	
+	<a  href="{% url 'home:contact' %}">Contact</a>
+	
+	
+	{% if user.is_authenticated %}
+	<a href="{% url 'home:signout' %}">Sign Out</a>
+	{% else %}
+	<a href="{% url 'home:login' %}">Log In</a>
+	{% endif %}
+	
+	</div>
+  </div>
+  <div class="column">
+  <h3 class="card-title">Contact Us:</h3>
+  <div class="container sml-txt mt-3 d-inline">
+  <p>For general enquires please contact us at
+  <a href="email">contact@clo.com</a></p>
+  <p>CLÒ</p>
+  <p>St.Ninian's Manse</p>
+  <p>1a Quayside Street</p>
+  <p>Leith</p>
+  <p>Edinburgh</p>
+  <p>EH6 6EX</p>
+  </div>
+  </div>
+</div>
+</div>
+</div>
+{% endblock %}
