@@ -22,14 +22,6 @@
     display:flex;
 }
 
-.info {
-    overflow-y:auto;
-}
-
-.issues {
-    flex-grow: 1;
-}
-
 .yellow {
     color: #ffcf01;
 }
@@ -70,10 +62,8 @@ body{
     overflow-x:hidden;
 }
 
-#mainbox {
+#content {
     flex-direction:column;
-    min-height: 100vh;
-    background-color: white;
     height:auto;
 }
 
@@ -87,6 +77,10 @@ body{
 .container input{
 	width:100%;
 	clear:both;
+}
+
+@media only screen and (max-width: 470px) {
+
 }
 
 
