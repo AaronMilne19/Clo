@@ -1,10 +1,4 @@
-.info-box {
-    top: 60px;
-    height: 85vh;
-    max-width: 95%;
-    width: 95%;
-    flex-direction: column;
-}
+/*temp. sidebar css*/
 
 .page-title{
     text-align: center;
@@ -26,6 +20,20 @@
     color: #ffcf01;
 }
 
+.sign-out{
+    text-align: center;
+    text-decoration:none;
+    color:grey;
+    text-decoration:underline;
+}
+
+.sign-out:hover{
+    color: #ff6666;
+    transition: color 0.1s ease;
+}
+
+/*form css*/
+
 .button{
     color:white;
     border:none;
@@ -46,42 +54,27 @@
     border-color:
 }
 
-.sign-out{
-    text-align: center;
-    text-decoration:none;
-    color:grey;
-    text-decoration:underline;
-}
-
-.sign-out:hover{
-    color: #ff6666;
-    transition: color 0.1s ease;
-}
-
-body{
-    overflow-x:hidden;
-}
+/*form render css*/
 
 #content {
     flex-direction:column;
+    min-height: 100vh;
     height:auto;
 }
 
+.info-box {
+    height: 85vh;
+    max-width: 95%;
+    width: 95%;
+    flex-direction: column;
+}
+
 .container{
-	width:500px;
-	clear:both;
 	margin-left:auto;
 	margin-right:auto;
 }
 
 .container input{
-	width:100%;
-	clear:both;
-}
-
-@media only screen and (max-width: 470px) {
+    width: 100%;
 
 }
-
-
-
