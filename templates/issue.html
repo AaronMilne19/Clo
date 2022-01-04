@@ -38,7 +38,7 @@
         </div>
 
         <div style="margin:0; padding:0;" class="col-sm-4">
-            <div style="margin:0; width:100%;" class="info-box sticky-top d-flex">
+            <div class="info-box issue-box sticky-top d-flex">
                 <div class="issue-header">
                     <div>
                         {{this.title}}<br />
@@ -46,13 +46,27 @@
                         <div style="margin:0 !important;" class="sml-txt gry-txt">
                             {% for hashtag in this.hashtag_set.all %}
                             {{ hashtag }} &#160
-                            {%  endfor %}
+                            {% endfor %}
                         </div>
                         {% if user.is_authenticated %}
                         <button role="button" data-toggle="button" class="btn btn-outline-secondary btn-sm favourite mt-2" aria-pressed="false" autocomplete="off">Add to favourites</button>
                         {% endif %}
                     </div>
                 </div>
+
+                <div class="issue-body">
+                    <div class="sml-txt">
+                        {{thisIssue.description_short}}{{thisIssue.description_short}}
+                    </div>
+                </div>
+
+                <div class="issue-buy">
+                    <div>
+                        <button type="button" class="btn btn-primary btn-sm">Subscriber Price &#163;{{this.discount}}</button>
+                        <button type="button" class="btn btn-outline-secondary btn-sm">Full Price &#163;{{this.price}}</button>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>

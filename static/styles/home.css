@@ -1,6 +1,6 @@
 .info-box {
     top: 58px;
-    height: 85vh;
+    height: 91vh;
     width: 95%;
     flex-direction: column;
 }
@@ -121,6 +121,12 @@
     color: gray;
 }
 
+.issue-box {
+    margin: 0;
+    width: 100%;
+    justify-content:space-between;
+}
+
 .issue-header{
     display:flex;
     min-height:100px;
@@ -138,6 +144,38 @@
 .favourite {
     height:30px !important;
     width:75% !important;
+}
+
+.issue-body {
+    display:flex;
+    align-items:start;
+    max-height:52vh;
+    overflow-y:auto;
+}
+
+.issue-body div {
+    position: relative;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-content: start;
+    padding: 15px;
+}
+
+.issue-buy {
+    margin-top:15px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-top: 1px solid black;
+    height:100px;
+}
+
+.issue-buy div {
+    padding: 15px;
+    display:flex;
+    justify-content:space-around;
+    width:70%;
 }
 
 body{
