@@ -9,11 +9,11 @@
 .mag-title{
     text-align: center;
     text-decoration:none;
-    color:black;
+    color:black !important;
 }
 
 .mag-title:hover {
-    color: #2F52E0;
+    color: #2F52E0 !important;
     transition: color 0.1s ease
 }
 
@@ -121,6 +121,10 @@
 .accordion-item:target .accordion-link {
     padding: 15pt;
     color: #2F52E0;
+}
+
+.member-link {
+    
 }
 
 .login {
