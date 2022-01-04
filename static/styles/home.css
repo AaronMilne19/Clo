@@ -51,29 +51,8 @@
     transition: color 0.1s ease
 }
 
-.issue-box {
-    position: absolute;
-    background-color: white;
-    height: 0px;
-    width: 0px;
-    right: 8vw;
-    top: 11vh;
-    opacity: 0;
-}
-
-.show-issue {
-    display: flex;
-    flex-direction: column;
-    height: 550px;
-    width: 450px;
-    opacity: 1;
-    transition: opacity 0.4s ease;
-    padding: 10px;
-    box-shadow: 5px 5px 8px rgb(0 0 0 / 0.75);
-}
-
 .yellow {
-    color: #2F52E0;
+    color: #2F52E0 !important;
 }
 
 .accordion {
@@ -123,10 +102,6 @@
     color: #2F52E0;
 }
 
-.member-link {
-    
-}
-
 .login {
     display:flex;
     align-items:center;
@@ -139,6 +114,10 @@
     color: #2F52E0;
 }
 
+.lin:hover {
+    color: gray;
+}
+
 .lout {
     color: gray;
 }
@@ -149,7 +128,7 @@ body{
 
 #mainbox {
     flex-direction:column;
-    min-height: 95vh;
+    min-height: 94vh;
     height:auto;
 }
 
