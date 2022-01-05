@@ -25,13 +25,21 @@
             <div class="info-box sticky-top mx-4 pe-4 d-flex">
                 <div class="issues mt-4">
                     {% for issue in issues reversed %}
-                    <div class="py-1">
                         {% if issue.slug == thisIssue.slug %}
-                        <a href="{% url 'home:magazine' this.id %}" class="yellow issue-link" id="{{issue.slug}}">Issue {{forloop.revcounter}}: {{issue.title}}</a>
+                        <a href="{% url 'home:magazine' this.id %}" class=" yellow issue-crd card issue-link py-1">
+                            <img class="card-img-top" src="{% static 'magazine_pictures/cover11.jpg' %}" />
+                            <div style=" display:flex; justify-content:center;" class="card-body">
+                                <h5 class="sml-txt card-title">Issue {{forloop.revcounter}}: {{issue.title}}</h5>
+                            </div>
+                        </a>
                         {% else %}
-                        <a href="{% url 'home:issue' this.id issue.slug %}" class="issue-link" id="{{issue.slug}}">Issue {{forloop.revcounter}}: {{issue.title}}</a>
+                        <a href="{% url 'home:issue' this.id issue.slug %}" class="issue-crd card issue-link py-1">
+                            <img class="card-img-top" src="{% static 'magazine_pictures/cover11.jpg' %}" />
+                            <div style=" display:flex; justify-content:center;" class="card-body">
+                                <h5 class="sml-txt card-title">Issue {{forloop.revcounter}}: {{issue.title}}</h5>
+                            </div>
+                        </a>
                         {% endif %}
-                    </div>
                     {% endfor %}
                 </div>
             </div>
@@ -62,8 +70,8 @@
 
                 <div class="issue-buy">
                     <div>
-                        <button type="button" class="btn btn-primary btn-sm">Subscriber Price &#163;{{this.discount}}</button>
-                        <button type="button" class="btn btn-outline-secondary btn-sm">Full Price &#163;{{this.price}}</button>
+                        <button type="button" class="btn btn-primary btn-sm pay">Subscriber Price &#163;{{this.discount}}</button>
+                        <button type="button" class="btn btn-outline-secondary btn-sm pay">Full Price &#163;{{this.price}}</button>
                     </div>
                 </div>
 
@@ -73,6 +81,10 @@
 </div>
 
 
-<script>window.location.href += "#Magazines";</script>
+<script>
+    if (window.location.href.slice(-10) != "#Magazines") {
+        window.location.href += "#Magazines";
+    }
+</script>
 <script src="{% static 'scripts/home.js' %}" defer></script>
 {% endblock %}
