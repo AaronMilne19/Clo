@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from home.models import Magazine, UserProfile, Hashtag, MagazineIssue
+from django.contrib.auth.decorators import login_required
 
 
 def home(request):
@@ -48,3 +49,12 @@ def issue(request, id, slug):
     ctx['issues'] = MagazineIssue.objects.filter(magazine=mag)
 
     return render(request, 'issue.html', context=ctx)
+
+
+@login_required
+def mymags(request):
+    ctx = {}
+
+    ctx['magazines'] = Magazine.objects.all()
+
+    return render(request, 'mymagazines.html', context=ctx)
