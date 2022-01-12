@@ -57,7 +57,12 @@
                             {% endfor %}
                         </div>
                         {% if user.is_authenticated %}
-                        <button role="button" data-toggle="button" class="btn btn-outline-secondary btn-sm favourite mt-2" aria-pressed="false" autocomplete="off">Add to favourites</button>
+                        <form class="save_issue" action="" method="POST" id="{{thisIssue.slug}}">
+                            {% csrf_token %}
+                            <button type="button" value="{{thisIssue.slug}}" class="btn btn-outline-secondary btn-sm favourite mt-2" onclick="saveIssue()">
+                                Add to My Magazines
+                            </button>
+                        </form>
                         {% endif %}
                     </div>
                 </div>
@@ -87,5 +92,7 @@
         window.location.href += "#Magazines";
     }
 </script>
+
 <script src="{% static 'scripts/home.js' %}" defer></script>
+<script src="{% static 'scripts/saveIssue.js' %}" defer></script>
 {% endblock %}

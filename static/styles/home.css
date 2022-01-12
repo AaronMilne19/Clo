@@ -164,7 +164,11 @@
 
 .favourite {
     height:30px !important;
-    width:75% !important;
+    width:80% !important;
+}
+
+.favourite:hover{
+    background-color:#808080 !important;
 }
 
 .issue-body {
@@ -201,6 +205,10 @@
 
 body{
     overflow-x:hidden;
+}
+
+.btn:focus{
+    box-shadow:none !important;
 }
 
 #mainbox {

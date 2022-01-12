@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login , logout
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.urls import reverse
 from home.models import Magazine, UserProfile, Hashtag, MagazineIssue
 from home.forms import UserForm, UserProfileForm
@@ -109,10 +109,33 @@ def issue(request, id, slug):
 def mymags(request):
     ctx = {}
 
-    #user = UserProfile.objects.get(user=request.user)
-    
+    user = UserProfile.objects.get(user=request.user)
+    issues = user.saved_issues.order_by("magazine")    
 
     ctx['magazines'] = Magazine.objects.all()
-    ctx['savedissues'] = MagazineIssue.objects.all() #This will change
+    ctx['savedissues'] = issues.all()
 
     return render(request, 'mymagazines.html', context=ctx)
+
+
+@login_required
+def save_issue(request):
+    if request.method == 'POST':
+        issue_name = request.POST.get('name')
+
+        issue = MagazineIssue.objects.get(slug=issue_name)
+        user = UserProfile.objects.get(user=request.user)
+
+        for i in user.saved_issues.all():
+            #This removes attraction from the list if already present hence acting as a toggle
+            if i == issue:
+                user.saved_issues.remove(issue)
+                user.save()
+                return JsonResponse({'success':'true', 'value':0})
+
+        user.saved_issues.add(issue)
+        user.save()
+
+        return JsonResponse({'success':'true', 'value':1})
+
+    return JsonResponse({'success':'false'})

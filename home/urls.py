@@ -12,5 +12,6 @@ urlpatterns = [
     path('<int:id>/<slug:slug>/', views.issue, name="issue"),
     path('mymagazines/', views.mymags, name="mymagazines"),
     path('signout/', views.user_signout, name="signout"),
+    path('saveissue/', views.save_issue, name="save-issue"),
 ]
 
