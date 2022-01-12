@@ -53,11 +53,11 @@
 
     {% if user.is_authenticated %}
     <div class="login">
-        <a class="lout" href="">Sign Out</a>
+        <a class="lout" href="{% url 'home:signout' %}">Sign Out</a>
     </div>
     {% else %}
     <div class="login">
-        <a class="lin" href="login">Log In</a>
+        <a class="lin" href="{% url 'home:login' %}">Log In</a>
     </div>
     {% endif %}
 

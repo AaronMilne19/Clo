@@ -14,48 +14,72 @@ Sign Up
 {% endblock %}
 
 {% block content %}
+
     <div class="info-box py-0 px-0 mr-0 d-inline">
-	<div class="boxed text-dark bg-white my-5 py-4 text-center">
 			
-			<div class="card-body">
-			<h1 class="card-title">Sign Up</h1>
-			<br></br>
+			<div class="card-body center">
+			<center>
+			{% if registered %}
+			<p>Thank you for registering!</p>
+			<a href="{% url 'home:home' %}">Return to homepage.</a>
+			
+			{% else %}
+			<h3 class="card-title">Sign Up</h3>
 			
 			
-			<form id=signup_form" method="post" action="{%url 'home:signup' %}">
+			
+			<div class="container sml-txt mt-3 d-inline">
+			<form id=signup_form" method="post" action="{%url 'home:signup' %}" >
 				{% csrf_token %}
 				
 				
-				<div class="container sml-txt mt-3 d-inline">
+				
 					
-					<label>Username:</label>
-					<input type="text" name="username" value="" /><br></br>				
-					<label>Email address:</label>
-					<input type="text" name="email" value=""/><br></br>
+						
+					
+					<input type="username" name="username" placeholder="Username" required/>
+					
+					<p>{{ form.username.errors.as_text }}</p>
+					
+					
+					<input type="password" name="password" placeholder="Password" required />				
+					
+					<p>{{ form.password.errors.as_text }}</p>
+					
 				
-					<label>Password:</label>
-					<input type="password" name="password" value="" /><br></br>
-				
-					<label>Confirm Password:</label>
-					<input type="password" name="password" value="" /><br></br>
-				
-				
+					
+					<input type="password" name="confirm_password" placeholder="Repeat Password" required />
+					
+					<p>{{ form.confirm_password.errors.as_text }}</p>
+					
+					
+
+
 				</div>
 				
 				
 				<div class="info xsml-txt gry-txt">
-			
-				<p>I accept the terms and conditions of use. <input type="checkbox"></p>
-				</div>
-				<div class="info sml-txt">
-				<input type="submit" value="Sign Up" href="{% url 'home:login' %}" /><br></br>
+				<input type="checkbox" id="terms" required onchange="this.setCustomValidity(validity.valueMissing ? 'Please accept the Terms and Conditions of use to continue.' : '');" />
+				<p>I accept the Terms and Conditions of use.</p>
+				
+				
+				
 				</div>
 				
+				<div class="info sml-txt ">
+				<input type="submit" name="submit" value="Enter" href="{% url 'home:login' %}" />
+
+				</div>
+			</center>
 			</form>
+			
+			
+			
+			{% endif %}
 			</div>
 			
 			
 </div>
 </div>
-<script src="{% static 'scripts/home.js' %}"></script>
+<script src="{% static 'scripts/signup.js' %}"></script>	
 {% endblock %}
