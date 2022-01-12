@@ -31,8 +31,10 @@ function saved(issueName, value) {
         if (button.value === issueName) {
             if (value === 0) {
                 button.classList.remove('selected');
+                button.innerHTML = "Add to My Magazines"
             } else {
                 button.classList.add('selected');
+                button.innerHTML = "Remove from My Magazines"
             }
         }
     }

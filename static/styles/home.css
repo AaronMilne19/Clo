@@ -163,17 +163,21 @@
 }
 
 .favourite {
-    height:30px !important;
-    width:80% !important;
+    height: 30px !important;
+    width: 82% !important;
+    transition: width ease 0.1s;
 }
 
 .favourite:hover{
-    background-color:#808080 !important;
+   background-color:gray !important;
+   transition: 0.1s ease;
 }
 
 .selected {
-    background-color: gray !important;
-    color:#E8E5E2;
+    background-color: darkgray !important;
+    color: #E8E5E2;
+    width: 100% !important;
+    transition: width ease 0.1s;
 }
 
 .issue-body {
