@@ -3,15 +3,19 @@
 
 {% block css %}
 <link rel="stylesheet" type="text/css" href="/static/styles/home.css">
+<link rel="stylesheet" type="text/css" href="/static/styles/mymagazines.css">
 {% endblock %}
 
 {% block navbar %}
 {% include 'navbar.html' %}
 {% endblock %}
 
+{% block title %}
+My Magazines
+{% endblock %}
+
 
 {% block content %}
-
 <div class="container py-0 px-0 mr-0 d-inline">
     <div class="row">
         <div style="min-height: 80vh;" class="col-sm-4 pt-3 px-0">
@@ -19,12 +23,22 @@
         </div>
 
         <div class="col-sm-4 border-start border-end border-dark border-1 d-flex" id="mainbox">
-
+            <div class="info-box sticky-top mx-4 pe-4 d-flex">
+                {% for issue in savedissues %}
+                <div class="saved-box">
+                    <a href="{% url 'home:issue' issue.magazine.id issue.slug %}" class="saved-link">
+                        {{issue.magazine.title}} - {{issue.title}}
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
         </div>
+
     </div>
 </div>
 
 {% endblock %}
+
 
 {% block script %}
 <script>
@@ -34,5 +48,4 @@
 
     document.getElementById('mmags').classList.add('yellow');
 </script>
-
 {% endblock %}

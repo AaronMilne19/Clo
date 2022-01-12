@@ -55,6 +55,10 @@ def issue(request, id, slug):
 def mymags(request):
     ctx = {}
 
+    #user = UserProfile.objects.get(user=request.user)
+    
+
     ctx['magazines'] = Magazine.objects.all()
+    ctx['savedissues'] = MagazineIssue.objects.all() #This will change
 
     return render(request, 'mymagazines.html', context=ctx)
