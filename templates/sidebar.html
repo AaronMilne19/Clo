@@ -33,6 +33,7 @@
                 Membership
             </a>
 
+            {% if user.is_authenticated %}
             <div class="answer">
                 <div class="mag-box justify-content-center align-items-center">
                     <a href="" class="card-title mem-title" id="mprof">My Profile</a>
@@ -42,6 +43,7 @@
                     <a href="{% url 'home:mymagazines' %}" class="card-title mem-title" id="mmags">My Magazines</a>
                 </div>
             </div>
+            {% endif %}
         </div>
 
         <div class="accordion-item" id="Contact">

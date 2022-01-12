@@ -1,4 +1,9 @@
 var csrf = document.getElementsByName('csrfmiddlewaretoken');
+var buttons = document.getElementsByClassName('favourite');
+
+for (const iss of savedIss) {
+    saved(iss, 1);
+}
 
 function saveIssue() {
     const issueName = event.target.value;
@@ -22,9 +27,13 @@ function saveIssue() {
 }
 
 function saved(issueName, value) {
-    if (value === 1) {
-        alert("Added" + issueName);
-    } else {
-        alert("removed" + issueName);
+    for (button of buttons) {
+        if (button.value === issueName) {
+            if (value === 0) {
+                button.classList.remove('selected');
+            } else {
+                button.classList.add('selected');
+            }
+        }
     }
 }

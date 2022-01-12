@@ -102,6 +102,10 @@ def issue(request, id, slug):
     ctx['magazines'] = Magazine.objects.all()
     ctx['issues'] = MagazineIssue.objects.filter(magazine=mag)
 
+    if request.user.is_authenticated:
+        user = UserProfile.objects.get(user=request.user)
+        ctx['saved_issues'] = user.saved_issues.all()
+
     return render(request, 'issue.html', context=ctx)
 
 
