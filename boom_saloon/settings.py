@@ -26,6 +26,13 @@ SECRET_KEY = 'django-insecure-cfs9z62t$-%vd2*x__#uud!1*(u@=$x!6=3j4+)hx%0k^drq1-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+LOGIN_URL='home:login'
+
+PASSWORD_HASHERS = (
+    'django.contrib.auth.hashers.PBKDF2PasswordHasher',
+    'django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher',
+)
+
 ALLOWED_HOSTS = [
     'aaronmilne19.pythonanywhere.com',
     '127.0.0.1',
