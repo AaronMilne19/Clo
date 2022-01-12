@@ -72,7 +72,7 @@ def user_signup(request):
     return render(request, 'signup.html', context=ctx)
     
 
-def my_profile(request):
+def myprofile(request):
     ctx = {}
 
     return render(request, 'myprofile.html', context=ctx)
