@@ -74,10 +74,14 @@ def user_signup(request):
 
 def my_profile(request):
     ctx = {}
-    
+    mag = Magazine.objects.get(id=id)
+
+    ctx['this'] = mag
     ctx['magazines'] = Magazine.objects.all()
+    ctx['issues'] = MagazineIssue.objects.filter(magazine=mag)
 
     return render(request, 'myprofile.html', context=ctx)
+
 
 @login_required
 def user_signout(request):
