@@ -36,7 +36,7 @@
             {% if user.is_authenticated %}
             <div class="answer">
                 <div class="mag-box justify-content-center align-items-center">
-                    <a href="" class="card-title mem-title" id="mprof">My Profile</a>
+                    <a href="{% url 'home:myprofile' %}" class="card-title mem-title" id="mprof">My Profile</a>
                 </div>
 
                 <div class="mag-box justify-content-center align-items-center">
