@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" type="text/css" href="/static/styles/myprofile.css">
+<link rel="stylesheet" type="text/css" href="/static/styles/home.css">
+{% endblock %}
+
+{% block title %}
+My Profile
+{% endblock %}
+
+
+{% block navbar %}
+{% include "navbar.html" %}
+{% endblock %}
+
+{% block content %}
+<div class="container py-0 px-0 mr-0 d-inline">
+    <div class="row">
+        <div style="min-height: 80vh;" class="col-sm-4 pt-3 px-0">
+            {% include "sidebar.html" %}
+        </div> <!-- ends left menu-->
+
+        <div class="col-sm border-start border-dark border-1 d-flex" id="mainbox">
+            <div style="min-width: 80% ;margin-top:50px" class="info-box sticky-top pr-3 d-flex mx-4 pe-4">
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="container">
+                        <label>Email Address: </label>
+                        <input class="textbox" type="text" name="email" value="" placeholder="example@email.com" />
+                        <input class="button" style="float: right; margin-top: 20px; width: 50%;" type="submit" name="Save" value="Change Email" />
+
+                        <label style="margin-top: 100px">Password :</label>
+                        <input class="textbox" type="text" name="username" value="" placeholder="New Password" />
+                        <input class="textbox" style="margin-top: 15px" type="text" name="username" value="" placeholder="Confirm Password" />
+                        <input class="button" style="float: right; margin-top: 20px; width: 50%;" type="submit" name="Save" value="Change Password" />
+
+
+                        <label style="margin-top: 100px">Subscription :</label>
+                        <label style="color:#4d79ff">Enabled <br> purchased 23-11-2021 <br> active 24-11-2021</label>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="col-sm border-start border-dark border-1"></div>
+    </div>
+</div>
+{% endblock %}
+
+
+{% block script %}
+<script>
+    if (window.location.href.slice(-11) != "#Membership") {
+        window.location.href += "#Membership";
+    }
+
+    document.getElementById('mprof').classList.add('yellow');
+</script>
+
+<script src="{% static 'scripts/profile.js' %}"></script>
+{% endblock %}
