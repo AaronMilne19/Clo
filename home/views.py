@@ -79,6 +79,9 @@ def my_profile(request):
 
     return render(request, 'myprofile.html', context=ctx)
 
+    
+
+
 @login_required
 def user_signout(request):
 	logout(request)
@@ -115,3 +118,4 @@ def issue(request, id, slug):
 def contact(request):
 	ctx={}
 	return render(request, 'contact.html', context=ctx)
+#
