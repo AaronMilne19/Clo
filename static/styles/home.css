@@ -212,6 +212,17 @@
     width:70%;
 }
 
+.con-title {
+    text-align: center;
+    text-decoration: none;
+    color: black !important;
+}
+
+.con-title:hover {
+    color: #2F52E0 !important;
+    transition: color 0.1s ease
+}
+
 body{
     overflow-x:hidden;
 }

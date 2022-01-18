@@ -80,6 +80,8 @@ def my_profile(request):
 
     return render(request, 'myprofile.html', context=ctx)
 
+    
+
 
 @login_required
 def user_signout(request):
@@ -153,3 +155,11 @@ def save_issue(request):
         return JsonResponse({'success':'true', 'value':1})
 
     return JsonResponse({'success':'false'})
+
+    
+def contact(request):
+    ctx={}
+    
+    ctx['magazines'] = Magazine.objects.all()
+
+    return render(request, 'contact.html', context=ctx)
