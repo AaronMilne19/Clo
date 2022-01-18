@@ -106,7 +106,8 @@
     max-height:0;
     overflow: hidden;
     position:relative; 
-    transition: max-height 200ms ease;
+    transition: max-height 100ms ease;
+    transition-delay:100ms !important;
 }
 
 .accordion-item:target .answer {
