@@ -72,12 +72,14 @@ def user_signup(request):
     return render(request, 'signup.html', context=ctx)
     
 
+@login_required
 def my_profile(request):
     ctx = {}
     
     ctx['magazines'] = Magazine.objects.all()
 
     return render(request, 'myprofile.html', context=ctx)
+
 
 @login_required
 def user_signout(request):

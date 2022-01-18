@@ -24,6 +24,7 @@ My Magazines
 
         <div class="col-sm-4 border-start border-end border-dark border-1 d-flex" id="mainbox">
             <div class="info-box sticky-top mx-4 pe-4 d-flex">
+                {% if savedissues %}
                 {% for issue in savedissues %}
                 <div class="saved-box">
                     <a href="{% url 'home:issue' issue.magazine.id issue.slug %}" class="saved-link">
@@ -31,6 +32,11 @@ My Magazines
                     </a>
                 </div>
                 {% endfor %}
+                {% else %}
+                <div class="saved-box">
+                    You haven't saved any magazines yet!
+                </div>
+                {% endif %}
             </div>
         </div>
 
