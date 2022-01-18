@@ -79,6 +79,9 @@ def my_profile(request):
 
     return render(request, 'myprofile.html', context=ctx)
 
+    
+
+
 @login_required
 def user_signout(request):
 	logout(request)
@@ -111,3 +114,11 @@ def issue(request, id, slug):
     ctx['issues'] = MagazineIssue.objects.filter(magazine=mag)
 
     return render(request, 'issue.html', context=ctx)
+
+    
+def contact(request):
+    ctx={}
+    
+    ctx['magazines'] = Magazine.objects.all()
+
+    return render(request, 'contact.html', context=ctx)
