@@ -14,6 +14,4 @@ urlpatterns = [
     path('contact/', views.contact, name="contact"),
     path('signout/', views.user_signout, name="signout"),
     path('membership/', views.membership, name="membership"),
-    path('contact/',views.contact, name="contact"),
-
 ]
