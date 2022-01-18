@@ -50,6 +50,9 @@ Contact Us
 
 {% block script %}
 <script>
-	document.getElementById('Contact').classList.add('yellow');
+	if (window.location.href.slice(-11) != "#Contact") {
+        window.location.href += "#Contact";
+    }
+	
 </script>	
 {% endblock %}
