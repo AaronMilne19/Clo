@@ -57,14 +57,19 @@
                             {% endfor %}
                         </div>
                         {% if user.is_authenticated %}
-                        <button role="button" data-toggle="button" class="btn btn-outline-secondary btn-sm favourite mt-2" aria-pressed="false" autocomplete="off">Add to favourites</button>
+                        <form class="save_issue" action="" method="POST" id="{{thisIssue.slug}}">
+                            {% csrf_token %}
+                            <button type="button" value="{{thisIssue.slug}}" class="btn btn-outline-secondary btn-sm favourite mt-2" onclick="saveIssue()">
+                                Add to My Magazines
+                            </button>
+                        </form>
                         {% endif %}
                     </div>
                 </div>
 
                 <div class="issue-body">
                     <div class="sml-txt">
-                        {{thisIssue.description_short}}{{thisIssue.description_short}}
+                        {{thisIssue.description_short}}
                     </div>
                 </div>
 
@@ -80,11 +85,22 @@
     </div>
 </div>
 
-
+{% endblock %}
+{% block script %}
 <script>
     if (window.location.href.slice(-10) != "#Magazines") {
         window.location.href += "#Magazines";
     }
 </script>
+
+<script>
+    var savedIss = []
+
+    {% for iss in saved_issues %}
+    savedIss.push("{{ iss.slug }}");
+    {% endfor %}
+</script>
+
 <script src="{% static 'scripts/home.js' %}" defer></script>
+<script src="{% static 'scripts/saveIssue.js' %}" defer></script>
 {% endblock %}

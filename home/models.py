@@ -50,6 +50,7 @@ class MagazineIssue (models.Model):
 class UserProfile(models.Model):
 
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+    saved_issues = models.ManyToManyField(MagazineIssue, related_name="saves")
 
     def __str__(self):
         return self.user.username

@@ -106,7 +106,8 @@
     max-height:0;
     overflow: hidden;
     position:relative; 
-    transition: max-height 200ms ease;
+    transition: max-height 100ms ease;
+    transition-delay:100ms !important;
 }
 
 .accordion-item:target .answer {
@@ -163,8 +164,21 @@
 }
 
 .favourite {
-    height:30px !important;
-    width:75% !important;
+    height: 30px !important;
+    width: 82% !important;
+    transition: width ease 0.1s;
+}
+
+.favourite:hover{
+   background-color:gray !important;
+   transition: 0.1s ease;
+}
+
+.selected {
+    background-color: darkgray !important;
+    color: #E8E5E2;
+    width: 100% !important;
+    transition: width ease 0.1s;
 }
 
 .issue-body {
@@ -212,6 +226,10 @@
 
 body{
     overflow-x:hidden;
+}
+
+.btn:focus{
+    box-shadow:none !important;
 }
 
 #mainbox {

@@ -1,7 +1,7 @@
 <div style="flex-direction:column; height:90vh; overflow:auto;" class="d-flex justify-content-between">
     <div class="accordion d-flex justify-content-center">
         <div class="accordion-item" id="Magazines">
-            <a class="accordion-link" href="#Magazines">
+            <a class="accordion-link" href="{% url 'home:home' %}#Magazines">
                 All Magazines
             </a>
 
@@ -29,19 +29,21 @@
         </div>
 
         <div class="accordion-item" id="Membership">
-            <a class="accordion-link" href="{% url 'home:membership' %}">
+            <a class="accordion-link" href="{% url 'home:membership' %}#Membership">
                 Membership
             </a>
 
+            {% if user.is_authenticated %}
             <div class="answer">
                 <div class="mag-box justify-content-center align-items-center">
                     <a href="{% url 'home:myprofile' %}" class="card-title mem-title" id="mprof">My Profile</a>
                 </div>
 
-                <div class="mag-box justify-content-center align-items-center" id="mmags">
-                    <a href="" class="card-title mem-title">My Magazines</a>
+                <div class="mag-box justify-content-center align-items-center">
+                    <a href="{% url 'home:mymagazines' %}" class="card-title mem-title" id="mmags">My Magazines</a>
                 </div>
             </div>
+            {% endif %}
         </div>
 
         <div class="accordion-item" id="Contact">
