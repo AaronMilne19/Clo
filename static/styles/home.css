@@ -163,8 +163,21 @@
 }
 
 .favourite {
-    height:30px !important;
-    width:75% !important;
+    height: 30px !important;
+    width: 82% !important;
+    transition: width ease 0.1s;
+}
+
+.favourite:hover{
+   background-color:gray !important;
+   transition: 0.1s ease;
+}
+
+.selected {
+    background-color: darkgray !important;
+    color: #E8E5E2;
+    width: 100% !important;
+    transition: width ease 0.1s;
 }
 
 .issue-body {
@@ -199,8 +212,23 @@
     width:70%;
 }
 
+.con-title {
+    text-align: center;
+    text-decoration: none;
+    color: black !important;
+}
+
+.con-title:hover {
+    color: #2F52E0 !important;
+    transition: color 0.1s ease
+}
+
 body{
     overflow-x:hidden;
+}
+
+.btn:focus{
+    box-shadow:none !important;
 }
 
 #mainbox {

@@ -33,19 +33,21 @@
                 Membership
             </a>
 
+            {% if user.is_authenticated %}
             <div class="answer">
                 <div class="mag-box justify-content-center align-items-center">
                     <a href="{% url 'home:myprofile' %}" class="card-title mem-title" id="mprof">My Profile</a>
                 </div>
 
-                <div class="mag-box justify-content-center align-items-center" id="mmags">
-                    <a href="" class="card-title mem-title">My Magazines</a>
+                <div class="mag-box justify-content-center align-items-center">
+                    <a href="{% url 'home:mymagazines' %}" class="card-title mem-title" id="mmags">My Magazines</a>
                 </div>
             </div>
+            {% endif %}
         </div>
 
         <div class="accordion-item" id="Contact">
-            <a class="accordion-link" href="">
+            <a class="accordion-link" href="{% url 'home:contact' %}" class="card-title con-title" id="con">
                 Contact
             </a>
         </div>
