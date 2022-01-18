@@ -79,7 +79,9 @@ def my_profile(request):
 
     return render(request, 'myprofile.html', context=ctx)
 
-    
+def membership(request):
+	ctx={}
+	return render(request, 'membership.html', context=ctx)   
 
 
 @login_required
