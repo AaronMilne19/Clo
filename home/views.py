@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login , logout
 from django.contrib.auth.decorators import login_required
+from django.contrib.admin.views.decorators import staff_member_required
 from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.urls import reverse
 from home.models import Magazine, UserProfile, Hashtag, MagazineIssue
@@ -167,3 +168,21 @@ def contact(request):
     ctx['magazines'] = Magazine.objects.all()
 
     return render(request, 'contact.html', context=ctx)
+
+
+@staff_member_required
+def staff(request):
+    ctx = {}
+
+    ctx['magazines'] = Magazine.objects.all()
+
+    return render(request, 'staff.html', context=ctx)
+
+
+@staff_member_required
+def codes(request):
+    ctx = {}
+
+    ctx['magazines'] = Magazine.objects.all()
+
+    return render(request, 'codes.html', context=ctx)

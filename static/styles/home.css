@@ -129,6 +129,7 @@
     justify-content:center;
     height:90px;
     margin-bottom:20px;
+    flex-direction:column;
 }
 
 .lin {
