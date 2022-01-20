@@ -5,6 +5,14 @@ ul{
 }
 
 li{
-    margin-bottom:50px;
-    
+    margin-bottom:30px;
+}
+
+.codes-box{
+    background-color:white;
+    display:flex;
+    flex-direction:column;
+    padding-left: 10px;
+    padding-right:10px;
+    min-height: 300px;
 }

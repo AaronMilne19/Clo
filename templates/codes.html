@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" type="text/css" href="/static/styles/home.css">
+<link rel="stylesheet" type="text/css" href="/static/styles/staff.css">
+{% endblock %}
+
+{% block title %}
+Upload Codes
+{% endblock %}
+
+<!--see navbar.html for navbar code-->
+{% block navbar %}
+{% include "navbar.html" %}
+{% endblock %}
+
+{% block content %}
+<div class="container py-0 px-0 mr-0 d-inline">
+    <div class="row">
+        <div style="min-height: 80vh;" class="col-sm-4 pt-3 px-0">
+            {% include "sidebar.html" %}
+        </div>
+
+        <div class="col-sm-4 border-start border-end border-dark border-1 d-flex" id="mainbox">
+            <div class="info-box sticky-top mx-4 pe-4 d-flex">
+                <h1 style="text-align:center;" class="mt-5 mb-3">
+                    <u>Add discount codes</u>
+                </h1>
+
+                <ol class="mt-4 sml-txt">
+                    <li>
+                        Download the template file from <a href="{% static 'codes_template/codes-template.csv' %}" download>here</a> and populate it with valid codes under the 'codes' column.
+                    </li>
+                    <li>
+                        After the template file has been populated with codes, upload the file and select the correct magazine that the codes are for.
+                        IMPORTANT: MAKE SURE THIS IS CORRECT BEFORE SUBMITTING AS OTHERWISE THE CODES WILL BE ADDED TO A DIFFERENT MAGAZINES LIST AND WILL NOT WORK.
+                    </li>
+                    <li>
+                        Click submit. If the template is formatted correctly, the codes will be automatically added to the database for subscribers to recieve.
+                    </li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="col-sm-4 d-flex justify-content-center" id="mainbox">
+            <div class="codes-box border border-1 border-dark mx-3">
+                hello
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
