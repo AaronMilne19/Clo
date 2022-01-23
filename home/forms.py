@@ -36,4 +36,15 @@ class UserProfileForm(forms.ModelForm):
 class UploadCodesFileForm(forms.Form):
 	magazine = forms.ModelChoiceField(queryset=Magazine.objects.all().order_by('title'), required=True)
 	file = forms.FileField(required=True)
-	
+
+	def clean(self):
+		cleaned_data = super(UploadCodesFileForm, self).clean()
+		file = cleaned_data.get('file')
+
+		if file:
+			filename = file.name
+			if filename.endswith('.csv') == False:
+				print('File is not a csv file as expected')
+				raise forms.ValidationError("File selected is not a csv. Please ensure the correct file is selected")
+
+		return file

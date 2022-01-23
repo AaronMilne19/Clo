@@ -185,12 +185,40 @@ def codes(request):
     if request.method == 'POST':
         form = UploadCodesFileForm(request.POST, request.FILES)
         if form.is_valid():
-            print('success', request.POST)
-    else:
-        form = UploadCodesFileForm()
+            if save_codes(request.POST.get('magazine'), request.FILES['file']):
+                #TODO Success Redirect to another page
+                pass
+            else:
+                return HttpResponse('Something went wrong')
+        else:
+            form = UploadCodesFileForm()
 
     ctx['form'] = form
     ctx['errors'] = form.errors or None
 
     return render(request, 'codes.html', context=ctx)
 
+
+def save_codes(mag_id, file):
+    mag = Magazine.objects.get(id=mag_id)
+
+    path = 'media/code_uploads/' + mag_id + '.csv'
+    
+    with open(path, 'wb+') as f:
+        for chunk in file.chunks():
+            f.write(chunk)
+
+    with open(path, 'r') as f:
+        i=0
+        for line in f:
+            i+=1
+
+            if i==1:
+                if line.strip() != 'ï»¿Code':
+                    print('File does not match expected template file')
+                    return False
+                
+                continue
+
+            else:
+                pass #TODO This is where new code objects will be created
