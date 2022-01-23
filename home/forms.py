@@ -32,3 +32,8 @@ class UserProfileForm(forms.ModelForm):
 		model=UserProfile
 		fields=()
 
+
+class UploadCodesFileForm(forms.Form):
+	magazine = forms.ModelChoiceField(queryset=Magazine.objects.all().order_by('title'), required=True)
+	file = forms.FileField(required=True)
+	

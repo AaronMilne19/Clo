@@ -45,7 +45,29 @@ Upload Codes
 
         <div class="col-sm-4 d-flex justify-content-center" id="mainbox">
             <div class="codes-box border border-1 border-dark mx-3">
-                hello
+                <form id="upload-codes-form" method="post" class="codes-box" action="{% url 'home:codes' %}" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="item sml-txt">
+                        Select the magazine these codes are for
+                        <select class="mt-2" name="magazine" placeholder="Magazine" required>
+                            <option value="" selected disabled>Select a magazine</option>
+                            {% for mag in form.magazine.field.queryset %}
+                            <option value="{{mag.id}}">{{mag.title}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="item sml-txt">
+                        Upload populated codes template
+                        <input class="xsml-txt mt-2" type="file" accept=".csv" name="file" required />
+                    </div>
+                    <div class="item sml-txt">
+                        PLEASE CONFIRM THE ABOVE INFORMATION IS CORRECT <br />
+                        <input class="mt-2" type="checkbox" name="confirm" required />
+                    </div>
+                    <div class="item sml-txt">
+                        <input type="submit" name="submit" value="Submit" href="" class="btn btn-sm btn-outline-secondary" />
+                    </div>
+                </form>
             </div>
         </div>
     </div>

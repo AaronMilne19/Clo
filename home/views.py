@@ -5,7 +5,7 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.urls import reverse
 from home.models import Magazine, UserProfile, Hashtag, MagazineIssue
-from home.forms import UserForm, UserProfileForm
+from home.forms import UserForm, UserProfileForm, UploadCodesFileForm
 from django.template.defaulttags import register
 
 
@@ -36,9 +36,7 @@ def user_login(request):
     		print("Invalid login details: {0}, {1}.".format(username,password))
     		return HttpResponse("Invalid login details supplied.")
     else:
-    	return render(request, 'login.html', {})
-
-    
+    	return render(request, 'login.html', {})    
 
 
 def user_signup(request):
@@ -182,7 +180,17 @@ def staff(request):
 @staff_member_required
 def codes(request):
     ctx = {}
-
     ctx['magazines'] = Magazine.objects.all()
 
+    if request.method == 'POST':
+        form = UploadCodesFileForm(request.POST, request.FILES)
+        if form.is_valid():
+            print('success', request.POST)
+    else:
+        form = UploadCodesFileForm()
+
+    ctx['form'] = form
+    ctx['errors'] = form.errors or None
+
     return render(request, 'codes.html', context=ctx)
+
