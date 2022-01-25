@@ -7,6 +7,10 @@ from home.models import Magazine, UserProfile, Hashtag, MagazineIssue
 from home.forms import UserForm, UserProfileForm
 from django.template.defaulttags import register
 
+from django.contrib import messages
+from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth.forms import PasswordChangeForm
+
 
 
 def home(request):
@@ -75,10 +79,26 @@ def user_signup(request):
 @login_required
 def my_profile(request):
     ctx = {}
-    
     ctx['magazines'] = Magazine.objects.all()
 
-    return render(request, 'myprofile.html', context=ctx)
+    if request.method == 'POST':
+        form = PasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)  # Important!
+            messages.success(request, 'Your password was successfully updated!')
+            return redirect(reverse('home:myprofile'))
+        else:
+            messages.error(request, 'Please correct the error below.')
+    else:
+        form = PasswordChangeForm(request.user)
+    return render(request, 'myprofile.html',
+    {
+        'form': form
+    })
+
+    # return render(request, 'myprofile.html', context=ctx)
+
 
 
 def membership(request):
