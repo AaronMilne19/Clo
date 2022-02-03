@@ -36,6 +36,7 @@ PASSWORD_HASHERS = (
 ALLOWED_HOSTS = [
     'aaronmilne19.pythonanywhere.com',
     '127.0.0.1',
+    '130.209.251.90'
 ]
 
 
