@@ -24,12 +24,18 @@ cache:
   paths:
     - ~/.cache/pip/
 
+stages:
+  - test
+  - deploy
+
 # This is a basic example for a gem or script which doesn't use
 # services such as redis or postgres
 before_script:
+  - mkdir -p ~/.ssh
+  - chmod 700 ~/.ssh
+  - eval $(ssh-agent -s)
+  - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
   - python -V  # Print out python version for debugging
-  # Uncomment next line if your Django app needs a JS runtime:
-  # - apt-get update -q && apt-get install nodejs -yqq
   - pip install -r requirements.txt
 
 # To get Django tests to work you may need to create a settings file using
@@ -51,7 +57,17 @@ before_script:
 test:
   tags:
     - docker
+  stage: test
   variables:
     DATABASE_URL: "postgresql://postgres:postgres@postgres:5432/$POSTGRES_DB"
   script:
     - python manage.py test
+
+deploy:
+  tags:
+    - docker
+  stage: deploy
+  only:
+    - master
+  script:
+    - ssh -o StrictHostKeyChecking=no ubuntu@130.209.251.90 "cd se07-main && ./run_on_server.sh"
