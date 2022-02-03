@@ -182,6 +182,8 @@ def codes(request):
     ctx = {}
     ctx['magazines'] = Magazine.objects.all()
 
+    form = UploadCodesFileForm()
+
     if request.method == 'POST':
         form = UploadCodesFileForm(request.POST, request.FILES)
         if form.is_valid():
@@ -189,9 +191,7 @@ def codes(request):
                 #TODO Success Redirect to another page
                 pass
             else:
-                return HttpResponse('Something went wrong')
-        else:
-            form = UploadCodesFileForm()
+                return HttpResponse('Something went wrong')            
 
     ctx['form'] = form
     ctx['errors'] = form.errors or None
@@ -219,6 +219,5 @@ def save_codes(mag_id, file):
                     return False
                 
                 continue
-
             else:
-                pass #TODO This is where new code objects will be created
+                return True #TODO This is where new code objects will be created
