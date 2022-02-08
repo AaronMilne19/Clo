@@ -102,9 +102,21 @@ def magazine(request, id):
     ctx['this'] = mag
     ctx['magazines'] = Magazine.objects.all()
     ctx['issues'] = MagazineIssue.objects.filter(magazine=mag)
+    
+    #check visitor user agent
+    user_agent=request.META['HTTP_USER_AGENT']
+    print(type(user_agent))
 
+    keywords = ['Mobile','Opera Mini','Android']
+   
+    if any(word in user_agent for word in keywords):
+    	#mobile
+    	temp='magazinemobile.html'
+    else:
+    	#desktop
+    	temp='magazine.html'
 
-    return render(request, 'magazine.html', context=ctx)
+    return render(request, temp , context=ctx)
 
 
 def issue(request, id, slug):
