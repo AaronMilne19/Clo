@@ -92,7 +92,16 @@ def user_signout(request):
 	logout(request)
 	return redirect(reverse('home:home'))
 
-
+def check_device(request):
+	#check visitor agent
+	user_agent=request.META['HTTP_USER_AGENT']
+	
+	keywords=['Mobile','Opera Mini','Android']
+	
+	if any(word in user_agent for word in keywords):
+		return 'mobile'
+	else:
+		return 'desktop'
 
 def magazine(request, id):
     ctx = {}
@@ -103,13 +112,8 @@ def magazine(request, id):
     ctx['magazines'] = Magazine.objects.all()
     ctx['issues'] = MagazineIssue.objects.filter(magazine=mag)
     
-    #check visitor user agent
-    user_agent=request.META['HTTP_USER_AGENT']
-    print(type(user_agent))
-
-    keywords = ['Mobile','Opera Mini','Android']
-   
-    if any(word in user_agent for word in keywords):
+    
+    if check_device(request)=='mobile':
     	#mobile
     	temp='magazinemobile.html'
     else:
@@ -134,7 +138,13 @@ def issue(request, id, slug):
         user = UserProfile.objects.get(user=request.user)
         ctx['saved_issues'] = user.saved_issues.all()
 
-    return render(request, 'issue.html', context=ctx)
+
+    if check_device(request)=='mobile':
+    	temp='issuemobile.html'
+    else:
+    	temp='issue.html'
+    	
+    return render(request, temp, context=ctx)
 
 
 @login_required
