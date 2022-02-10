@@ -13,8 +13,6 @@ class Magazine(models.Model):
 
     #long - in case we have seperate pages for each magzine
     description_long = models.CharField(max_length=2000)
-    price = models.IntegerField(default = 0 )
-    discount = models.IntegerField(default=0)
     cover = models.ImageField(upload_to='magazine_pictures', default = None)
     link_to_publishers_site = models.URLField(max_length=300)
     #slug - again, in case we have seperate pages for each magzine
@@ -27,13 +25,13 @@ class Magazine(models.Model):
         self.slug = slugify(self.title)
         super(Magazine, self).save(*args, **kwargs)
 
-    def calculate_discounted_price(self):
-        return self.price * (1 - self.discount)
-
 
 class MagazineIssue (models.Model):
     magazine = models.ForeignKey(Magazine, on_delete=models.CASCADE)
     title = models.CharField(max_length =1000, default="No title", unique=True)
+    issue_description = models.CharField(max_length=1000)
+    price = models.IntegerField(default = 0 )
+    discounted_price = models.IntegerField(default= 0)
     cover = models.ImageField(upload_to='magazine_pictures/', default=None)
     description_short = models.CharField(max_length=1000, default=None, null=True)
     date =  models.DateField(("Date"), default=datetime.date.today)
