@@ -51,6 +51,7 @@ Upload Codes
                     <div class="item sml-txt mt-3">
                         Select the number of codes you wish to generate.
                         <select class="mt-2" name="amount" required>
+                            <option value="0" selected disabled></option>
                             {% for i in range %}
                             <option value="{{i}}">{{i}}</option>
                             {% endfor %}

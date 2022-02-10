@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
 from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.urls import reverse
-from home.models import Magazine, UserProfile, Hashtag, MagazineIssue
+from home.models import Magazine, UserProfile, Hashtag, MagazineIssue, DiscountCode
 from home.forms import UserForm, UserProfileForm, UploadCodesFileForm
 from django.template.defaulttags import register
 from datetime import datetime
@@ -193,10 +193,15 @@ def codes(request):
         if form.is_valid():
             time, codes = gen_codes(request.POST.get("amount"))
             ctx['codefile'] = time
+               
+            #Delete all existing codes from database for now... (this will need to change for release)
+            DiscountCode.objects.all().delete()
 
-    for code in codes:
-        code = code[:-1]
-        print(code)
+            #Save codes to DB
+            for code in codes:
+                code = code[:-1]
+                new_code = DiscountCode(code=code)
+                new_code.save()
 
     ctx['range'] = range(5,501,5)
     ctx['form'] = form
