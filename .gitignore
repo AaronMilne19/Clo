@@ -142,4 +142,4 @@ Pipfile.lock
 Pipfile
 
 #csv files for codes
-.csv
+*.csv
