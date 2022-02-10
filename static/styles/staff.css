@@ -8,13 +8,14 @@ li{
     margin-bottom:30px;
 }
 
-.codes-box{
+.codes-box {
     background-color:white;
     display:flex;
     flex-direction:column;
     padding-left: 10px;
     padding-right:10px;
     min-height: 300px;
+    align-items:center;
 }
 
 .item {

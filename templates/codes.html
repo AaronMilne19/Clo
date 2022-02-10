@@ -25,22 +25,19 @@ Upload Codes
         <div class="col-sm-4 border-start border-end border-dark border-1 d-flex" id="mainbox">
             <div class="info-box sticky-top mx-4 pe-4 d-flex">
                 <h1 style="text-align:center;" class="mt-4 mb-3">
-                    <u>Add discount codes</u>
+                    <u>Generate discount codes</u>
                 </h1>
 
                 <ol class="mt-4 sml-txt">
                     <li>
-                        Download the template file from <a href="{% static 'codes_template/codes-template.csv' %}" download>here</a> and populate it with valid codes under the 'codes' column.
+                        Select the number of codes you would like to generate.
                     </li>
                     <li>
-                        Populate file with codes and ensure the template file is in the correct format (ie one code per line in column A)
+                        Click Generate 
                     </li>
                     <li>
-                        After the template file has been populated with codes, upload the file and select the correct magazine that the codes are for.
-                        IMPORTANT: MAKE SURE THIS IS CORRECT BEFORE SUBMITTING AS OTHERWISE THE CODES WILL BE ADDED TO A DIFFERENT MAGAZINES LIST AND WILL NOT WORK.
-                    </li>
-                    <li>
-                        Click submit. If the template is formatted correctly, the codes will be automatically added to the database for subscribers to recieve.
+                        This will then automatically add the generated codes to the database and will provide you with a downloadable CSV file which can then be sent to
+                        magazines to add to their system.
                     </li>
                 </ol>
             </div>
@@ -48,30 +45,9 @@ Upload Codes
 
         <div class="col-sm-4 d-flex justify-content-center" id="mainbox">
             <div class="codes-box border border-1 border-dark mx-3">
-                <form id="upload-codes-form" method="post" class="codes-box" action="{% url 'home:codes' %}" enctype="multipart/form-data">
-                    {% csrf_token %}
-                    <div class="item sml-txt">
-                        Select the magazine these codes are for
-                        <select class="mt-2" name="magazine" placeholder="Magazine" required>
-                            <option value="" selected disabled>Select a magazine</option>
-                            {% for mag in form.magazine.field.queryset %}
-                            <option value="{{mag.id}}">{{mag.title}}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                    <div class="item sml-txt">
-                        Upload populated codes template
-                        <input class="xsml-txt mt-2" type="file" accept=".csv" name="file" required />
-                    </div>
-                    <div class="item sml-txt">
-                        PLEASE CONFIRM THE ABOVE INFORMATION IS CORRECT <br />
-                        <input class="mt-2" type="checkbox" name="confirm" required />
-                    </div>
-                    <div class="item sml-txt">
-                        <input type="submit" name="submit" value="Submit" class="btn btn-sm btn-outline-secondary" />
-                    </div>
-
-                </form>
+                <div class="sml-txt mt-3">
+                    Select the number of codes you wish to generate.
+                </div>
             </div>
         </div>
     </div>
