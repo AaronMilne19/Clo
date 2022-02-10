@@ -194,6 +194,9 @@ def codes(request):
             time, codes = gen_codes(request.POST.get("amount"))
             ctx['codefile'] = time
 
+    for code in codes:
+        code = code[:-1]
+        print(code)
 
     ctx['range'] = range(5,501,5)
     ctx['form'] = form
