@@ -14,8 +14,9 @@ li{
     flex-direction:column;
     padding-left: 10px;
     padding-right:10px;
-    min-height: 300px;
+    min-height: 200px;
     align-items:center;
+    justify-content:center;
 }
 
 .item {

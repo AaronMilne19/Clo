@@ -7,6 +7,8 @@ from django.urls import reverse
 from home.models import Magazine, UserProfile, Hashtag, MagazineIssue
 from home.forms import UserForm, UserProfileForm, UploadCodesFileForm
 from django.template.defaulttags import register
+from datetime import datetime
+import random, string, secrets
 
 
 
@@ -181,43 +183,37 @@ def staff(request):
 def codes(request):
     ctx = {}
     ctx['magazines'] = Magazine.objects.all()
+    ctx['codefile'] = None
 
     form = UploadCodesFileForm()
 
     if request.method == 'POST':
-        form = UploadCodesFileForm(request.POST, request.FILES)
+        form = UploadCodesFileForm(request.POST)
+        
         if form.is_valid():
-            if save_codes(request.POST.get('magazine'), request.FILES['file']):
-                #TODO Success Redirect to another page
-                pass
-            else:
-                return HttpResponse('Something went wrong')            
+            time, codes = gen_codes(request.POST.get("amount"))
+            ctx['codefile'] = time
 
+
+    ctx['range'] = range(5,501,5)
     ctx['form'] = form
     ctx['errors'] = form.errors or None
+
 
     return render(request, 'codes.html', context=ctx)
 
 
-def save_codes(mag_id, file):
-    mag = Magazine.objects.get(id=mag_id)
+def gen_codes(amount):
+    time = datetime.now().strftime("%d-%m-%Y %H%M%S")
+    path = 'static/code_templates/' + time + '.csv'
+    codes = []
+    code_length = 16
 
-    path = 'media/code_uploads/' + mag_id + '.csv'
-    
-    with open(path, 'wb+') as f:
-        for chunk in file.chunks():
-            f.write(chunk)
-
-    with open(path, 'r') as f:
-        i=0
-        for line in f:
-            i+=1
-
-            if i==1:
-                if line.strip() != 'ï»¿Code':
-                    print('File does not match expected template file')
-                    return False
-                
-                continue
-            else:
-                return True #TODO This is where new code objects will be created
+    with open(path, 'w+') as f:
+        for i in range(int(amount)):
+            #---This line of code has come from https://www.javatpoint.com/python-program-to-generate-a-random-string
+            code = ''.join(secrets.choice(string.ascii_letters + string.digits) for x in range(code_length)) + ','
+            f.write(code)
+            codes.append(code)
+        
+    return path, codes

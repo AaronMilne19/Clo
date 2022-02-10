@@ -34,4 +34,4 @@ class UserProfileForm(forms.ModelForm):
 
 
 class UploadCodesFileForm(forms.Form):
-	pass
+	amount = forms.IntegerField(required=True, min_value=1, max_value=500, widget=forms.widgets.NumberInput)

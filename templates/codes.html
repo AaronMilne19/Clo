@@ -45,9 +45,26 @@ Upload Codes
 
         <div class="col-sm-4 d-flex justify-content-center" id="mainbox">
             <div class="codes-box border border-1 border-dark mx-3">
-                <div class="sml-txt mt-3">
-                    Select the number of codes you wish to generate.
-                </div>
+                <form id="upload-codes-form" method="post" class="codes-box" action="{% url 'home:codes' %}" enctype="multipart/form-data">
+                    {% csrf_token %}
+
+                    <div class="item sml-txt mt-3">
+                        Select the number of codes you wish to generate.
+                        <select class="mt-2" name="amount" required>
+                            {% for i in range %}
+                            <option value="{{i}}">{{i}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="item sml-txt">
+                        <input type="submit" name="submit" value="Generate" class="btn btn-sm btn-outline-primary" />
+                    </div>
+                </form>
+
+                {% if codefile  %}
+                <a class="xsml-txt mb-3" href="/{{codefile}}" download>Download codes here</a>
+                {% endif %}
             </div>
         </div>
     </div>
