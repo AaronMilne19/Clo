@@ -85,19 +85,15 @@ def my_profile(request):
         form = PasswordChangeForm(request.user, request.POST)
         if form.is_valid():
             user = form.save()
-            update_session_auth_hash(request, user)  # Important!
-            messages.success(request, 'Your password was successfully updated!')
+            update_session_auth_hash(request, user)
+            #messages.success(request, 'Your password was successfully updated!')
             return redirect(reverse('home:myprofile'))
-        else:
-            messages.error(request, 'Please correct the error below.')
     else:
         form = PasswordChangeForm(request.user)
     return render(request, 'myprofile.html',
     {
         'form': form
     })
-
-    # return render(request, 'myprofile.html', context=ctx)
 
 
 

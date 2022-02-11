@@ -5,6 +5,7 @@ from home.models import Magazine, UserProfile, MagazineIssue, Hashtag, UserProfi
 
 
 class UserForm(forms.ModelForm):
+	email = forms.CharField(required=True, widget=forms.widgets.TextInput(attrs={'placeholder': 'Email'}))
 	username = forms.CharField(required=True, widget=forms.widgets.TextInput(attrs={'placeholder': 'Username'}))
 	password =forms.CharField(required=True,min_length=8, widget=forms.widgets.PasswordInput())
 	confirm_password =forms.CharField(required=True, widget=forms.widgets.PasswordInput())
@@ -12,7 +13,7 @@ class UserForm(forms.ModelForm):
 	
 	class Meta:
 		model=User
-		fields=('username','email','password')
+		fields=('email','username','password')
 		
 	def clean(self):
 		cleaned_data=super(UserForm, self).clean()

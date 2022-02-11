@@ -33,7 +33,9 @@ Sign Up
 				{% csrf_token %}
 				
 				
-				
+					<input type="email" name="email" placeholder="Email" required/>
+
+					<p>{{ form.username.errors.as_text }}</p>
 					
 						
 					
