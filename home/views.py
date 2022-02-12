@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.urls import reverse
 from home.models import Magazine, UserProfile, Hashtag, MagazineIssue
-from home.forms import UserForm, UserProfileForm
+from home.forms import UserForm, UserProfileForm, EmailChangeForm
 from django.template.defaulttags import register
 
 from django.contrib import messages
@@ -78,23 +78,35 @@ def user_signup(request):
 
 @login_required
 def my_profile(request):
-    ctx = {}
-    ctx['magazines'] = Magazine.objects.all()
+    ctx= {}
+    password_form = PasswordChangeForm(request.user,prefix='password_form')
+    email_form = EmailChangeForm(request.user, prefix='email_form')
+
+    if request.method == 'GET':
+        email_form = EmailChangeForm(request.user,initial={'new_email1': request.user.email})
 
     if request.method == 'POST':
-        form = PasswordChangeForm(request.user, request.POST)
-        if form.is_valid():
-            user = form.save()
-            update_session_auth_hash(request, user)
-            messages.success(request, 'Your password was successfully updated!')
-            return redirect(reverse('home:myprofile'))
+        action = request.POST['action']
 
-    else:
-        form = PasswordChangeForm(request.user)
-    return render(request, 'myprofile.html',
-    {
-        'form': form
-    })
+        if action == 'edit_email':
+            email_form = EmailChangeForm(request.user, prefix='email_form')
+            if email_form.is_valid():
+                email_form.save()
+                messages.success(request, 'Email updated')
+                return redirect(reverse('home:myprofile'))
+
+        if action == 'edit_password':
+            password_form = PasswordChangeForm(request.user, request.POST, prefix='password_form')
+            if password_form.is_valid():
+                user = password_form.save()
+                update_session_auth_hash(request, user)
+                messages.success(request, 'Password updated')
+                return redirect(reverse('home:myprofile'))
+
+    ctx['email_form'] = email_form
+    ctx['password_form'] = password_form
+
+    return render(request, 'myprofile.html', ctx)
 
 
 
