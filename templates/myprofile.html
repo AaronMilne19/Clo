@@ -39,7 +39,14 @@ My Profile
                             {% if field.errors %}
                             {{ field.errors }}
                             {% endif %}
+                            {% if messages %}
+                            {% endif %}
                             {% endfor %}
+                            <ul class="messages">
+                                {% for message in messages %}
+                                <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                                {% endfor %}
+                            </ul>
                             <!--
                             <input class="textbox" type="password" name="username" value="" placeholder="Current Password" />
                             <input class="textbox" style="margin-top: 15px" type="password" name="username" value="" placeholder="New Password" />
