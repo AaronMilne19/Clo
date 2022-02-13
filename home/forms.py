@@ -43,7 +43,7 @@ class EmailChangeForm(forms.Form):
     }
 
     new_email1 = forms.EmailField(
-        label="Email",
+        label="Email address",
         widget=forms.EmailInput,
     )
 

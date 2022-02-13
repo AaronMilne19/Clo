@@ -41,22 +41,13 @@ My Profile
                             {{password_form.non_field_errors}}
                             {% for field in password_form %}
                             {{field.label_tag}}
-                            <div>
                             {{ field }}
-                            </div>
                             {% if field.errors %}
                             <div style="color: red">
                                 {{ field.errors }}
                             </div>
                             {% endif %}
-                            {% if messages %}
-                            {% endif %}
                             {% endfor %}
-                            <!--
-                            <input class="textbox" type="password" name="username" value="" placeholder="Current Password" />
-                            <input class="textbox" style="margin-top: 15px" type="password" name="username" value="" placeholder="New Password" />
-                            <input class="textbox" style="margin-top: 15px" type="password" name="username" value="" placeholder="Confirm Password" />
-                            -->
                             <input class="button" style="float: right; margin-top: 20px; width: 50%;" type="submit" name="Save" value="Change Password" />
                         </form>
                         <ul class="messages" style="color:green">

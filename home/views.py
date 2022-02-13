@@ -89,7 +89,7 @@ def my_profile(request):
         action = request.POST['action']
 
         if action == 'edit_email':
-            email_form = EmailChangeForm(request.user, prefix='email_form')
+            email_form = EmailChangeForm(request.user, request.POST)
             if email_form.is_valid():
                 email_form.save()
                 messages.success(request, 'Email updated')
@@ -102,6 +102,8 @@ def my_profile(request):
                 update_session_auth_hash(request, user)
                 messages.success(request, 'Password updated')
                 return redirect(reverse('home:myprofile'))
+
+
 
     ctx['email_form'] = email_form
     ctx['password_form'] = password_form
