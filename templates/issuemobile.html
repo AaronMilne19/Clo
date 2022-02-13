@@ -12,7 +12,7 @@
 
 <!--see navbar.html for navbar code-->
 {% block navbar %}
-{% include "navbar.html" %}
+{% include "navbarmobile.html" %}
 {% endblock %}
 
 {% block content %}
@@ -50,15 +50,15 @@
 		
                 <div class="issue-body sml-txt">
                    
-                       {{thisIssue.description_short}}
+                       {{thisIssue.issue_description}}
                        
                    
                 </div>
 
                 <div class="issue-buy">
                     <div>
-                        <button type="button" class="btn btn-primary btn-sm pay">Subscriber Price &#163;{{this.discount}}</button>
-                        <button type="button" class="btn btn-outline-secondary btn-sm pay">Full Price &#163;{{this.price}}</button>
+                        <button type="button" class="btn btn-primary btn-sm pay">Subscriber Price &#163;{{thisIssue.discounted_price}}</button>
+                        <button type="button" class="btn btn-outline-secondary btn-sm pay">Full Price &#163;{{thisIssue.price}}</button>
                     </div>
                 </div>
 
