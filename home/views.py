@@ -14,8 +14,15 @@ def home(request):
     
     ctx['magazines'] = Magazine.objects.all()
 
+    if check_device(request)=='mobile':
+    	#mobile
+    	temp='mobiletemplates/homemobile.html'
+    else:
+    	#desktop
+    	temp='home.html'
 
-    return render(request, 'home.html', context=ctx)
+
+    return render(request, temp, context=ctx)
 
 
 def user_login(request):
@@ -115,7 +122,7 @@ def magazine(request, id):
     
     if check_device(request)=='mobile':
     	#mobile
-    	temp='magazinemobile.html'
+    	temp='mobiletemplates/magazinemobile.html'
     else:
     	#desktop
     	temp='magazine.html'
@@ -140,7 +147,7 @@ def issue(request, id, slug):
 
 
     if check_device(request)=='mobile':
-    	temp='issuemobile.html'
+    	temp='mobiletemplates/issuemobile.html'
     else:
     	temp='issue.html'
     	
