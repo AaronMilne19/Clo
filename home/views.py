@@ -4,8 +4,12 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.urls import reverse
 from home.models import Magazine, UserProfile, Hashtag, MagazineIssue
-from home.forms import UserForm, UserProfileForm
+from home.forms import UserForm, UserProfileForm, EmailChangeForm
 from django.template.defaulttags import register
+
+from django.contrib import messages
+from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth.forms import PasswordChangeForm
 
 
 
@@ -74,11 +78,38 @@ def user_signup(request):
 
 @login_required
 def my_profile(request):
-    ctx = {}
-    
-    ctx['magazines'] = Magazine.objects.all()
+    ctx= {}
+    password_form = PasswordChangeForm(request.user,prefix='password_form')
+    email_form = EmailChangeForm(request.user, prefix='email_form')
 
-    return render(request, 'myprofile.html', context=ctx)
+    if request.method == 'GET':
+        email_form = EmailChangeForm(request.user,initial={'new_email1': request.user.email})
+
+    if request.method == 'POST':
+        action = request.POST['action']
+
+        if action == 'edit_email':
+            email_form = EmailChangeForm(request.user, request.POST)
+            if email_form.is_valid():
+                email_form.save()
+                messages.success(request, 'Email updated')
+                return redirect(reverse('home:myprofile'))
+
+        if action == 'edit_password':
+            password_form = PasswordChangeForm(request.user, request.POST, prefix='password_form')
+            if password_form.is_valid():
+                user = password_form.save()
+                update_session_auth_hash(request, user)
+                messages.success(request, 'Password updated')
+                return redirect(reverse('home:myprofile'))
+
+
+
+    ctx['email_form'] = email_form
+    ctx['password_form'] = password_form
+
+    return render(request, 'myprofile.html', ctx)
+
 
 
 def membership(request):
