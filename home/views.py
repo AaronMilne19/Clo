@@ -1,11 +1,14 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login , logout
 from django.contrib.auth.decorators import login_required
+from django.contrib.admin.views.decorators import staff_member_required
 from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.urls import reverse
-from home.models import Magazine, UserProfile, Hashtag, MagazineIssue
-from home.forms import UserForm, UserProfileForm, EmailChangeForm
+from home.models import Magazine, UserProfile, Hashtag, MagazineIssue, DiscountCode
+from home.forms import UserForm, UserProfileForm, UploadCodesFileForm, EmailChangeForm
 from django.template.defaulttags import register
+from datetime import datetime
+import random, string, secrets
 
 from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash
@@ -39,9 +42,7 @@ def user_login(request):
     		print("Invalid login details: {0}, {1}.".format(username,password))
     		return HttpResponse("Invalid login details supplied.")
     else:
-    	return render(request, 'login.html', {})
-
-    
+    	return render(request, 'login.html', {})    
 
 
 def user_signup(request):
@@ -220,3 +221,60 @@ def contact(request):
     ctx['magazines'] = Magazine.objects.all()
 
     return render(request, 'contact.html', context=ctx)
+
+
+@staff_member_required
+def staff(request):
+    ctx = {}
+
+    ctx['magazines'] = Magazine.objects.all()
+
+    return render(request, 'staff.html', context=ctx)
+
+
+@staff_member_required
+def codes(request):
+    ctx = {}
+    ctx['magazines'] = Magazine.objects.all()
+    ctx['codefile'] = None
+
+    form = UploadCodesFileForm()
+
+    if request.method == 'POST':
+        form = UploadCodesFileForm(request.POST)
+        
+        if form.is_valid():
+            time, codes = gen_codes(request.POST.get("amount"))
+            ctx['codefile'] = time
+               
+            #Delete all existing codes from database for now... (this will need to change for release)
+            DiscountCode.objects.all().delete()
+
+            #Save codes to DB
+            for code in codes:
+                code = code[:-1]
+                new_code = DiscountCode(code=code)
+                new_code.save()
+
+    ctx['range'] = range(5,501,5)
+    ctx['form'] = form
+    ctx['errors'] = form.errors or None
+
+
+    return render(request, 'codes.html', context=ctx)
+
+
+def gen_codes(amount):
+    time = datetime.now().strftime("%d-%m-%Y %H%M%S")
+    path = 'static/code_templates/' + time + '.csv'
+    codes = []
+    code_length = 16
+
+    with open(path, 'w+') as f:
+        for i in range(int(amount)):
+            #---This line of code has come from https://www.javatpoint.com/python-program-to-generate-a-random-string
+            code = ''.join(secrets.choice(string.ascii_letters + string.digits) for x in range(code_length)) + ','
+            f.write(code)
+            codes.append(code)
+        
+    return path, codes

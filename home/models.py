@@ -1,6 +1,6 @@
 from django.db import models
 from django.template.defaultfilters import slugify
-
+from django.core.validators import MinLengthValidator
 from django.contrib.auth.models import User
 import datetime
 
@@ -60,3 +60,10 @@ class Hashtag(models.Model):
 
     def __str__(self):
         return self.text
+
+
+class DiscountCode(models.Model):
+    code = models.CharField(max_length=16, validators=[MinLengthValidator(16)])
+
+    def __str__(self):
+        return self.code

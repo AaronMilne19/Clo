@@ -1,4 +1,4 @@
-<div style="flex-direction:column; height:90vh; overflow:auto;" class="d-flex justify-content-between">
+<div style="flex-direction:column; height:90vh; overflow:hidden;" class="d-flex justify-content-between sidebar">
     <div class="accordion d-flex justify-content-center">
         <div class="accordion-item" id="Magazines">
             <a class="accordion-link" href="{% url 'home:home' %}#Magazines">
@@ -24,7 +24,7 @@
                     </div>
                 </div>
                 {% endfor %}
-                
+
             </div>
         </div>
 
@@ -53,14 +53,20 @@
         </div>
     </div>
 
-    {% if user.is_authenticated %}
     <div class="login">
+        {% if user.is_authenticated %}
         <a class="lout" href="{% url 'home:signout' %}">Sign Out</a>
-    </div>
-    {% else %}
-    <div class="login">
+        {% else %}
         <a class="lin" href="{% url 'home:login' %}">Log In</a>
+        {% endif %}
+
+        {% if user.is_staff %}
+        <div>
+            <a href="{% url 'home:staff' %}" class="btn btn-outline-secondary btn-sm">
+                Staff Portal
+            </a>
+        </div>
+        {% endif %}
     </div>
-    {% endif %}
 
 </div>

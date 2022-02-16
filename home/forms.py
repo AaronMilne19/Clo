@@ -33,6 +33,7 @@ class UserProfileForm(forms.ModelForm):
 		model=UserProfile
 		fields=()
 
+
 class EmailChangeForm(forms.Form):
     """
     A form that lets a user change set their email while checking for a change in the
@@ -68,3 +69,7 @@ class EmailChangeForm(forms.Form):
         if commit:
             self.user.save()
         return self.user
+
+
+class UploadCodesFileForm(forms.Form):
+	amount = forms.IntegerField(required=True, min_value=1, max_value=500, widget=forms.widgets.NumberInput)
