@@ -1,5 +1,6 @@
 var acc = document.getElementsByClassName("menuelement");
 var about = document.getElementById("aboutclo")
+var openedElement = null;
 var i;
 
 for (i = 0; i < acc.length; i++) {
