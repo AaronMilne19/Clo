@@ -30,6 +30,6 @@ class TestHomepageHTML(TestCase):
 
     def test_for_some_html_elements(self):
         response = self.client.get(reverse('home:home'))
-        self.assertInHTML("""<script src="{% static 'scripts/home.js' %}"></script>""",
+        self.assertInHTML("""<div>About Cl&ograve</div>""",
                           response.content.decode())
 
