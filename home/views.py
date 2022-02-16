@@ -10,7 +10,10 @@ from django.template.defaulttags import register
 
 def check_device(request):
     # check visitor agent
-    user_agent = request.META['HTTP_USER_AGENT']
+    try:
+        user_agent = request.META['HTTP_USER_AGENT']
+    except:
+        return 'desktop'
 
     keywords = ['Mobile', 'Opera Mini', 'Android']
 
