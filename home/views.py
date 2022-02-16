@@ -5,10 +5,14 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.urls import reverse
 from home.models import Magazine, UserProfile, Hashtag, MagazineIssue, DiscountCode
-from home.forms import UserForm, UserProfileForm, UploadCodesFileForm
+from home.forms import UserForm, UserProfileForm, UploadCodesFileForm, EmailChangeForm
 from django.template.defaulttags import register
 from datetime import datetime
 import random, string, secrets
+
+from django.contrib import messages
+from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth.forms import PasswordChangeForm
 
 
 
@@ -75,11 +79,38 @@ def user_signup(request):
 
 @login_required
 def my_profile(request):
-    ctx = {}
-    
-    ctx['magazines'] = Magazine.objects.all()
+    ctx= {}
+    password_form = PasswordChangeForm(request.user,prefix='password_form')
+    email_form = EmailChangeForm(request.user, prefix='email_form')
 
-    return render(request, 'myprofile.html', context=ctx)
+    if request.method == 'GET':
+        email_form = EmailChangeForm(request.user,initial={'new_email1': request.user.email})
+
+    if request.method == 'POST':
+        action = request.POST['action']
+
+        if action == 'edit_email':
+            email_form = EmailChangeForm(request.user, request.POST)
+            if email_form.is_valid():
+                email_form.save()
+                messages.success(request, 'Email updated')
+                return redirect(reverse('home:myprofile'))
+
+        if action == 'edit_password':
+            password_form = PasswordChangeForm(request.user, request.POST, prefix='password_form')
+            if password_form.is_valid():
+                user = password_form.save()
+                update_session_auth_hash(request, user)
+                messages.success(request, 'Password updated')
+                return redirect(reverse('home:myprofile'))
+
+
+
+    ctx['email_form'] = email_form
+    ctx['password_form'] = password_form
+
+    return render(request, 'myprofile.html', ctx)
+
 
 
 def membership(request):
@@ -93,7 +124,16 @@ def user_signout(request):
 	logout(request)
 	return redirect(reverse('home:home'))
 
-
+def check_device(request):
+	#check visitor agent
+	user_agent=request.META['HTTP_USER_AGENT']
+	
+	keywords=['Mobile','Opera Mini','Android']
+	
+	if any(word in user_agent for word in keywords):
+		return 'mobile'
+	else:
+		return 'desktop'
 
 def magazine(request, id):
     ctx = {}
@@ -103,9 +143,16 @@ def magazine(request, id):
     ctx['this'] = mag
     ctx['magazines'] = Magazine.objects.all()
     ctx['issues'] = MagazineIssue.objects.filter(magazine=mag)
+    
+    
+    if check_device(request)=='mobile':
+    	#mobile
+    	temp='magazinemobile.html'
+    else:
+    	#desktop
+    	temp='magazine.html'
 
-
-    return render(request, 'magazine.html', context=ctx)
+    return render(request, temp , context=ctx)
 
 
 def issue(request, id, slug):
@@ -123,7 +170,13 @@ def issue(request, id, slug):
         user = UserProfile.objects.get(user=request.user)
         ctx['saved_issues'] = user.saved_issues.all()
 
-    return render(request, 'issue.html', context=ctx)
+
+    if check_device(request)=='mobile':
+    	temp='issuemobile.html'
+    else:
+    	temp='issue.html'
+    	
+    return render(request, temp, context=ctx)
 
 
 @login_required

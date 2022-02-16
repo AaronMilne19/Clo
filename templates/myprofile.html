@@ -24,23 +24,43 @@ My Profile
 
         <div class="col-sm border-start border-dark border-1 d-flex" id="mainbox">
             <div style="min-width: 80% ;margin-top:50px" class="info-box sticky-top pr-3 d-flex mx-4 pe-4">
-                <form method="post">
-                    {% csrf_token %}
+                <!--<form method="post">-->
                     <div class="container">
-                        <label>Email Address: </label>
-                        <input class="textbox" type="text" name="email" value="" placeholder="example@email.com" />
-                        <input class="button" style="float: right; margin-top: 20px; width: 50%;" type="submit" name="Save" value="Change Email" />
+                        <form method="post">
+                            {% csrf_token %}
+                            <input type='hidden' name='action' value='edit_email'>
+                            {{ email_form }}
+                            <input class="button" style="float: right; margin-top: 20px; width: 50%;" type="submit" name="Save" value="Change Email" />
+                        </form>
 
-                        <label style="margin-top: 100px">Password :</label>
-                        <input class="textbox" type="text" name="username" value="" placeholder="New Password" />
-                        <input class="textbox" style="margin-top: 15px" type="text" name="username" value="" placeholder="Confirm Password" />
-                        <input class="button" style="float: right; margin-top: 20px; width: 50%;" type="submit" name="Save" value="Change Password" />
+
+                        <form method="post">
+                            {% csrf_token %}
+                            <input type='hidden' name='action' value='edit_password'>
+                            <label style="margin-top: 100px"> </label>
+                            {{password_form.non_field_errors}}
+                            {% for field in password_form %}
+                            {{field.label_tag}}
+                            {{ field }}
+                            {% if field.errors %}
+                            <div style="color: red">
+                                {{ field.errors }}
+                            </div>
+                            {% endif %}
+                            {% endfor %}
+                            <input class="button" style="float: right; margin-top: 20px; width: 50%;" type="submit" name="Save" value="Change Password" />
+                        </form>
+                        <ul class="messages" style="color:green">
+                                {% for message in messages %}
+                                <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                                {% endfor %}
+                        </ul>
 
 
                         <label style="margin-top: 100px">Subscription :</label>
                         <label style="color:#4d79ff">Enabled <br> purchased 23-11-2021 <br> active 24-11-2021</label>
                     </div>
-                </form>
+
             </div>
         </div>
         <div class="col-sm border-start border-dark border-1"></div>

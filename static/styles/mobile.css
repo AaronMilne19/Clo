@@ -1,0 +1,13 @@
+
+.backbutton{
+	background-color: #E8E5E2;	
+  	border: none;
+  	color: #2F52E0;
+  	padding:30px 5px;
+ 	text-align: left;
+  	text-decoration: none;
+  	display: inline-block;
+  	font-size: 18px;
+  	cursor: pointer;
+}
+
