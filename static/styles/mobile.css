@@ -1,7 +1,11 @@
-
+/*General*/
 *{
 	margin: 0px;
 	padding: 0px;
+}
+
+*{
+	font-size: 5vmin;
 }
 
 #mainwrapper{
@@ -9,7 +13,7 @@
 	flex-direction: column;
 	flex-wrap: nowrap;
 	align-items: center;
-	margin: 0;
+	justify-content: start;
 }
 
 
@@ -20,7 +24,7 @@
 	height: 10%;
 	width: 100%;
 	text-align: center;
-	margin-bottom: 2em;
+	margin-bottom: 0.5em;
 	border-bottom: solid black;
 	border-bottom-width: thin;
 	z-index: 999;
@@ -35,11 +39,77 @@
 
 }
 
+/*Menu*/
+
+
+
+#menuwrapper{
+	display: flex;
+	text-align: center;
+	flex-flow: column nowrap;
+	width: 100%;
+	row-gap: 0;
+}
+
+
+
+
+
+.menutext{
+	text-decoration: none ;
+	color: inherit;
+	text-underline: none ;
+	font-size: 1.4em !important;
+	font-weight: 570;
+
+}
+
+.menuelement a{
+	height: 100%;
+	width: 100%;
+	text-decoration: none ;
+	color: inherit;
+	text-underline: none ;
+	font-size: 1.4em !important;
+	font-weight: 570;
+	size: inherit;
+	padding-top: 2em;
+	padding-bottom:2em;
+}
+
+.menulink a:first-child{
+	height: 100%;
+	width: 100%;
+
+}
+
+
+
+
+#menuwrapper div{
+	border-top: solid black;
+	border-width: thin;
+	padding-top: 0.6em;
+	padding-bottom:0.6em;
+}
+
+#menuwrapper:last-child{
+	border-bottom: solid black;
+	border-width: thin;
+}
+
+
+
+/*Home Page*/
 
 #aboutclo{
 	padding: 1em;
-	text-align: center;
+	padding-top: 0;
+	padding-bottom: 0;
+	text-align:left;
 }
+
+
 
 
 

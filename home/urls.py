@@ -16,4 +16,5 @@ urlpatterns = [
     path('signout/', views.user_signout, name="signout"),
     path('saveissue/', views.save_issue, name="save-issue"),
     path('membership/', views.membership, name="membership"),
+    path('allmagazines/', views.allmagazinesmobile, name='allmagazinesmobile')
 ]
