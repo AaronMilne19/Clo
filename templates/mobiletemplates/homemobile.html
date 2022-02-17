@@ -62,7 +62,7 @@ Home - Mobile
 
         <div class="menuelement">
             {% if user.is_authenticated %}
-                    <a >Sign Out</a>
+                    <a href="{% url 'home:signout' %}">Sign Out</a>
             {% else %}
                     <a>Log In</a>
             {% endif %}
