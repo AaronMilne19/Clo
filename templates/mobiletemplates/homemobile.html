@@ -41,7 +41,7 @@ Home - Mobile
         </div>
 
         <div class="hiddenpanel">
-            <p>Lorem ipsum...</p>
+            <div>Lorem ipsum...</div>
         </div>
 
         <div class="menuelement">
@@ -49,7 +49,7 @@ Home - Mobile
         </div>
 
         <div class="hiddenpanel">
-            <p>Lorem ipsum...</p>
+            <div>Lorem ipsum...</div>
         </div>
 
         <div class="menuelement">
@@ -57,23 +57,23 @@ Home - Mobile
         </div>
 
         <div class="hiddenpanel">
-            <p>Lorem ipsum...</p>
+            <div> {% include "mobiletemplates/contactmobile.html" %} </div>
         </div>
 
         <div class="menuelement">
             {% if user.is_authenticated %}
                     <a >Sign Out</a>
-
             {% else %}
                     <a>Log In</a>
             {% endif %}
 
         </div>
 
-
-        <div class="hiddenpanel">
-            <p>Lorem ipsum...</p>
-        </div>
+        {% if not user.is_authenticated %}
+            <div class="hiddenpanel">
+                <div> {% include "mobiletemplates/loginmobile.html" %} </div>
+            </div>
+        {% endif %}
 
     </div>
 

@@ -109,7 +109,7 @@
 /*Home Page*/
 
 #aboutclo{
-	max-height:max-content;
+	max-height:initial;
 	padding: 1em;
 	padding-top: 0;
 	padding-bottom: 0;
@@ -135,4 +135,18 @@
 }
 
 
+ input, .btn{
+ 	border-radius: 0.2em !important;
+ 	border-width:0.1em;
+	width:70%;
+	clear:both;
+	background-color:#E8E5E2;
 
+}
+
+input[type=submit]{
+	width:20%;
+	background-color:#2F52E0;
+	color:white;
+	position:center;
+}
