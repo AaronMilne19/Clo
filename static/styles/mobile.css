@@ -138,7 +138,7 @@
  input, .btn{
  	border-radius: 0.2em !important;
  	border-width:0.1em;
-	width:70%;
+	width:80%;
 	clear:both;
 	background-color:#E8E5E2;
 
@@ -149,4 +149,11 @@ input[type=submit]{
 	background-color:#2F52E0;
 	color:white;
 	position:center;
+	min-width: max-content;
+}
+
+#signupcontent{
+	width: 100%;
+	text-align: center;
+	margin-top: 4em;
 }

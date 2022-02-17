@@ -103,7 +103,14 @@ def user_signup(request):
 
     ctx = {'user_form': user_form, 'profile_form': profile_form, 'registered': registered}
 
-    return render(request, 'signup.html', context=ctx)
+    if check_device(request) == 'mobile':
+        # mobile
+        temp = 'mobiletemplates/signupmobile.html'
+    else:
+        # desktop
+        temp = 'signup.html'
+
+    return render(request, temp, context=ctx)
 
 
 @login_required
