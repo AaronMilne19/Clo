@@ -139,5 +139,9 @@ dmypy.json
 
 #VS
 **.vs/
+
 Pipfile.lock
 Pipfile
+
+#csv files for codes
+*.csv
