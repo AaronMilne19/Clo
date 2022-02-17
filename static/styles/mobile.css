@@ -5,7 +5,7 @@
 }
 
 *{
-	font-size: 5vmin;
+	font-size: 2.5vmax;
 }
 
 #mainwrapper{
@@ -18,7 +18,7 @@
 
 
 #logo-bar{
-	padding: 0.6em;
+	padding: 0.5em;
 	display: block;
 	top: 0;
 	height: 10%;
@@ -109,13 +109,13 @@
 /*Home Page*/
 
 #aboutclo{
-	max-height:initial;
+	max-height:max-content;
 	padding: 1em;
 	padding-top: 0;
 	padding-bottom: 0;
 	text-align:left;
     overflow: hidden;
-    transition: max-height 0.2s ease-out;
+    transition: max-height 0.4s ease-out;
 }
 
 
