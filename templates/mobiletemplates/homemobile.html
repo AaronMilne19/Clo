@@ -55,7 +55,7 @@ Home - Mobile
     {% endif %}
 
         <div class="hiddenpanel">
-            <div>Lorem ipsum...</div>
+            {% include "mobiletemplates/membershipmobile.html" %}
         </div>
 
         <div class="menuelement">
@@ -63,7 +63,7 @@ Home - Mobile
         </div>
 
         <div class="hiddenpanel">
-            <div> {% include "mobiletemplates/contactmobile.html" %} </div>
+            {% include "mobiletemplates/contactmobile.html" %}
         </div>
 
         <div id="login_element" class="menuelement">
@@ -81,8 +81,8 @@ Home - Mobile
         </div>
     {% else %}
         <div class="hiddenpanel">
-            <p>Are you sure you want to Sign Out?</p>
-            <p><a href="{% url 'home:signout' %}">Yes</a></p>
+            <p>Are you sure you want to sign out?</p>
+            <p><a class="basic_link" href="{% url 'home:signout' %}">Yes</a></p>
 
         </div>
     {% endif %}

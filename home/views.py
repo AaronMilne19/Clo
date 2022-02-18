@@ -15,19 +15,19 @@ from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
 
 
-def check_device(request):
+def is_mobile_device(request):
     # check visitor agent
     try:
         user_agent = request.META['HTTP_USER_AGENT']
     except:
-        return 'desktop'
+        return False
 
     keywords = ['Mobile', 'Opera Mini', 'Android']
 
     if any(word in user_agent for word in keywords):
-        return 'mobile'
+        return True
     else:
-        return 'desktop'
+        return False
 
 
 def home(request):
@@ -35,7 +35,7 @@ def home(request):
 
     ctx['magazines'] = Magazine.objects.all()
 
-    if check_device(request) == 'mobile':
+    if is_mobile_device(request):
         # mobile
         temp = 'mobiletemplates/homemobile.html'
     else:
@@ -63,19 +63,19 @@ def user_login(request):
             return HttpResponse("Invalid login details supplied.")
 
 
-    else:
-        if check_device(request) == 'mobile':
-            # mobile
-            temp = 'mobiletemplates/loginmobile.html'
-        else:
-            # desktop
-            temp = 'login.html'
 
-        return render(request, temp, {})
+        return render(request, "login.html", {})
 
 
 def user_signup(request):
     registered = False
+
+    if is_mobile_device(request):
+        # mobile
+        temp = 'mobiletemplates/signupmobile.html'
+    else:
+        # desktop
+        temp = 'signup.html'
 
     # if HTTP POST then process form
     if request.method == 'POST':
@@ -96,19 +96,14 @@ def user_signup(request):
             registered = True
         else:
             print(user_form.errors, profile_form.errors)
-            return render(request, 'signup.html', {'form': user_form})
+            return render(request, temp, {'form': user_form})
     else:
         user_form = UserForm()
         profile_form = UserProfileForm()
 
     ctx = {'user_form': user_form, 'profile_form': profile_form, 'registered': registered}
 
-    if check_device(request) == 'mobile':
-        # mobile
-        temp = 'mobiletemplates/signupmobile.html'
-    else:
-        # desktop
-        temp = 'signup.html'
+
 
     return render(request, temp, context=ctx)
 
@@ -170,19 +165,13 @@ def magazine(request, id):
     ctx['magazines'] = Magazine.objects.all()
     ctx['issues'] = MagazineIssue.objects.filter(magazine=mag)
 
-    if check_device(request) == 'mobile':
+    if is_mobile_device(request):
         temp = 'mobiletemplates/magazine.html'
     else:
         temp = 'magazine.html'
 
     return render(request, temp, context=ctx)
 
-
-def allmagazinesmobile(request):
-    ctx = {}
-    ctx['magazines'] = Magazine.objects.all()
-
-    return render(request, 'mobiletemplates/issuemobile.html', context=ctx)
 
 
 def issue(request, id, slug):
@@ -200,7 +189,7 @@ def issue(request, id, slug):
         user = UserProfile.objects.get(user=request.user)
         ctx['saved_issues'] = user.saved_issues.all()
 
-    if check_device(request) == 'mobile':
+    if is_mobile_device(request):
         temp = 'mobiletemplates/issuemobile.html'
     else:
         temp = 'issue.html'

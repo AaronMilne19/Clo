@@ -5,7 +5,8 @@
 }
 
 *{
-	font-size: 2.5vmax;
+	font-size: 2.5vh;/*  relative to viewpoint's height - so that the app looks good
+	on both vertically and horizontally held mobile devices  */
 }
 
 #mainwrapper{
@@ -37,6 +38,10 @@
 	margin-left: auto;
 	margin-right: auto;
 
+}
+
+.basic_link{
+	text-decoration-line: none !important;
 }
 
 /*Homepage*/
@@ -156,6 +161,8 @@ input[type=submit]{
 	text-align: center;
 	margin-top: 3em;
 	margin-bottom: 1em;
+	padding-left: 0.5em;
+	padding-right: 0.5em;
 }
 
 #ask_to_login_aftet_membership_clicked{
@@ -163,4 +170,12 @@ input[type=submit]{
 
 
 
+}
+
+
+/*Contact*/
+
+#contact{
+	padding-right: 0.7em;
+	padding-left: 0.7em;
 }
