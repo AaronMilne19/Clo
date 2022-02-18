@@ -64,7 +64,7 @@ def user_login(request):
 
 
 
-        return render(request, "login.html", {})
+    return render(request, "login.html", {})
 
 
 def user_signup(request):
