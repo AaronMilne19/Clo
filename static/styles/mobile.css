@@ -151,9 +151,17 @@ input[type=submit]{
 	position:center;
 	min-width: max-content;
 }
-
-#signupcontent{
+/*basic form e.g. sign up or login*/
+.basic_form{
 	width: 100%;
 	text-align: center;
-	margin-top: 4em;
+	margin-top: 3em;
+	margin-bottom: 1em;
+}
+
+#ask_to_login_aftet_membership_clicked{
+	display: none;
+
+
+
 }
