@@ -68,18 +68,24 @@ Home - Mobile
 
         <div id="login_element" class="menuelement">
             {% if user.is_authenticated %}
-                    <a href="{% url 'home:signout' %}">Sign Out</a>
+                    <a>Sign Out</a>
             {% else %}
                     <a>Log In</a>
             {% endif %}
 
         </div>
 
-        {% if not user.is_authenticated %}
-            <div class="hiddenpanel">
-                 {% include "mobiletemplates/loginmobile.html" %}
-            </div>
-        {% endif %}
+    {% if not user.is_authenticated %}
+        <div class="hiddenpanel">
+           {% include "mobiletemplates/loginmobile.html" %}
+        </div>
+    {% else %}
+        <div class="hiddenpanel">
+            <p>Are you sure you want to Sign Out?</p>
+            <p><a href="{% url 'home:signout' %}">Yes</a></p>
+
+        </div>
+    {% endif %}
 
     </div>
 

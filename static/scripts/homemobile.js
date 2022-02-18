@@ -14,7 +14,11 @@ for (i = 0; i < acc.length; i++) {
     var thisPanel = this.nextElementSibling;
 
     if (openedElement == this) {
-      ask_to_login_txt.style.display = "none";
+
+      if(ask_to_login_txt){ //check if not null i.e. the user is logged in
+              ask_to_login_txt.style.display = "none"; //hide the message after the login panel is closed
+      }
+
       thisPanel.style.maxHeight = null;
       about.style.maxHeight = about.scrollHeight + 'px';
       openedElement = null;
@@ -31,7 +35,9 @@ for (i = 0; i < acc.length; i++) {
         openedElement = login_element;
       }
       else {
-        ask_to_login_txt.style.display = "none";
+        if(ask_to_login_txt){ //check if not null i.e. the user is logged in
+                ask_to_login_txt.style.display = "none"; //hide the message after the login panel is closed
+        }
         var openedPanel = openedElement.nextElementSibling;
         openedPanel.style.maxHeight = null;
         thisPanel.style.maxHeight = thisPanel.scrollHeight + "px";
