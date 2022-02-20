@@ -1,19 +1,17 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login , logout
+from django.core.mail import EmailMessage
+from django.contrib import messages
+from django.contrib.auth import authenticate, login , logout, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
+from django.contrib.auth.forms import PasswordChangeForm
+from django.template.defaulttags import register
 from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.urls import reverse
 from home.models import Magazine, UserProfile, Hashtag, MagazineIssue, DiscountCode
 from home.forms import UserForm, UserProfileForm, UploadCodesFileForm, EmailChangeForm
-from django.template.defaulttags import register
 from datetime import datetime
 import random, string, secrets
-
-from django.contrib import messages
-from django.contrib.auth import update_session_auth_hash
-from django.contrib.auth.forms import PasswordChangeForm
-
 
 
 def home(request):
@@ -116,6 +114,11 @@ def my_profile(request):
 def membership(request):
     ctx={}
     ctx['magazines'] = Magazine.objects.all()
+
+    if request.user.is_authenticated:
+        ctx['subscribed'] = UserProfile.objects.get(user=request.user).is_subscribed
+ 
+
     return render(request, 'membership.html', context=ctx)   
 
 
@@ -123,6 +126,7 @@ def membership(request):
 def user_signout(request):
 	logout(request)
 	return redirect(reverse('home:home'))
+
 
 def check_device(request):
 	#check visitor agent
@@ -134,6 +138,7 @@ def check_device(request):
 		return 'mobile'
 	else:
 		return 'desktop'
+
 
 def magazine(request, id):
     ctx = {}
@@ -169,6 +174,7 @@ def issue(request, id, slug):
     if request.user.is_authenticated:
         user = UserProfile.objects.get(user=request.user)
         ctx['saved_issues'] = user.saved_issues.all()
+        ctx['subscribed'] = UserProfile.objects.get(user=request.user).is_subscribed
 
 
     if check_device(request)=='mobile':
@@ -278,3 +284,42 @@ def gen_codes(amount):
             codes.append(code)
         
     return path, codes
+
+
+@login_required
+def send_email(request):
+    user = UserProfile.objects.get(user=request.user)
+
+    if user.is_subscribed == False:
+        return HttpResponse("Sorry, you are not a subscriber!")
+    
+    try:
+        code = DiscountCode.objects.all()[0]
+    except IndexError:
+        return HttpResponse("There are no available codes at the moment. If you think there should be, please get in touch.")
+
+
+    text = """
+    Hey """ + request.user.username + """,
+
+
+    Thank you so much for making the decision to subscribe to Clò this month. Here is your unique discount code which 
+    can be used once across any of the magazines on our site which have a 'subscriber price'.
+
+    Please ensure to keep this email or your code safe as it cannot be resent.
+
+    """ + code.code
+
+
+    email = EmailMessage(
+        subject = 'Your unique Clò discount code',
+        body = text,
+        from_email = 'TestingForClo@gmail.com',
+        to = [request.user.email],
+        )
+
+    sent = email.send()
+    print(sent)
+    code.delete()
+
+    return HttpResponseRedirect(reverse('home:membership'))
