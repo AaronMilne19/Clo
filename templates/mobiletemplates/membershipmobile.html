@@ -1,30 +1,36 @@
 <!DOCTYPE html>
-<div id="membership_menu">
+{% load static %}
+
+{#<div id="membership_menu">#}
 
     <div class="membership_element">
-        <a> My Profile </a>
+        <hr class="membership_menu_line">
+        <div>My Profile</div>
     </div>
 
     <div class="membership_hidden_panel">
-
-
+        <span>membership_hidden_panel</span>
     </div>
 
 
     <div class="membership_element">
-        <a> My Magazines </a>
+        <hr class="membership_menu_line">
+        <div>My Magazines</div>
     </div>
 
     <div class="membership_hidden_panel">
-
+        <span>membership_hidden_panel jfskjbskjfnlsjd
+        ksndlksndflksmlkmd
+        sjfnskjdfnksjnd
+        ssdljfnskjdfn
+        skfnksjdfn
+        skfdksjfdskd <br>
+        kjshfksjhfjkskd</span>
     </div>
 
 
+{#</div>#}
 
-
-
-
-
-
-
-</div>
+{% block script %}
+    <script src="{% static 'scripts/membershipmobile.js' %}"></script>
+{% endblock %}
