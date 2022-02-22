@@ -140,7 +140,14 @@ def my_profile(request):
     ctx['email_form'] = email_form
     ctx['password_form'] = password_form
 
-    return render(request, 'myprofile.html', ctx)
+    if is_mobile_device(request):
+        # mobile
+        temp = 'mobiletemplates/membershipmenumobile.html'
+    else:
+        # desktop
+        temp = 'myprofile.html'
+
+    return render(request, temp, ctx)
 
 
 

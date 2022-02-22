@@ -1,0 +1,51 @@
+{% extends 'mobiletemplates/basemobile.html' %}
+{% load static %}
+
+{% block title %}
+    Sign up
+{% endblock %}
+
+{% block content %}
+
+<div class="menuwrapper">
+
+    <div id="backbutton">
+        <a class="basic_link" href="{% url 'home:home' %}">Back</a>
+    </div>
+
+    <div id="membershipinfo">
+        <p>
+{#            Break instead of using padding or margin in the css file because - the max-height property doesn't include #}
+{#            them - faulty accordion menu#}
+            <br>
+            Check you account details or view your saved magazine issues below.
+            <br>
+        </p>
+    </div>
+
+    <div class="menuelement">
+        <a > My Profile </a>
+
+    </div>
+
+    <div class="hiddenpanel">
+        <div>Lorem ipsum...</div>
+    </div>
+
+    <div class="menuelement">
+        <a > My Magazines </a>
+
+    </div>
+
+    <div class="hiddenpanel">
+        <div>Lorem ipsum...</div>
+    </div>
+
+</div>
+
+{% endblock %}
+
+{% block script %}
+    <script src="{% static 'scripts/home.js' %}"></script>
+    <script src="{% static 'scripts/membershipmobile.js' %}"></script>
+{% endblock %}

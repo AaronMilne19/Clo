@@ -1,43 +1,35 @@
-/*Commented out - underline active element functionally (without reset when Membership menu is closed!)*/
+var acc = document.getElementsByClassName("menuelement");
+var membinfo = document.getElementById("membershipinfo")
+var openedElement = null;
 
-
-var acc = document.getElementsByClassName("membership_element");
+membinfo.style.maxHeight = membinfo.scrollHeight + 'px';
 var i;
-var openedMembershipElement = null;
-var membership_outer_hidden_panel = document.getElementById("membership_outer_hidden_panel")
-
 
 for (i = 0; i < acc.length; i++) {
-    acc[i].addEventListener("click", function () {
-        this.classList.toggle("active");
-        var thisMembershipPanel = this.nextElementSibling;
+  acc[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var thisPanel = this.nextElementSibling;
 
-        if (openedMembershipElement == this){
-            thisMembershipPanel.style.maxHeight = null;
-            // this.style.textDecoration = "none"
-            openedMembershipElement = null;
-        }
+    if (openedElement == this) {// clicking on the menu element whose hidden panel is open
 
-        else if (openedMembershipElement){
-            var openedMembershipPanel = openedMembershipElement.nextElementSibling;
-            openedMembershipPanel.style.maxHeight = null;
-            // openedMembershipElement.style.textDecoration = "none";
+      thisPanel.style.maxHeight = null;
+     membinfo.style.maxHeight = membinfo.scrollHeight + 'px';
+      openedElement = null;
+    }
 
-            // this.style.textDecoration = "underline";
-            thisMembershipPanel.style.maxHeight = thisMembershipPanel.scrollHeight + "px"
-            openedMembershipElement = this;
-            membership_outer_hidden_panel.style.maxHeight = "max-content"
+    else if (openedElement) {// clicking on some menu element while another element has its hidden panel open
 
-        }
+        var openedPanel = openedElement.nextElementSibling;
+        openedPanel.style.maxHeight = null;
+        thisPanel.style.maxHeight = thisPanel.scrollHeight + "px";
+        openedElement = this;
+    }
 
-        else{
-            // this.style.textDecoration = "underline";
-            thisMembershipPanel.style.maxHeight = thisMembershipPanel.scrollHeight + "px"
-            openedMembershipElement = this;
-            membership_outer_hidden_panel.style.maxHeight = "max-content"
+    else {//none of the hidden panels are open and therefore Membinfo is visible
 
-
-        }
-
-    })
+        thisPanel.style.maxHeight = thisPanel.scrollHeight + "px";
+        membinfo.style.maxHeight = 0;
+        openedElement = this;
+    }
+  });
 }

@@ -33,7 +33,7 @@ Home - Mobile
     </div>
 
 
-    <div id="menuwrapper">
+    <div class="menuwrapper">
 
         <div class="menuelement">
             <a > All Magazines </a>
@@ -55,7 +55,7 @@ Home - Mobile
     {% endif %}
 
         <div class="hiddenpanel" id="membership_outer_hidden_panel">
-            {% include "mobiletemplates/membershipmobile.html" %}
+            <p><a class="basic_link" href="{% url 'home:myprofile' %}">Go to Membership Menu</a></p>
         </div>
 
         <div class="menuelement">
