@@ -42,3 +42,7 @@
 .container input{
     width: 100%;
 }
+
+.basic_form label{
+    display: block;
+}

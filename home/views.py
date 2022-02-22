@@ -186,6 +186,11 @@ def issue(request, id, slug):
 
     mag = Magazine.objects.get(id=id)
     issue = MagazineIssue.objects.get(slug=slug)
+    user = UserProfile.objects.get(user=request.user)
+    issues = user.saved_issues.order_by("magazine")
+
+    ctx['magazines'] = Magazine.objects.all()
+    ctx['savedissues'] = issues.all()
 
     ctx['this'] = mag
     ctx['thisIssue'] = issue
