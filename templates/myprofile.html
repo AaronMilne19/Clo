@@ -26,18 +26,14 @@ My Profile
             <div style="min-width: 80% ;margin-top:50px" class="info-box sticky-top pr-3 d-flex mx-4 pe-4">
                 <!--<form method="post">-->
                     <div class="container">
-                        <form method="post">
-                            {% csrf_token %}
-                            <input type='hidden' name='action' value='edit_email'>
-                            {{ email_form }}
-                            <input class="button" style="float: right; margin-top: 20px; width: 50%;" type="submit" name="Save" value="Change Email" />
-                        </form>
+                        <label>Email Address: </label>
+                        <input class="textbox" type="text" name="email" value="{{ request.user.email }}" disabled/>
 
 
                         <form method="post">
                             {% csrf_token %}
                             <input type='hidden' name='action' value='edit_password'>
-                            <label style="margin-top: 100px"> </label>
+                            <label style="margin-top: 70px"> </label>
                             {{password_form.non_field_errors}}
                             {% for field in password_form %}
                             {{field.label_tag}}
