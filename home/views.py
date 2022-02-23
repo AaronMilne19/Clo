@@ -308,7 +308,10 @@ def send_email(request):
 
     Please ensure to keep this email or your code safe as it cannot be resent.
 
-    """ + code.code
+    """ + code.code + """
+
+
+    The Clò Team. """
 
 
     email = EmailMessage(
@@ -318,8 +321,12 @@ def send_email(request):
         to = [request.user.email],
         )
 
-    sent = email.send()
-    print(sent)
+    try:
+       email.send()
+    except Exception as e:
+        print(e)
+        return HttpResponse("Oops! Something went wrong.")
+
     code.delete()
 
     return HttpResponseRedirect(reverse('home:membership'))
