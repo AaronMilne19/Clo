@@ -317,7 +317,7 @@ def send_email(request):
     email = EmailMessage(
         subject = 'Your unique Clò discount code',
         body = text,
-        from_email = 'TestingForClo@gmail.com',
+        from_email = 'clo.magazines@gmail.com',
         to = [request.user.email],
         )
 
