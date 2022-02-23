@@ -304,7 +304,7 @@ def send_email(request):
 
 
     Thank you so much for making the decision to subscribe to Clò this month. Here is your unique discount code which 
-    can be used once across any of the magazines on our site which have a 'subscriber price'.
+    can be used once across any of the magazines on our site marked with a 'subscriber price'.
 
     Please ensure to keep this email or your code safe as it cannot be resent.
 
