@@ -18,4 +18,5 @@ urlpatterns = [
     path('membership/', views.membership, name="membership"),
     path('staff/', views.staff, name="staff"),
     path('codes/', views.codes, name='codes'),
+    path('email/', views.send_email, name="email"),
 ]
