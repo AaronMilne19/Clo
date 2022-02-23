@@ -14,6 +14,7 @@ var i;
 for (i = 0; i < acc.length; i++) {
   acc[i].addEventListener("click", function() {
     this.classList.toggle("active");
+    var closeicon = this.lastElementChild;
     var thisPanel = this.nextElementSibling;
 
     if (openedElement == this) {// clicking on the menu element whose hidden panel is open
@@ -25,15 +26,24 @@ for (i = 0; i < acc.length; i++) {
 
       thisPanel.style.maxHeight = null;
       about.style.maxHeight = about.scrollHeight + 'px';
+      closeicon.style.opacity = "0%"
       openedElement = null;
     }
 
     else if (openedElement) {// clicking on some menu element while another element has its hidden panel open
 
-      if (this == membership_not_auth__element){
+      // close the open panel
         var openedPanel = openedElement.nextElementSibling;
         openedPanel.style.maxHeight = null;
+        var visiblecloseicon = openedElement.lastElementChild;
+        visiblecloseicon.style.opacity = "0%"
+
+      //and open another depending on whether "membership" is clicked and whether the user is logged in
+      if (this == membership_not_auth__element){
+
         var loginPanel = login_element.nextElementSibling
+        var logincloseicon = login_element.lastElementChild;
+        logincloseicon.style.opacity = "100%"
         ask_to_login_txt.style.display = "block";
         loginPanel.style.maxHeight = loginPanel.scrollHeight + "px";
         openedElement = login_element;
@@ -43,8 +53,7 @@ for (i = 0; i < acc.length; i++) {
                 ask_to_login_txt.style.display = "none"; //hide the message when the login panel is closed
                 // by opening another panel
         }
-        var openedPanel = openedElement.nextElementSibling;
-        openedPanel.style.maxHeight = null;
+        closeicon.style.opacity = "100%"
         thisPanel.style.maxHeight = thisPanel.scrollHeight + "px";
         openedElement = this;
       }
@@ -59,9 +68,13 @@ for (i = 0; i < acc.length; i++) {
         var loginPanel = login_element.nextElementSibling
         ask_to_login_txt.style.display = "block";
         loginPanel.style.maxHeight = loginPanel.scrollHeight + "px";
+        var logincloseicon = login_element.lastElementChild;
+        logincloseicon.style.opacity = "100%"
         openedElement = login_element;
       }
       else {
+
+        closeicon.style.opacity = "100%"
         thisPanel.style.maxHeight = thisPanel.scrollHeight + "px";
         about.style.maxHeight = 0;
         openedElement = this;
