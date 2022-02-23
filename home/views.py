@@ -113,6 +113,11 @@ def my_profile(request):
     ctx= {}
     password_form = PasswordChangeForm(request.user,prefix='password_form')
     email_form = EmailChangeForm(request.user, prefix='email_form')
+    user = UserProfile.objects.get(user=request.user)
+    issues = user.saved_issues.order_by("magazine")
+
+    ctx['magazines'] = Magazine.objects.all()
+    ctx['savedissues'] = issues.all()
 
     if request.method == 'GET':
         email_form = EmailChangeForm(request.user,initial={'new_email1': request.user.email})
@@ -173,7 +178,7 @@ def magazine(request, id):
     ctx['issues'] = MagazineIssue.objects.filter(magazine=mag)
 
     if is_mobile_device(request):
-        temp = 'mobiletemplates/magazine.html'
+        temp = 'mobiletemplates/magazinemobile.html'
     else:
         temp = 'magazine.html'
 
@@ -186,11 +191,6 @@ def issue(request, id, slug):
 
     mag = Magazine.objects.get(id=id)
     issue = MagazineIssue.objects.get(slug=slug)
-    user = UserProfile.objects.get(user=request.user)
-    issues = user.saved_issues.order_by("magazine")
-
-    ctx['magazines'] = Magazine.objects.all()
-    ctx['savedissues'] = issues.all()
 
     ctx['this'] = mag
     ctx['thisIssue'] = issue

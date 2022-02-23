@@ -1,39 +1,17 @@
-{% extends 'base.html' %}
+{% extends 'mobiletemplates/basemobile.html' %}
 {% load static %}
 
-{% block css %}
-<link rel="stylesheet" type="text/css" href="/static/styles/home.css">
-<link rel="stylesheet" type="text/css" href="/static/styles/mobile.css">
-{% endblock %}
+
 
 {% block title %}
 {{this.title}}
 {% endblock %}
 
-<!--see navbar.html for navbar code-->
-{% block navbar %}
-{% include "navbar.html" %}
-{% endblock %}
 
 {% block content %}
+
 <div class="container py-0 px-0 mr-0 d-inline">
     <div class="row">
-    
-      	
-         <div class="col-sm-4 d-flex" id="mainbox">
-         
-           <button onclick="history.back()" class="backbutton">Go Back </button>
-         
-         
-            <div class="info-box sticky-top px-4 py-4 d-flex">
-                About {{this.title}}
-
-                <div class="info sml-txt mt-3 d-inline overflow-hidden">
-                    {{this.description_long}}
-                </div>
-            </div>
-            
-        </div>
 
         <div class="col-sm-4 border-start border-end border-dark border-1 d-flex" id="mainbox">
             <div class="info-box sticky-top mx-4 pe-4 d-flex">
@@ -50,7 +28,16 @@
             </div>
         </div>
 
-       
+        <div class="col-sm-4 d-flex" id="mainbox">
+            <div class="info-box sticky-top px-4 py-4 d-flex">
+                About {{this.title}}
+
+                <div class="info sml-txt mt-3 d-inline">
+                    {{this.description_long}}
+                </div>
+            </div>
+
+        </div>
     </div>
 </div>
 
@@ -64,4 +51,4 @@
 </script>
 
 <script src="{% static 'scripts/home.js' %}" defer></script>
-{% endblock %}	
+{% endblock %}
