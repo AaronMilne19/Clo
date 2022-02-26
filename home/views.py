@@ -287,11 +287,13 @@ def gen_codes(amount):
 
 
 @login_required
-def send_email(request):
+def send_code(request):
     user = UserProfile.objects.get(user=request.user)
 
     if user.is_subscribed == False:
         return HttpResponse("Sorry, you are not a subscriber!")
+    elif user.has_code:
+        return HttpResponse("You have already recieved your discount code for this month. Please check your inbox!")
     
     try:
         code = DiscountCode.objects.all()[0]
@@ -300,18 +302,18 @@ def send_email(request):
 
 
     text = """
-    Hey """ + request.user.username + """,
+Hey """ + request.user.username + """,
 
 
-    Thank you so much for making the decision to subscribe to Clò this month. Here is your unique discount code which 
-    can be used once across any of the magazines on our site marked with a 'subscriber price'.
+Thank you so much for making the decision to subscribe to Clò this month. Here is your unique discount code which 
+can be used once across any of the magazines on our site marked with a 'subscriber price'.
 
-    Please ensure to keep this email or your code safe as it cannot be resent.
+Please ensure to keep this email or your code safe as it cannot be resent.
 
     """ + code.code + """
 
 
-    The Clò Team. """
+The Clò Team. """
 
 
     email = EmailMessage(
@@ -328,5 +330,8 @@ def send_email(request):
         return HttpResponse("Oops! Something went wrong.")
 
     code.delete()
+
+    user.has_code = True
+    user.save()
 
     return HttpResponseRedirect(reverse('home:membership'))
