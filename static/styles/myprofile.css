@@ -17,7 +17,7 @@
 .textbox{
     border-radius: 4px !important;
     background-color: #E8E5E2;
-    border-color:
+
 }
 
 /*form render css*/
@@ -41,4 +41,8 @@
 
 .container input{
     width: 100%;
+}
+
+.basic_form label{
+    display: block;
 }
