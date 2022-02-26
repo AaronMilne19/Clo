@@ -11,9 +11,9 @@
  input, .btn{
  	border-radius: 5px !important;
  	border-width:1px;
-	max - width:150px;
+	max-width: 50%;
 	width:35%;
-	min - width: 80px;
+	min-width: max-content;
 	clear:both;
 	background-color:#E8E5E2;
 
