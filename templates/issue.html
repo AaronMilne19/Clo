@@ -34,7 +34,7 @@
                         </a>
                         {% else %}
                         <a href="{% url 'home:issue' this.id issue.slug %}" class="issue-crd card issue-link py-1">
-                            <img class="card-img-top" src="{% static 'magazine_pictures/cover11.jpg' %}" />
+                            <img class="card-img-top" src="{{ thisIssue.cover.url }}" />
                             <div style=" display:flex; justify-content:center;" class="card-body">
                                 <h5 class="sml-txt card-title">Issue {{forloop.revcounter}}: {{issue.title}}</h5>
                             </div>
