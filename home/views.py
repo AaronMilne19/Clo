@@ -290,7 +290,13 @@ def codes(request):
                 file = request.FILES['file']
                 codes = file.read().decode('utf-8').split(',')[:-1]
 
+                #delete existing codes
                 DiscountCode.objects.all().delete()
+
+                #reset users has_code field meaning they can recieve new email
+                for user in UserProfile.objects.all():
+                    user.has_code = False
+                    user.save()
 
                 #Save codes to DB
                 for code in codes:
