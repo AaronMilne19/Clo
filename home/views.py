@@ -9,7 +9,7 @@ from django.template.defaulttags import register
 from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.urls import reverse
 from home.models import Magazine, UserProfile, Hashtag, MagazineIssue, DiscountCode
-from home.forms import UserForm, UserProfileForm, UploadCodesFileForm, EmailChangeForm
+from home.forms import UserForm, UserProfileForm, UploadCodesFileForm, EmailChangeForm, CodesFileForm
 from datetime import datetime
 import random, string, secrets
 
@@ -277,29 +277,40 @@ def codes(request):
     ctx = {}
     ctx['magazines'] = Magazine.objects.all()
     ctx['codefile'] = None
+    ctx['done'] = None
 
-    form = UploadCodesFileForm()
+    form = CodesFileForm()
+    form2 = UploadCodesFileForm()
 
     if request.method == 'POST':
-        form = UploadCodesFileForm(request.POST)
-        
-        if form.is_valid():
-            time, codes = gen_codes(request.POST.get("amount"))
-            ctx['codefile'] = time
-               
-            #Delete all existing codes from database for now... (this will need to change for release)
-            DiscountCode.objects.all().delete()
+        if request.FILES:
+            form2 = UploadCodesFileForm(request.POST, request.FILES)
 
-            #Save codes to DB
-            for code in codes:
-                code = code[:-1]
-                new_code = DiscountCode(code=code)
-                new_code.save()
+            if form2.is_valid():
+                file = request.FILES['file']
+                codes = file.read().decode('utf-8').split(',')[:-1]
+
+                DiscountCode.objects.all().delete()
+
+                #Save codes to DB
+                for code in codes:
+                    new_code = DiscountCode(code=code)
+                    new_code.save()
+
+                ctx['done'] = "Success!"
+        else:
+            form = CodesFileForm(request.POST)
+        
+            if form.is_valid():
+                time, codes = gen_codes(request.POST.get("amount"))
+                ctx['codefile'] = time
+               
 
     ctx['range'] = range(5,501,5)
     ctx['form'] = form
+    ctx['form2'] = form2
     ctx['errors'] = form.errors or None
-
+    ctx['errors2'] = form2.errors or None
 
     return render(request, 'codes.html', context=ctx)
 

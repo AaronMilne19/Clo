@@ -36,16 +36,19 @@ Upload Codes
                         Click Generate 
                     </li>
                     <li>
-                        This will then automatically add the generated codes to the database and will provide you with a downloadable CSV file which can then be sent to
-                        magazines to add to their system.
+                        This will then create a downloadable CSV file which can then be sent to magazines to add to their system.
+                    </li>
+                    <li>
+                        When you are ready to make the codes live, upload the same csv file to the section below and this will
+                        automatically update the database with the codes on the file, replacing any existing codes.
                     </li>
                 </ol>
             </div>
         </div>
 
         <div class="col-sm-4 d-flex justify-content-center" id="mainbox">
-            <div class="codes-box border border-1 border-dark mx-3">
-                <form id="upload-codes-form" method="post" class="codes-box" action="{% url 'home:codes' %}" enctype="multipart/form-data">
+            <div class="codes-box border border-1 border-dark mx-3 my-3">
+                <form id="codes-form" method="post" class="codes-box" action="{% url 'home:codes' %}">
                     {% csrf_token %}
 
                     <div class="item sml-txt mt-3">
@@ -67,6 +70,26 @@ Upload Codes
                 <a class="xsml-txt mb-3" href="/{{codefile}}" download>Download codes here</a>
                 {% endif %}
             </div>
+
+            <div class="codes-box border border-1 border-dark mx-3 my-3">
+                <form id="upload-codes-form" method="post" class="codes-box" action="{% url 'home:codes' %}" enctype="multipart/form-data">
+                    {% csrf_token %}
+
+                    <div class="item sml-txt mt-3">
+                        Upload csv file of codes to make them live on the site.
+                        <input class="mt-3" type="file" name="file" accept=".csv" required/> 
+                    </div>
+
+                    <div class="item sml-txt">
+                        <input type="submit" name="submit" value="Upload" class="btn btn-sm btn-outline-primary" />
+                    </div>
+                    
+                </form>
+                {% if done %}
+                <div style="color:limegreen">{{done}}</div>
+                {% endif %}
+            </div>
+        </div>
         </div>
     </div>
 </div>
