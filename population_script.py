@@ -241,13 +241,13 @@ def populate():
             add_issue(magazine=m, cover=i['cover'], date=i['date'], title=i['title'], description=i['issue_description'],
                       price=i['price'], discounted_price=i['discounted_price'])
 
-    h1 = Hashtag.objects.get_or_create(text="#PhotoEssays")[0]
+    h1 = Hashtag.objects.get_or_create(text="PhotoEssays")[0]
     h1.save()
     h1.magazines.add(1,2,4)
-    h2 = Hashtag.objects.get_or_create(text="#Music")[0]
+    h2 = Hashtag.objects.get_or_create(text="Music")[0]
     h2.save()
     h2.magazines.add(1,4,3)
-    h3 = Hashtag.objects.get_or_create(text="#Theatre")[0]
+    h3 = Hashtag.objects.get_or_create(text="Theatre")[0]
     h3.save()
     h3.magazines.add(2,4)
 
