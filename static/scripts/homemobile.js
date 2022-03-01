@@ -26,7 +26,7 @@ for (i = 0; i < acc.length; i++) {
 
       thisPanel.style.maxHeight = null;
       about.style.maxHeight = about.scrollHeight + 'px';
-      closeicon.style.opacity = "0%"
+      closeicon.style.opacity = "0%";
       openedElement = null;
     }
 

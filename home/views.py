@@ -184,7 +184,7 @@ def magazine(request, id):
 
     ctx['this'] = mag
     ctx['magazines'] = Magazine.objects.all()
-    ctx['issues'] = MagazineIssue.objects.filter(magazine=mag)
+    ctx['issues'] = MagazineIssue.objects.filter(magazine=mag).order_by("-date")
     ctx['latest_issue'] = MagazineIssue.objects.filter(magazine=mag).first()
 
     if is_mobile_device(request):

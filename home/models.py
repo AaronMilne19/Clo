@@ -33,7 +33,7 @@ class MagazineIssue (models.Model):
     discounted_price = models.IntegerField(default= 0)
     cover = models.ImageField(upload_to='cover_pictures', default=None)
     description_short = models.CharField(max_length=1000, default=None, null=True)
-    date =  models.DateField(("Date"), default=datetime.date.today)
+    date = models.DateField(("Date"), default=datetime.date.today)
     slug = models.SlugField(unique=True)
 
     def __str__(self):
