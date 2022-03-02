@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'mobiletemplates/basemobile.html' %}
 {% load static %}
 
 {% block css %}
@@ -10,64 +10,70 @@
 {{this.title}}
 {% endblock %}
 
-<!--see navbar.html for navbar code-->
-{% block navbar %}
-{% include "navbar.html" %}
-{% endblock %}
 
 {% block content %}
-<div class="container py-0 px-0 mr-0 d-inline">
-    <div class="row">
-       
 
-       <div class="col-sm-4 d-flex" id="mainbox">
-        <div style="margin:0; padding:20;" class="col-sm-4">
-        <button onclick="history.back()" class="backbutton">Go Back</button>
-        
-        
-            <div class="info-box issue-box sticky-top d-flex">
-                <div class="issue-header">
-                    <div>
-                        {{this.title}}<br />
-                        {{thisIssue.title}}<br />
-                        <div style="margin:0 !important;" class="sml-txt gry-txt">
-                            {% for hashtag in this.hashtag_set.all %}
-                            {{ hashtag }} &#160
-                            {% endfor %}
-                        </div>
-                        {% if user.is_authenticated %}
-                        <form class="save_issue" action="" method="POST" id="{{thisIssue.slug}}">
-                            {% csrf_token %}
-                            <button type="button" value="{{thisIssue.slug}}" class="btn btn-outline-secondary btn-sm favourite mt-2" onclick="saveIssue()">
-                                Add to My Magazines
-                            </button>
-                        </form>
-                        {% endif %}
-                    </div>
-                </div>
-                
-                     		<img class="card-img-top" src="{{ thisIssue.cover.url }}" />
-		
-                <div class="issue-body sml-txt">
-                   
-                       {{thisIssue.issue_description}}
-                       
-                   
-                </div>
+    <img class="cover_image" src="{{ thisIssue.cover.url }}" />
 
-                <div class="issue-buy">
-                    <div>
-                        <button type="button" class="btn btn-primary btn-sm pay">Subscriber Price &#163;{{thisIssue.discounted_price}}</button>
-                        <button type="button" class="btn btn-outline-secondary btn-sm pay">Full Price &#163;{{thisIssue.price}}</button>
-                    </div>
-                </div>
+    <div class="issue_title_block">
+        <div class="issue_title_text">
+            <div> {{ this.title }}</div>
+            <div id="issue_title"> {{ thisIssue.title }}</div>
+        </div>
 
-            </div>
+        {% if user.is_authenticated %}
+        <form class="save_issue" action="" method="POST" id="{{thisIssue.slug}}">
+            {% csrf_token %}
+            <button type="button" class="favourite" value="{{thisIssue.slug}}"  onclick="saveIssue()">
+                Add to My Magazines
+            </button>
+        </form>
+        {% endif %}
+    </div>
+
+    <div class="mag_and_issue_line"></div>
+
+    <div class="mag_or_issue_wrap">
+
+        <div class="hashtags">
+            {% for hashtag in this.hashtag_set.all %}
+            {{ hashtag }}, &#160
+            {% endfor %}
+        </div>
+
+        <div class="mag_and_issue_description">
+            <p>{{ thisIssue.issue_description }}</p>
+        </div>
+
+        <div class="buy_buttons">
+            {% if subscribed %}
+                <a href="{{this.link_to_publishers_site}}" onclick="alert('Please go to the Membership area to' +
+                 ' recieve your subscriber code if you have not already')" type="button" class="left_button" >
+                    Subscriber Price &#163
+                    {{thisIssue.discounted_price}}</a>
+
+                <a href="{{this.link_to_publishers_site}}" type="button" class="right_button">
+                    <strike>Full Price &#163 {{thisIssue.price}}</strike></a>
+
+            {% else %}
+                <a href="{% url 'home:membership' %}" type="button" class="left_button" >
+                    Subscriber Price &#163 {{thisIssue.discounted_price}}</a>
+                <a href="{{this.link_to_publishers_site}}" type="button" class="right_button">
+                    Full Price &#163 {{thisIssue.price}}</a>
+            {% endif %}
         </div>
     </div>
-</div>
+
+    <div id="issue_back_button" class="backbutton">
+        <a class="basic_link" href="{% url 'home:magazine' this.id %}">Back</a>
+    </div>
+
 
 {% endblock %}
+
+
+
+
 {% block script %}
 <script>
     if (window.location.href.slice(-10) != "#Magazines") {
