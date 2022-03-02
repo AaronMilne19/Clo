@@ -237,7 +237,7 @@ input[type=submit]{
 	text-decoration: none ;
 	color: rgb(44,84,232);
 	text-underline: none ;
-	font-size: 1.4em !important;
+	font-size: 1.4em;
 	font-weight: 570;
 	size: inherit;
 	transition: 0.4s;
@@ -438,5 +438,15 @@ input[type=submit]{
 #issue_back_button{
 	margin-top: 1.5em;
 	border-bottom: solid thin;
+	height: 3.2rem;
+	display: flex;
+	justify-content: center;
+}
+
+#issue_back_button a {
+	font-size: 0.8em;
+	align-self: center;
+	height: max-content;
+	width: max-content;
 }
 
