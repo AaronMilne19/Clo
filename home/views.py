@@ -1,10 +1,10 @@
 from django.shortcuts import render, redirect
 from django.core.mail import EmailMessage
 from django.contrib import messages
-from django.contrib.auth import authenticate, login , logout, update_session_auth_hash
+from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
-from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth.forms import PasswordChangeForm, PasswordResetForm
 from django.template.defaulttags import register
 from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.urls import reverse
@@ -13,23 +13,28 @@ from home.forms import UserForm, UserProfileForm, UploadCodesFileForm
 from datetime import datetime
 import random, string, secrets
 
+from django.contrib.auth.models import User
+from django.template.loader import render_to_string
+from django.db.models.query_utils import Q
+from django.utils.http import urlsafe_base64_encode
+from django.contrib.auth.tokens import default_token_generator
+from django.utils.encoding import force_bytes
 
 
 def home(request):
     ctx = {}
-    
-    ctx['magazines'] = Magazine.objects.all()
 
+    ctx['magazines'] = Magazine.objects.all()
 
     return render(request, 'home.html', context=ctx)
 
 
 def user_login(request):
-    #if HTTP POST pull relevant info
-    if request.method=='POST':
-        username=request.POST.get('username')
-        password=request.POST.get('password')
-        user=authenticate(username=username,password=password)
+    # if HTTP POST pull relevant info
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(username=username, password=password)
 
         if user:
             if user.is_active:
@@ -38,48 +43,48 @@ def user_login(request):
             else:
                 return HttpResponse("Your account is disabled")
         else:
-            print("Invalid login details: {0}, {1}.".format(username,password))
+            print("Invalid login details: {0}, {1}.".format(username, password))
             return HttpResponse("Invalid login details supplied.")
     else:
         return render(request, 'login.html', {})
 
 
 def user_signup(request):
-    registered=False
-    
-    #if HTTP POST then process form
-    if request.method=='POST':
-        user_form=UserForm(data=request.POST)
+    registered = False
 
-        profile_form=UserProfileForm(data=request.POST)
+    # if HTTP POST then process form
+    if request.method == 'POST':
+        user_form = UserForm(data=request.POST)
 
-        #if both forms are valid
+        profile_form = UserProfileForm(data=request.POST)
+
+        # if both forms are valid
         if user_form.is_valid() and profile_form.is_valid():
-            user=user_form.save(commit=False)
+            user = user_form.save(commit=False)
             user.set_password(user.password)
             user.save()
 
-            profile=profile_form.save(commit=False)
-            profile.user=user
+            profile = profile_form.save(commit=False)
+            profile.user = user
             profile.save()
 
-            registered=True
+            registered = True
         else:
             print(user_form.errors, profile_form.errors)
-            return render(request,'signup.html', {'form':user_form})
+            return render(request, 'signup.html', {'form': user_form})
     else:
-        user_form=UserForm()
-        profile_form=UserProfileForm()
+        user_form = UserForm()
+        profile_form = UserProfileForm()
 
-    ctx = {'user_form':user_form, 'profile_form':profile_form, 'registered':registered}
+    ctx = {'user_form': user_form, 'profile_form': profile_form, 'registered': registered}
 
     return render(request, 'signup.html', context=ctx)
-    
+
 
 @login_required
 def my_profile(request):
-    ctx= {}
-    password_form = PasswordChangeForm(request.user,prefix='password_form')
+    ctx = {}
+    password_form = PasswordChangeForm(request.user, prefix='password_form')
 
     if request.method == 'POST':
         action = request.POST['action']
@@ -97,16 +102,14 @@ def my_profile(request):
     return render(request, 'myprofile.html', ctx)
 
 
-
 def membership(request):
-    ctx={}
+    ctx = {}
     ctx['magazines'] = Magazine.objects.all()
 
     if request.user.is_authenticated:
         ctx['subscribed'] = UserProfile.objects.get(user=request.user).is_subscribed
- 
 
-    return render(request, 'membership.html', context=ctx)   
+    return render(request, 'membership.html', context=ctx)
 
 
 @login_required
@@ -116,10 +119,10 @@ def user_signout(request):
 
 
 def check_device(request):
-    #check visitor agent
-    user_agent=request.META['HTTP_USER_AGENT']
+    # check visitor agent
+    user_agent = request.META['HTTP_USER_AGENT']
 
-    keywords=['Mobile','Opera Mini','Android']
+    keywords = ['Mobile', 'Opera Mini', 'Android']
 
     if any(word in user_agent for word in keywords):
         return 'mobile'
@@ -135,16 +138,15 @@ def magazine(request, id):
     ctx['this'] = mag
     ctx['magazines'] = Magazine.objects.all()
     ctx['issues'] = MagazineIssue.objects.filter(magazine=mag)
-    
-    
-    if check_device(request)=='mobile':
-        #mobile
-        temp='magazinemobile.html'
-    else:
-        #desktop
-        temp='magazine.html'
 
-    return render(request, temp , context=ctx)
+    if check_device(request) == 'mobile':
+        # mobile
+        temp = 'magazinemobile.html'
+    else:
+        # desktop
+        temp = 'magazine.html'
+
+    return render(request, temp, context=ctx)
 
 
 def issue(request, id, slug):
@@ -163,11 +165,10 @@ def issue(request, id, slug):
         ctx['saved_issues'] = user.saved_issues.all()
         ctx['subscribed'] = UserProfile.objects.get(user=request.user).is_subscribed
 
-
-    if check_device(request)=='mobile':
-        temp='issuemobile.html'
+    if check_device(request) == 'mobile':
+        temp = 'issuemobile.html'
     else:
-        temp='issue.html'
+        temp = 'issue.html'
 
     return render(request, temp, context=ctx)
 
@@ -177,7 +178,7 @@ def mymags(request):
     ctx = {}
 
     user = UserProfile.objects.get(user=request.user)
-    issues = user.saved_issues.order_by("magazine")    
+    issues = user.saved_issues.order_by("magazine")
 
     ctx['magazines'] = Magazine.objects.all()
     ctx['savedissues'] = issues.all()
@@ -194,23 +195,23 @@ def save_issue(request):
         user = UserProfile.objects.get(user=request.user)
 
         for i in user.saved_issues.all():
-            #This removes attraction from the list if already present hence acting as a toggle
+            # This removes attraction from the list if already present hence acting as a toggle
             if i == issue:
                 user.saved_issues.remove(issue)
                 user.save()
-                return JsonResponse({'success':'true', 'value':0})
+                return JsonResponse({'success': 'true', 'value': 0})
 
         user.saved_issues.add(issue)
         user.save()
 
-        return JsonResponse({'success':'true', 'value':1})
+        return JsonResponse({'success': 'true', 'value': 1})
 
-    return JsonResponse({'success':'false'})
+    return JsonResponse({'success': 'false'})
 
-    
+
 def contact(request):
-    ctx={}
-    
+    ctx = {}
+
     ctx['magazines'] = Magazine.objects.all()
 
     return render(request, 'contact.html', context=ctx)
@@ -235,24 +236,23 @@ def codes(request):
 
     if request.method == 'POST':
         form = UploadCodesFileForm(request.POST)
-        
+
         if form.is_valid():
             time, codes = gen_codes(request.POST.get("amount"))
             ctx['codefile'] = time
-               
-            #Delete all existing codes from database for now... (this will need to change for release)
+
+            # Delete all existing codes from database for now... (this will need to change for release)
             DiscountCode.objects.all().delete()
 
-            #Save codes to DB
+            # Save codes to DB
             for code in codes:
                 code = code[:-1]
                 new_code = DiscountCode(code=code)
                 new_code.save()
 
-    ctx['range'] = range(5,501,5)
+    ctx['range'] = range(5, 501, 5)
     ctx['form'] = form
     ctx['errors'] = form.errors or None
-
 
     return render(request, 'codes.html', context=ctx)
 
@@ -265,11 +265,11 @@ def gen_codes(amount):
 
     with open(path, 'w+') as f:
         for i in range(int(amount)):
-            #---This line of code has come from https://www.javatpoint.com/python-program-to-generate-a-random-string
+            # ---This line of code has come from https://www.javatpoint.com/python-program-to-generate-a-random-string
             code = ''.join(secrets.choice(string.ascii_letters + string.digits) for x in range(code_length)) + ','
             f.write(code)
             codes.append(code)
-        
+
     return path, codes
 
 
@@ -279,12 +279,12 @@ def send_email(request):
 
     if user.is_subscribed == False:
         return HttpResponse("Sorry, you are not a subscriber!")
-    
+
     try:
         code = DiscountCode.objects.all()[0]
     except IndexError:
-        return HttpResponse("There are no available codes at the moment. If you think there should be, please get in touch.")
-
+        return HttpResponse(
+            "There are no available codes at the moment. If you think there should be, please get in touch.")
 
     text = """
     Hey """ + request.user.username + """,
@@ -300,16 +300,15 @@ def send_email(request):
 
     The Clò Team. """
 
-
     email = EmailMessage(
-        subject = 'Your unique Clò discount code',
-        body = text,
-        from_email = 'clo.magazines@gmail.com',
-        to = [request.user.email],
-        )
+        subject='Your unique Clò discount code',
+        body=text,
+        from_email='clo.magazines@gmail.com',
+        to=[request.user.email],
+    )
 
     try:
-       email.send()
+        email.send()
     except Exception as e:
         print(e)
         return HttpResponse("Oops! Something went wrong.")
@@ -317,3 +316,42 @@ def send_email(request):
     code.delete()
 
     return HttpResponseRedirect(reverse('home:membership'))
+
+
+def password_reset_request(request):
+    if request.method == "POST":
+        password_reset_form = PasswordResetForm(request.POST)
+        if password_reset_form.is_valid():
+            data = password_reset_form.cleaned_data['email']
+            associated_users = User.objects.filter(Q(email=data))
+            if associated_users.exists():
+                for user in associated_users:
+                    email_template_name = "resetpassword/password_reset_email.txt"
+                    c = {
+                        "email": user.email,
+                        'domain': '127.0.0.1:8000',
+                        'site_name': 'Website',
+                        "uid": urlsafe_base64_encode(force_bytes(user.pk)),
+                        "user": user,
+                        'token': default_token_generator.make_token(user),
+                        'protocol': 'http',
+                    }
+                    email_text = render_to_string(email_template_name, c)
+                    user_email = [user.email]
+
+                    to_be_sent_email = EmailMessage(
+                        subject='Clò Password Reset',
+                        body=email_text,
+                        from_email='clo.magazines@gmail.com',
+                        to=user_email
+                    )
+                    try:
+                        to_be_sent_email.send()
+                    except Exception as e:
+                        print(e)
+                        return HttpResponse("Oops! Something went wrong.")
+                    return redirect("password_reset/done/")
+
+    password_reset_form = PasswordResetForm()
+    return render(request=request, template_name="resetpassword/password_reset.html",
+                  context={"password_reset_form": password_reset_form})

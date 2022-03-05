@@ -19,12 +19,19 @@ class UserForm(forms.ModelForm):
 		cleaned_data=super(UserForm, self).clean()
 		password=self.cleaned_data.get("password")
 		confirm_password=self.cleaned_data.get("confirm_password")
-				
 
 		if password!=confirm_password:
 			self.add_error("confirm_password","Passwords do not match.")
 			
 		return cleaned_data
+
+	#def clean_email(self):
+#		cleaned_data = super(UserForm, self).clean()
+#		email = self.cleaned_data.get("email")
+#		if User.objects.filter(email=email).exists():
+#			self.add_error("email", "Account with this email already exists")
+#			#raise ValidationError("Email exists")
+#		return cleaned_data
 	
 	
 class UserProfileForm(forms.ModelForm):
