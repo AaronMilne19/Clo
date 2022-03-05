@@ -1,0 +1,35 @@
+
+<br>
+<div id="ask_to_login_after_membership_clicked">
+    <b>Please Log in or Register first</b>
+</div>
+
+
+<div class="basic_form">
+
+			<form id="login_form" method="post" action="{%url 'home:login' %}">
+				{% csrf_token %}
+
+
+            <input type="username" name="username" placeholder="Username" required /><br></br>
+            <input type="password" name="password" placeholder="Password" required/><br></br>
+
+             <div class="sml-txt">
+            <input type="submit" value="Enter"/><br></br>
+            </div>
+
+
+			</form>
+
+			<div class="info sml-txt">
+
+			<p>Don't have an account?</p>
+			<a class="basic_link" href="{% url 'home:signup' %}">Sign Up</a>
+
+			</div>
+
+</div>
+
+
+
+

@@ -56,7 +56,7 @@ def home(request):
 
 
 
-def user_login(request):
+ef user_login(request):
     # if HTTP POST pull relevant info
     if request.method == 'POST':
         username = request.POST.get('username')
