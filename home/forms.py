@@ -71,5 +71,20 @@ class EmailChangeForm(forms.Form):
         return self.user
 
 
-class UploadCodesFileForm(forms.Form):
+class CodesFileForm(forms.Form):
 	amount = forms.IntegerField(required=True, min_value=1, max_value=500, widget=forms.widgets.NumberInput)
+
+class UploadCodesFileForm(forms.Form):
+    file = forms.FileField(required=True)
+
+    def clean(self):
+        cleaned_data = super(UploadCodesFileForm, self).clean()
+        file = cleaned_data.get('file')
+        
+        if file:
+            filename = file.name
+            if filename.endswith('.csv') == False:
+                print('File is not a csv file as expected')
+                raise forms.ValidationError("File selected is not a csv. Please ensure the correct file is selected")
+
+        return file

@@ -76,7 +76,7 @@
                 <div class="issue-buy">
                     <div>
                         {% if subscribed %}
-                            <a href="{{this.link_to_publishers_site}}" onclick="alert('Please go to the Membership area to recieve your subscriber code if you have not already')" type="button" class="btn btn-primary btn-sm pay">Subscriber Price &#163 {{thisIssue.discounted_price}}</a>
+                            <a href="{{this.link_to_publishers_site}}" onclick="alert('Please remember to use your subscriber discount code at the checkout!')" type="button" class="btn btn-primary btn-sm pay">Subscriber Price &#163 {{thisIssue.discounted_price}}</a>
                             <a href="{{this.link_to_publishers_site}}" type="button" class="btn btn-outline-secondary btn-sm pay disabled"><strike>Full Price &#163 {{thisIssue.price}}</strike></a>
                         {% else %}
                             <a href="{% url 'home:membership' %}" type="button" class="btn btn-primary btn-sm pay">Subscriber Price &#163 {{thisIssue.discounted_price}}</a>
