@@ -83,8 +83,9 @@ def user_signup(request):
     # if HTTP POST then process form
     if request.method == 'POST':
         user_form = UserForm(data=request.POST)
-
         profile_form = UserProfileForm(data=request.POST)
+
+        email = request.POST['email']
 
         # if both forms are valid
         if user_form.is_valid() and profile_form.is_valid():
