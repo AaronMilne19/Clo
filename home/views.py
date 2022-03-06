@@ -86,6 +86,7 @@ def user_signup(request):
         profile_form = UserProfileForm(data=request.POST)
 
         email = request.POST['email']
+        print(email)
 
         # if both forms are valid
         if user_form.is_valid() and profile_form.is_valid():
