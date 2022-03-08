@@ -51,6 +51,7 @@ class UserProfile(models.Model):
     saved_issues = models.ManyToManyField(MagazineIssue, related_name="saves")
     is_subscribed = models.BooleanField(default=False)
     has_code = models.BooleanField(default=False)
+    email_confirmed = models.BooleanField(default=False)
 
     def __str__(self):
         return self.user.username

@@ -17,10 +17,12 @@ from django.template.loader import render_to_string
 from django.db.models.query_utils import Q
 from django.utils.http import urlsafe_base64_encode
 from django.contrib.auth.tokens import default_token_generator
-from django.utils.encoding import force_bytes
+from django.utils.encoding import force_bytes, force_text
 from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.sites.shortcuts import get_current_site
+from home.tokens import account_activation_token
 
 
 def is_mobile_device(request):
@@ -38,8 +40,6 @@ def is_mobile_device(request):
         return False
 
 
-
-
 def home(request):
     ctx = {}
 
@@ -53,7 +53,6 @@ def home(request):
         temp = 'home.html'
 
     return render(request, temp, context=ctx)
-
 
 
 def user_login(request):
@@ -73,11 +72,7 @@ def user_login(request):
             print("Invalid login details: {0}, {1}.".format(username, password))
             return HttpResponse("Invalid login details supplied.")
 
-
-
     return render(request, "login.html", {})
-
-
 
 
 def user_signup(request):
@@ -99,6 +94,7 @@ def user_signup(request):
         if user_form.is_valid() and profile_form.is_valid():
             user = user_form.save(commit=False)
             user.set_password(user.password)
+            user.email_confirmed = False
             user.save()
 
             profile = profile_form.save(commit=False)
@@ -106,6 +102,8 @@ def user_signup(request):
             profile.save()
 
             registered = True
+            send_confirmation_email(user, request)
+
         else:
             print(user_form.errors, profile_form.errors)
             return render(request, temp, {'form': user_form})
@@ -115,15 +113,13 @@ def user_signup(request):
 
     ctx = {'user_form': user_form, 'profile_form': profile_form, 'registered': registered}
 
-
-
     return render(request, temp, context=ctx)
 
 
 @login_required
 def my_profile(request):
-    ctx= {}
-    password_form = PasswordChangeForm(request.user,prefix='password_form')
+    ctx = {}
+    password_form = PasswordChangeForm(request.user, prefix='password_form')
     user = UserProfile.objects.get(user=request.user)
     issues = user.saved_issues.order_by("magazine")
 
@@ -140,7 +136,7 @@ def my_profile(request):
                 update_session_auth_hash(request, user)
                 messages.success(request, 'Password updated')
                 return redirect(reverse('home:myprofile'))
-                
+
     ctx['password_form'] = password_form
 
     if is_mobile_device(request):
@@ -151,7 +147,6 @@ def my_profile(request):
         temp = 'myprofile.html'
 
     return render(request, temp, ctx)
-
 
 
 def membership(request):
@@ -170,7 +165,6 @@ def user_signout(request):
     return redirect(reverse('home:home'))
 
 
-
 def magazine(request, id):
     ctx = {}
 
@@ -186,7 +180,6 @@ def magazine(request, id):
         temp = 'magazine.html'
 
     return render(request, temp, context=ctx)
-
 
 
 def issue(request, id, slug):
@@ -211,8 +204,6 @@ def issue(request, id, slug):
         temp = 'issue.html'
 
     return render(request, temp, context=ctx)
-
-
 
 
 @login_required
@@ -286,15 +277,15 @@ def codes(request):
                 file = request.FILES['file']
                 codes = file.read().decode('utf-8').split(',')[:-1]
 
-                #delete existing codes
+                # delete existing codes
                 DiscountCode.objects.all().delete()
 
-                #reset users has_code field meaning they can recieve new email
+                # reset users has_code field meaning they can recieve new email
                 for user in UserProfile.objects.all():
                     user.has_code = False
                     user.save()
 
-                #Save codes to DB
+                # Save codes to DB
                 for code in codes:
                     new_code = DiscountCode(code=code)
                     new_code.save()
@@ -302,13 +293,12 @@ def codes(request):
                 ctx['done'] = "Success!"
         else:
             form = CodesFileForm(request.POST)
-        
+
             if form.is_valid():
                 time, codes = gen_codes(request.POST.get("amount"))
                 ctx['codefile'] = time
-               
 
-    ctx['range'] = range(5,501,5)
+    ctx['range'] = range(5, 501, 5)
     ctx['form'] = form
     ctx['form2'] = form2
     ctx['errors'] = form.errors or None
@@ -325,13 +315,12 @@ def gen_codes(amount):
 
     with open(path, 'w+') as f:
         for i in range(int(amount)):
-            #---This line of code has come from https://www.javatpoint.com/python-program-to-generate-a-random-string
+            # ---This line of code has come from https://www.javatpoint.com/python-program-to-generate-a-random-string
             code = ''.join(secrets.choice(string.ascii_letters + string.digits) for x in range(code_length)) + ','
             f.write(code)
             codes.append(code)
-        
-    return path, codes
 
+    return path, codes
 
 
 @login_required
@@ -342,12 +331,12 @@ def send_code(request):
         return HttpResponse("Sorry, you are not a subscriber!")
     elif user.has_code:
         return HttpResponse("You have already recieved your discount code for this month. Please check your inbox!")
-    
+
     try:
         code = DiscountCode.objects.all()[0]
     except IndexError:
-        return HttpResponse("There are no available codes at the moment. If you think there should be, please get in touch.")
-
+        return HttpResponse(
+            "There are no available codes at the moment. If you think there should be, please get in touch.")
 
     text = """
 Hey """ + request.user.username + """,
@@ -363,16 +352,15 @@ Please ensure to keep this email or your code safe as it cannot be resent.
 
 The Clò Team. """
 
-
     email = EmailMessage(
-        subject = 'Your unique Clò discount code',
-        body = text,
-        from_email = 'clo.magazines@gmail.com',
-        to = [request.user.email],
-        )
+        subject='Your unique Clò discount code',
+        body=text,
+        from_email='clo.magazines@gmail.com',
+        to=[request.user.email],
+    )
 
     try:
-       email.send()
+        email.send()
     except Exception as e:
         print(e)
         return HttpResponse("Oops! Something went wrong.")
@@ -383,7 +371,6 @@ The Clò Team. """
     user.save()
 
     return HttpResponseRedirect(reverse('home:membership'))
-
 
 
 def password_reset_request(request):
@@ -421,6 +408,56 @@ def password_reset_request(request):
                     return redirect("password_reset/done/")
 
     password_reset_form = PasswordResetForm()
-    
+
     return render(request=request, template_name="resetpassword/password_reset.html",
                   context={"password_reset_form": password_reset_form})
+
+
+def send_confirmation_email(user, request):
+    site = get_current_site(request)
+    email_template_name = "confirm_email.html"
+    c = {
+        "user": user,
+        'domain': site,
+        "uid": urlsafe_base64_encode(force_bytes(user.pk)),
+        'token': account_activation_token.make_token(user),
+        'protocol': 'http',
+    }
+    email_text = render_to_string(email_template_name, c)
+    user_email = [user.email]
+
+    to_be_sent_email = EmailMessage(
+        subject='Confirm your Clò email',
+        body=email_text,
+        from_email='clo.magazines@gmail.com',
+        to=user_email
+    )
+    try:
+        to_be_sent_email.send()
+    except Exception as e:
+        print(e)
+        return HttpResponse("Oops! Something went wrong.")
+    return redirect("home:login")
+
+
+def confirm_email(request, uidb64, token):
+    try:
+        uid = force_text(urlsafe_base64_encode(uidb64))
+        user = User.objects.get(pk=uid)
+
+    except Exception as e:
+        user = None
+
+    if user and account_activation_token.check_token(user, token):
+        user.email_confirmed = True
+        user.Save()
+        messages.add_message(request, messages.SUCCESS, 'Thanks for confirming your email!')
+        return redirect(reverse('home:login'))
+    return HttpResponse("Failed")
+
+
+
+
+
+
+
