@@ -10,6 +10,7 @@ from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.urls import reverse
 from home.models import Magazine, UserProfile, Hashtag, MagazineIssue, DiscountCode
 from home.forms import UserForm, UserProfileForm, UploadCodesFileForm, CodesFileForm
+from home.forms import UserForm, UserProfileForm, UploadCodesFileForm, 
 from datetime import datetime
 import random, string, secrets
 from django.contrib.auth.models import User
