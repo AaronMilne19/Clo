@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" type="text/css" href="/static/styles/home.css">
+{% endblock %}
+
+{% block title %}
+Email Verification Failed
+{% endblock %}
+
+{% block navbar %}
+{% include "navbar.html" %}
+{% endblock %}
+
+{% block content %}
+
+
+<!--Reset Password-->
+	<div class="container p-5">
+  	 	<h2 class="font-weight-bold mt-3">Email Not Verified</h2>
+		<hr>
+        <p>There was an error verifying your email, please request a new link from the profile page</p>
+        <a href="{% url 'home:login' %}">Login</a>
+
+  	</div>
+
+{% endblock %}

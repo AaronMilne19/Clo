@@ -94,7 +94,7 @@ def user_signup(request):
         if user_form.is_valid() and profile_form.is_valid():
             user = user_form.save(commit=False)
             user.set_password(user.password)
-            #user.email_confirmed = False
+            user.email_confirmed = False
             user.save()
 
             profile = profile_form.save(commit=False)
@@ -103,6 +103,8 @@ def user_signup(request):
 
             registered = True
             send_confirmation_email(user, request)
+            login(request, user)
+            return redirect(reverse('home:home'))
 
         else:
             print(user_form.errors, profile_form.errors)
@@ -452,9 +454,9 @@ def confirm_email(request, uidb64, token):
         user.email_confirmed = True
         user.save()
         login(request, user)
-        return HttpResponse('Thank you for your email confirmation. Now you can login your account.')
+        return render(request, 'emailverifysuccess.html')
     else:
-        return HttpResponse("Failed")
+        return render(request, 'emailverifyfail.html')
 
 
 
