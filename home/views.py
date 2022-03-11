@@ -15,7 +15,7 @@ import random, string, secrets
 from django.contrib.auth.models import User
 from django.template.loader import render_to_string
 from django.db.models.query_utils import Q
-from django.utils.http import urlsafe_base64_encode
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.contrib.auth.tokens import default_token_generator
 from django.utils.encoding import force_bytes, force_text
 from django.contrib import messages
@@ -94,7 +94,7 @@ def user_signup(request):
         if user_form.is_valid() and profile_form.is_valid():
             user = user_form.save(commit=False)
             user.set_password(user.password)
-            user.email_confirmed = False
+            #user.email_confirmed = False
             user.save()
 
             profile = profile_form.save(commit=False)
@@ -442,7 +442,7 @@ def send_confirmation_email(user, request):
 
 def confirm_email(request, uidb64, token):
     try:
-        uid = force_text(urlsafe_base64_encode(uidb64))
+        uid = force_text(urlsafe_base64_decode(uidb64))
         user = User.objects.get(pk=uid)
 
     except Exception as e:
@@ -450,10 +450,12 @@ def confirm_email(request, uidb64, token):
 
     if user and account_activation_token.check_token(user, token):
         user.email_confirmed = True
-        user.Save()
-        messages.add_message(request, messages.SUCCESS, 'Thanks for confirming your email!')
-        return redirect(reverse('home:login'))
-    return HttpResponse("Failed")
+        user.save()
+        login(request, user)
+        return HttpResponse('Thank you for your email confirmation. Now you can login your account.')
+    else:
+        return HttpResponse("Failed")
+
 
 
 
