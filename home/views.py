@@ -106,8 +106,6 @@ def user_signup(request):
 
     ctx = {'user_form': user_form, 'profile_form': profile_form, 'registered': registered}
 
-
-
     return render(request, temp, context=ctx)
 
 

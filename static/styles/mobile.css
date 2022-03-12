@@ -177,6 +177,9 @@ input[type=submit]{
 	position:center;
 	min-width: max-content;
 }
+.all_mags{
+	text-align: center;
+}
 
 
 

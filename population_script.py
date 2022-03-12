@@ -10,9 +10,10 @@ from home.models import Magazine, MagazineIssue,Hashtag
 from django.core.files import File
 
 
-def add_magazine(mag_title, id, description_short, description_long, link_to_publishers_site):
-    m = Magazine.objects.get_or_create(title = mag_title, description_long = description_long, description_short= description_short,
+def add_magazine(mag_cover, mag_title, id, description_short, description_long, link_to_publishers_site):
+    m = Magazine.objects.get_or_create(mag_cover=mag_cover, title = mag_title, description_long = description_long, description_short= description_short,
                                          link_to_publishers_site = link_to_publishers_site, id=id)[0]
+    m.mag_cover.save(mag_cover, File(open("static/magazine_pictures/" + mag_cover, "rb")))
     m.save()
     return m
 
@@ -24,8 +25,6 @@ def add_issue(magazine, date, cover, title, description, price, discounted_price
 
 
     i.save()
-    image = Image.open(i.cover)
-    image.show()
     return i
 
 
@@ -114,7 +113,7 @@ def populate():
                          'ex ea commodo consequat. Duis aute irure dolor in reprehenderit '''
                     }]
 
-    mags = {'MagazineTitle1' : {'issues': mag1_issues, 'id' : 1, 'description_short': 'Lorem ipsum dolor sit amet, consectetur adipiscing' \
+    mags = {'MagazineTitle1' : {'mag_cover': 'cover11.png', 'issues': mag1_issues, 'id' : 1, 'description_short': 'Lorem ipsum dolor sit amet, consectetur adipiscing' \
                              ' elit, sed do eiusmod tempor incididunt ut labore et ' \
                              'dolore magna aliqua. Ut enim ad minim veniam, quis' \
                              ' nostrud exercitation ullamco laboris nisi ut aliquip ' \
@@ -142,7 +141,7 @@ def populate():
 
                                'link_to_publishers_site' : 'www.mag1.com',},
 
-            'MagazineTitle2': {'issues': mag2_issues, 'id': 2,
+            'MagazineTitle2': {'mag_cover': 'cover21.png', 'issues': mag2_issues, 'id': 2,
                                'description_short': 'Lorem ipsum dolor sit amet, consectetur adipiscing' \
                                 ' elit, sed do eiusmod tempor incididunt ut labore et ' \
                                 'dolore magna aliqua. Ut enim ad minim veniam, quis' \
@@ -171,7 +170,7 @@ def populate():
 
                                'link_to_publishers_site': 'www.mag2.com', },
 
-            'MagazineTitle3': {'issues': mag3_issues, 'id': 3,
+            'MagazineTitle3': {'mag_cover': 'cover22.png', 'issues': mag3_issues, 'id': 3,
                                'description_short': 'Lorem ipsum dolor sit amet, consectetur adipiscing' \
                                                     ' elit, sed do eiusmod tempor incididunt ut labore et ' \
                                                     'dolore magna aliqua. Ut enim ad minim veniam, quis' \
@@ -200,7 +199,7 @@ def populate():
 
                                'link_to_publishers_site': 'www.mag3.com', },
 
-            'MagazineTitle4': {'issues': mag4_issues, 'id': 4,
+            'MagazineTitle4': {'mag_cover': 'cover12.png', 'issues': mag4_issues, 'id': 4,
                                'description_short': 'Lorem ipsum dolor sit amet, consectetur adipiscing' \
                                                     ' elit, sed do eiusmod tempor incididunt ut labore et ' \
                                                     'dolore magna aliqua. Ut enim ad minim veniam, quis' \
@@ -236,7 +235,7 @@ def populate():
 
     for mag, mag_data in mags.items():
         m = add_magazine(mag_title=mag, id=mag_data['id'], description_short=mag_data['description_short'], description_long=mag_data['description_long'],
-                         link_to_publishers_site=mag_data['link_to_publishers_site'])
+                         link_to_publishers_site=mag_data['link_to_publishers_site'], mag_cover=mag_data["mag_cover"] )
         for i in mag_data['issues']:
             add_issue(magazine=m, cover=i['cover'], date=i['date'], title=i['title'], description=i['issue_description'],
                       price=i['price'], discounted_price=i['discounted_price'])
