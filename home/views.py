@@ -127,6 +127,7 @@ def my_profile(request):
 
     ctx['magazines'] = Magazine.objects.all()
     ctx['savedissues'] = issues.all()
+    ctx['user'] = user
 
     if request.method == 'POST':
         action = request.POST['action']
@@ -451,8 +452,9 @@ def confirm_email(request, uidb64, token):
         user = None
 
     if user and account_activation_token.check_token(user, token):
-        user.email_confirmed = True
-        user.save()
+        user2 = UserProfile.objects.get(user=user)
+        user2.email_confirmed = True
+        user2.save()
         login(request, user)
         return render(request, 'emailverifysuccess.html')
     else:

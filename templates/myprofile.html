@@ -27,10 +27,10 @@ My Profile
                 <!--<form method="post">-->
                     <div class="container">
                         <label>Email Address: {{ request.user.email }}</label>
-                        {% if request.user.email_confirmed == true %}
-                        <div style= "color:green" class="xsml-txt">Verified</div>
-                        {% else %}
+                        {% if not user.email_confirmed %}
                         <div style= "color:red" class="xsml-txt">Not Verified</div>
+                        {% else %}
+                        <div style= "color:green" class="xsml-txt">Verified</div>
                         {% endif %}
 
                         <form method="post">
