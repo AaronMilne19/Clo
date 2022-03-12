@@ -9,7 +9,7 @@ from django.template.defaulttags import register
 from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.urls import reverse
 from home.models import Magazine, UserProfile, Hashtag, MagazineIssue, DiscountCode
-from home.forms import UserForm, UserProfileForm, UploadCodesFileForm, EmailChangeForm
+from home.forms import UserForm, UserProfileForm, UploadCodesFileForm, EmailChangeForm, CodesFileForm
 from datetime import datetime
 import random, string, secrets
 
@@ -83,7 +83,6 @@ def user_signup(request):
     # if HTTP POST then process form
     if request.method == 'POST':
         user_form = UserForm(data=request.POST)
-
         profile_form = UserProfileForm(data=request.POST)
 
         # if both forms are valid
@@ -276,29 +275,46 @@ def codes(request):
     ctx = {}
     ctx['magazines'] = Magazine.objects.all()
     ctx['codefile'] = None
+    ctx['done'] = None
 
-    form = UploadCodesFileForm()
+    form = CodesFileForm()
+    form2 = UploadCodesFileForm()
 
     if request.method == 'POST':
-        form = UploadCodesFileForm(request.POST)
-        
-        if form.is_valid():
-            time, codes = gen_codes(request.POST.get("amount"))
-            ctx['codefile'] = time
-               
-            #Delete all existing codes from database for now... (this will need to change for release)
-            DiscountCode.objects.all().delete()
+        if request.FILES:
+            form2 = UploadCodesFileForm(request.POST, request.FILES)
 
-            #Save codes to DB
-            for code in codes:
-                code = code[:-1]
-                new_code = DiscountCode(code=code)
-                new_code.save()
+            if form2.is_valid():
+                file = request.FILES['file']
+                codes = file.read().decode('utf-8').split(',')[:-1]
+
+                #delete existing codes
+                DiscountCode.objects.all().delete()
+
+                #reset users has_code field meaning they can recieve new email
+                for user in UserProfile.objects.all():
+                    user.has_code = False
+                    user.save()
+
+                #Save codes to DB
+                for code in codes:
+                    new_code = DiscountCode(code=code)
+                    new_code.save()
+
+                ctx['done'] = "Success!"
+        else:
+            form = CodesFileForm(request.POST)
+        
+            if form.is_valid():
+                time, codes = gen_codes(request.POST.get("amount"))
+                ctx['codefile'] = time
+               
 
     ctx['range'] = range(5,501,5)
     ctx['form'] = form
+    ctx['form2'] = form2
     ctx['errors'] = form.errors or None
-
+    ctx['errors2'] = form2.errors or None
 
     return render(request, 'codes.html', context=ctx)
 
@@ -320,11 +336,13 @@ def gen_codes(amount):
 
 
 @login_required
-def send_email(request):
+def send_code(request):
     user = UserProfile.objects.get(user=request.user)
 
     if user.is_subscribed == False:
         return HttpResponse("Sorry, you are not a subscriber!")
+    elif user.has_code:
+        return HttpResponse("You have already recieved your discount code for this month. Please check your inbox!")
     
     try:
         code = DiscountCode.objects.all()[0]
@@ -333,18 +351,18 @@ def send_email(request):
 
 
     text = """
-    Hey """ + request.user.username + """,
+Hey """ + request.user.username + """,
 
 
-    Thank you so much for making the decision to subscribe to Clò this month. Here is your unique discount code which 
-    can be used once across any of the magazines on our site marked with a 'subscriber price'.
+Thank you so much for making the decision to subscribe to Clò this month. Here is your unique discount code which 
+can be used once across any of the magazines on our site marked with a 'subscriber price'.
 
-    Please ensure to keep this email or your code safe as it cannot be resent.
+Please ensure to keep this email or your code safe as it cannot be resent.
 
     """ + code.code + """
 
 
-    The Clò Team. """
+The Clò Team. """
 
 
     email = EmailMessage(
@@ -361,5 +379,8 @@ def send_email(request):
         return HttpResponse("Oops! Something went wrong.")
 
     code.delete()
+
+    user.has_code = True
+    user.save()
 
     return HttpResponseRedirect(reverse('home:membership'))

@@ -166,7 +166,7 @@
 
 .favourite {
     height: 30px !important;
-    width: 82% !important;
+    width: 180px !important;
     transition: width ease 0.1s;
 }
 
@@ -178,7 +178,7 @@
 .selected {
     background-color: darkgray !important;
     color: #E8E5E2;
-    width: 100% !important;
+    width: 200px !important;
     transition: width ease 0.1s;
 }
 

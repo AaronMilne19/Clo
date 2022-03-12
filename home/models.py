@@ -49,6 +49,7 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     saved_issues = models.ManyToManyField(MagazineIssue, related_name="saves")
     is_subscribed = models.BooleanField(default=False)
+    has_code = models.BooleanField(default=False)
 
     def __str__(self):
         return self.user.username
