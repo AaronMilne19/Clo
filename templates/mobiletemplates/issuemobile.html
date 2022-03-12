@@ -24,7 +24,7 @@
         {% if user.is_authenticated %}
         <form class="save_issue" action="" method="POST" id="{{thisIssue.slug}}">
             {% csrf_token %}
-            <button type="button" class="favourite" value="{{thisIssue.slug}}"  onclick="saveIssue()">
+            <button type="button" class="favourite_mobile favourite" value="{{thisIssue.slug}}"  onclick="saveIssue()">
                 Add to My Magazines
             </button>
         </form>
