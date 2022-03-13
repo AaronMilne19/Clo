@@ -11,7 +11,7 @@
      {% for magazine in magazines %}
          <div class="mag_list_element_wrap">
 
-         <a class="magazine_link" href="{% url 'home:magazine' magazine.id %}">
+         <a class="magazine_or_issue_list_link" href="{% url 'home:magazine' magazine.id %}">
 
             <div class="mag_list_element">
                 <img class="mag_list_cover_image" src="{{ magazine.mag_cover.url }}" />

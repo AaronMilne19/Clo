@@ -308,7 +308,7 @@ input[type=submit]{
 	color: grey;
 }
 
-.magazine_link{
+.magazine_or_issue_list_link{
 	text-decoration: none;
 	color: unset;
 }

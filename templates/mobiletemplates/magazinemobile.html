@@ -73,13 +73,14 @@
         <div id="hidden_panel_issues">
 
             {% for issue in issues %}
+                <a class="magazine_or_issue_list_link" href="{% url 'home:issue' this.id issue.slug %} ">
                 <div class="mag_list_element">
                     <img class="mag_list_cover_image" src="{{ issue.cover.url }}" />
 
                     <div class="mag_list_text">
-                        <a href="{% url 'home:issue' this.id issue.slug %}" class="mag_list_title basic_link">
+                        
                             {{ issue.title }}
-                        </a>
+
 
                         <div class="issue_date">Published: {{ issue.date|date:"j M y" }}</div>
                     </div>
@@ -87,6 +88,7 @@
 
 
                 </div>
+                 </a>
                 <div class="mag_list_line"></div>
             {% endfor %}
 
