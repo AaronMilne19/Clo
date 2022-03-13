@@ -392,6 +392,10 @@ input[type=submit]{
 
 /*All magazines list*/
 
+.mag_list_element_wrap{
+	display: block;
+}
+
 .mag_list_element{
 	width: 100%;
 	display: flex;
@@ -409,9 +413,6 @@ input[type=submit]{
 
 }
 
-#mag_list_title{
-	color: black;
-}
 
 .mag_list_line{
 	border-top: grey;
@@ -428,6 +429,7 @@ input[type=submit]{
 	border-radius: 0.2em !important;
 	background-color: lightgrey;
 	margin-bottom: 1em;
+	margin-top: 1em;
 
 }
 /*Issue*/

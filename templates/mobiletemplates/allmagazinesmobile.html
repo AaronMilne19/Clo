@@ -1,5 +1,7 @@
 <!DOCTYPE html>
 
+{% load static %}
+
 <div id="allmagazineswrapper">
 
 
@@ -7,6 +9,7 @@
           <input type="text" id="searchBar" onkeyup="searchBarFunction()" placeholder="search magazines or topics">
       </div>
      {% for magazine in magazines %}
+         <div class="mag_list_element_wrap">
 
          <a class="magazine_link" href="{% url 'home:magazine' magazine.id %}">
 
@@ -16,7 +19,7 @@
 
                 <div class="mag_list_text all_mags">
 
-                        {{ magazine.title }}
+                       <span> {{ magazine.title }} </span>
 
 
                     <div class="hashtags">
@@ -31,6 +34,9 @@
             </div>
           </a>
             <div class="mag_list_line"></div>
+         </div>
     {% endfor %}
 
 </div>
+
+<script src="{% static 'scripts/searchbarmobile.js' %}"></script>
