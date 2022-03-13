@@ -13,6 +13,7 @@ all_issues.addEventListener("click", function() {
     }
     else {
         hidden_panel_issues.style.maxHeight = hidden_panel_issues.scrollHeight + 'px';
+        hidden_panel_issues.scrollIntoView(true); //doesn't do anything - I'm not sure why
         close_icon_issues.style.opacity = "100%";
         hidden_panel_open = true;
     }

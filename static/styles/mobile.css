@@ -280,6 +280,7 @@ input[type=submit]{
 	font-weight: 500;
 	width: 100%;
 	padding-left: 1em;
+	padding-right: 1em;
 	padding-bottom: 0.5em;
 	text-align: left;
 	max-height: max-content;
@@ -454,7 +455,7 @@ input[type=submit]{
 	margin-left: auto;
 }
 
-.issue_title_block, .favourite_mobile{
+.issue_title_block .favourite_mobile{
 	padding: 0.25em;
 	background-color: #E8E5E2;
 
