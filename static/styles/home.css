@@ -253,6 +253,7 @@ body{
 
 #searchBarDesktop{
     text-align: center;
+    font-size: 0.6em;
 	border: none;
 	border-radius: 0.2em !important;
 	background-color: lightgrey;
