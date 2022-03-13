@@ -250,3 +250,10 @@ body{
     }
 
 }
+
+#searchBarDesktop{
+    text-align: center;
+	border: none;
+	border-radius: 0.2em !important;
+	background-color: lightgrey;
+}
