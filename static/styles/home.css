@@ -257,4 +257,9 @@ body{
 	border: none;
 	border-radius: 0.2em !important;
 	background-color: lightgrey;
+    width: 100% !important;
+}
+
+#searchBarDesktopDiv{
+    width: 100% !important;
 }
