@@ -308,6 +308,11 @@ input[type=submit]{
 	color: grey;
 }
 
+.magazine_link{
+	text-decoration: none;
+	color: unset;
+}
+
 .mag_and_issue_description{
 	text-align: left;
 	margin-top: 0.5em;
@@ -401,6 +406,11 @@ input[type=submit]{
 	margin-top: 1em;
 	margin-right: 1em;
 	width: 100%;
+
+}
+
+#mag_list_title{
+	color: black;
 }
 
 .mag_list_line{
@@ -417,6 +427,7 @@ input[type=submit]{
 	border: none;
 	border-radius: 0.2em !important;
 	background-color: lightgrey;
+	margin-bottom: 1em;
 
 }
 /*Issue*/

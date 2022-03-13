@@ -7,14 +7,17 @@
           <input type="text" id="searchBar" onkeyup="searchBarFunction()" placeholder="search magazines or topics">
       </div>
      {% for magazine in magazines %}
+
+         <a class="magazine_link" href="{% url 'home:magazine' magazine.id %}">
+
             <div class="mag_list_element">
                 <img class="mag_list_cover_image" src="{{ magazine.mag_cover.url }}" />
 
 
                 <div class="mag_list_text all_mags">
-                    <a href="{% url 'home:magazine' magazine.id %}" class="mag_list_title basic_link">
+
                         {{ magazine.title }}
-                    </a>
+
 
                     <div class="hashtags">
                         {% for hashtag in magazine.hashtag_set.all %}
@@ -26,6 +29,7 @@
 
 
             </div>
+          </a>
             <div class="mag_list_line"></div>
     {% endfor %}
 
