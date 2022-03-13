@@ -30,15 +30,15 @@ Membership
         <div class="col-sm-4 pt-3 px-4 pe-4 border-end border-dark border-1 d-flex" id="mainbox">
         	<div style="margin-top:20px; margin-left:10px; margin-right:10px; margin-bottom:10px;" class="info-box">
 				<div class="pt-3  d-flex align-items-end">
-				{% if subscribed %}
+				{% if user.is_authenticated %}
                     <div>Your Plan:</div>
                 {% elif subscribed == False %}
                     <div>Upgrade:</div>
 				{% else %}
-					<div>Create a free account</div>
+					<div>Get a free account</div>
                 {% endif %}
                 </div>
-                
+                	
 	  			<div class="container sml-txt mt-3 d-inline">
 	  				<p>Lorem ipsum dolor sit amet, consectetuer adipscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quiz nostrud exerci tation.</p>
 	  				<ul>
@@ -49,12 +49,29 @@ Membership
 	  				</ul>
 	  				<br />
 	  				{% if user.is_authenticated %}
-	  				<center>
-	  					<input class="button" style="text-align:center; margin:0 auto; background-color:#2F52E0; color:white;border-radius: 5px !important; width: 30%;" type="submit" name="Save" value="Cancel" />
-	  				</center>
+	  					{% if subscribed == False %}
+	  					{% if codes != 0 %}
+	  					
+	  					<center>
+	  					
+	  					<input class="button" style="text-align:center; margin:0 auto; background-color:#2F52E0; color:white;border-radius: 5px !important; width: 30%;" type="submit" name="Save" value="Purchase" />
+	  					<br></br>
+	  					{{ form.render }}
+	  					</center>
+	  					{% else %}
+	  					<center>
+							<p> Try again next month. </p>
+						</center>
+						{% endif %}
+						
+	  					{% endif %}
+	  						  				
+	  				
 	  				{% else %}
 	  					<center>
-	  					<input class="button" style="text-align:center; margin:0 auto; background-color:#2F52E0; color:white;border-radius: 5px !important; width: 30%;" type="submit" name="Save" value="Purchase" />
+	  					<a href="{% url 'home:signup' %}" class="btn btn-primary"> 
+	  					Sign up
+	  					</a>
 	  					</center>
 	  				{% endif %}
 	  	
@@ -63,14 +80,25 @@ Membership
 		</div>
 
 		{% if subscribed %}
+		
 		<div class="col-sm-4 email-box" id="mainbox">
 			<div>
-				<a href="{% url 'home:sendcode' %}" class="btn btn-primary">
+				<a href="{% url 'home:email' %}" class="btn btn-primary">
 					Send your unique code to your email. 
 				</a>
+				
 			</div>
 		</div>
+		{% else %}
+		<div class="col-sm-4 pt-3 px-4 pe-4 border-end border-dark border-1 d-flex" id="mainbox">
+		<div style="margin-top:400px; margin-left:10px; margin-right:10px; margin-bottom:10px;" class="info-box">
+		<center> 
+		<h3> {{ countdown }}</h3>
+		</center>
+		</div>
+		</div>
 		{% endif %}
+		
     </div>
 </div>
 

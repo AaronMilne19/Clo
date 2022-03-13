@@ -19,4 +19,6 @@ urlpatterns = [
     path('staff/', views.staff, name="staff"),
     path('codes/', views.codes, name='codes'),
     path('email/', views.send_code, name="sendcode"),
+    path('payment-done/', views.payment_done, name='payment_done'),
+    path('payment-cancelled/', views.payment_cancelled, name='payment_cancelled'),
 ]

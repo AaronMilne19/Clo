@@ -17,6 +17,10 @@ from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
 
+from paypal.standard.forms import PayPalPaymentsForm
+from django.conf import settings
+from django.views.decorators.csrf import csrf_exempt
+
 
 def is_mobile_device(request):
     # check visitor agent
@@ -164,9 +168,32 @@ def membership(request):
 
     if request.user.is_authenticated:
         ctx['subscribed'] = UserProfile.objects.get(user=request.user).is_subscribed
- 
-
-    return render(request, 'membership.html', context=ctx)   
+    
+    host=request.get_host()
+	
+    paypal_dict={
+		'business':settings.PAYPAL_RECEIVER_EMAIL,
+		'amount':5.00,
+		'item_name':"Membership",
+		'invoice':1234,
+		'currency_code':'GBP',
+		#'notify_url': 'http://{}{}'.format(host,reverse('paypal-ipn')),
+		'return_url': 'http://{}{}'.format(host,home),
+		#'cancel_return': 'http://{}{}'.format(host,reverse('payment_cancelled')),
+	}
+    ctx['form']=PayPalPaymentsForm(initial=paypal_dict)
+    
+    codes=DiscountCode.objects.all().count()
+    ctx['codes']=codes
+    
+    if codes==0:
+    	ctx['countdown']="No codes left."
+    elif codes==1:
+    	ctx['countdown']="Only 1 code left."
+    else:
+    	ctx['countdown']="There are {} codes left.".format(codes)
+    
+    return render(request, 'membership.html', context=ctx)  
 
 
 @login_required
@@ -385,3 +412,14 @@ The Clò Team. """
     user.save()
 
     return HttpResponseRedirect(reverse('home:membership'))
+    
+@csrf_exempt
+def payment_done(request):
+	return render(request, 'payment_done.html')
+
+@csrf_exempt
+def payment_cancelled(request):
+	return render(request, 'payment_cancelled.html')
+       
+    
+    
