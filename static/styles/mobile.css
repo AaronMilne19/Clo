@@ -177,9 +177,9 @@ input[type=submit]{
 	position:center;
 	min-width: max-content;
 }
-.all_mags{
-	text-align: center;
-}
+/*.all_mags{*/
+/*	text-align: center;*/
+/*}*/
 
 
 
@@ -303,7 +303,7 @@ input[type=submit]{
 
 .hashtags{
 	width: 100%;
-	text-align: left;
+	text-align: center;
 	font-size: 0.8em;
 	color: grey;
 }
@@ -398,6 +398,7 @@ input[type=submit]{
 .mag_list_text{
 	margin-top: 1em;
 	margin-right: 1em;
+	width: 100%;
 }
 
 .mag_list_line{
