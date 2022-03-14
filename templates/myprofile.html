@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load myfilter %}
 
 {% block css %}
 <link rel="stylesheet" type="text/css" href="/static/styles/myprofile.css">
@@ -40,7 +41,7 @@ My Profile
                             {{password_form.non_field_errors}}
                             {% for field in password_form %}
                             {{field.label_tag}}
-                            {{ field }}
+                            {{ field | addclass:'textbox' }}
                             {% if field.errors %}
                             <div style="color: red">
                                 {{ field.errors }}

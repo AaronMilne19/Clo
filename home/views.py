@@ -94,16 +94,18 @@ def user_signup(request):
         if user_form.is_valid() and profile_form.is_valid():
             user = user_form.save(commit=False)
             user.set_password(user.password)
-            user.email_confirmed = False
             user.save()
-
+            user = authenticate(username=user_form.cleaned_data['username'],
+                                password=user_form.cleaned_data['password'])
+            login(request, user)
             profile = profile_form.save(commit=False)
             profile.user = user
+            user.email_confirmed = False
             profile.save()
 
             registered = True
             send_confirmation_email(user, request)
-            login(request, user)
+
             return redirect(reverse('home:home'))
 
         else:
