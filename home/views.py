@@ -9,7 +9,7 @@ from django.template.defaulttags import register
 from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.urls import reverse
 from home.models import Magazine, UserProfile, Hashtag, MagazineIssue, DiscountCode
-from home.forms import UserForm, UserProfileForm, UploadCodesFileForm, CodesFileForm
+from home.forms import UserForm, UserProfileForm, UploadCodesFileForm, CodesFileForm, UserPasswordChangeForm
 from datetime import datetime
 import random, string, secrets
 from django.contrib.auth.models import User
@@ -95,17 +95,16 @@ def user_signup(request):
             user = user_form.save(commit=False)
             user.set_password(user.password)
             user.save()
-            user = authenticate(username=user_form.cleaned_data['username'],
-                                password=user_form.cleaned_data['password'])
-            login(request, user)
+
             profile = profile_form.save(commit=False)
             profile.user = user
-            user.email_confirmed = False
             profile.save()
 
             registered = True
             send_confirmation_email(user, request)
-
+            user = authenticate(username=user_form.cleaned_data['username'],
+                                password=user_form.cleaned_data['password'])
+            login(request, user)
             return redirect(reverse('home:home'))
 
         else:
@@ -123,19 +122,19 @@ def user_signup(request):
 @login_required
 def my_profile(request):
     ctx = {}
-    password_form = PasswordChangeForm(request.user, prefix='password_form')
+    password_form = UserPasswordChangeForm(request.user, prefix='password_form')
     user = UserProfile.objects.get(user=request.user)
     issues = user.saved_issues.order_by("magazine")
 
     ctx['magazines'] = Magazine.objects.all()
     ctx['savedissues'] = issues.all()
-    ctx['user'] = user
+    ctx['curr_user'] = user
 
     if request.method == 'POST':
         action = request.POST['action']
 
         if action == 'edit_password':
-            password_form = PasswordChangeForm(request.user, request.POST, prefix='password_form')
+            password_form = UserPasswordChangeForm(request.user, request.POST, prefix='password_form')
             if password_form.is_valid():
                 user = password_form.save()
                 update_session_auth_hash(request, user)
@@ -457,7 +456,6 @@ def confirm_email(request, uidb64, token):
         user2 = UserProfile.objects.get(user=user)
         user2.email_confirmed = True
         user2.save()
-        login(request, user)
         return render(request, 'emailverifysuccess.html')
     else:
         return render(request, 'emailverifyfail.html')
