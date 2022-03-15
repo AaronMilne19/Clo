@@ -30,7 +30,12 @@ My Profile
                         <h3 style="display: inline-block">Email Address: </h3>
                         <label>{{ request.user.email }}</label>
                         {% if not curr_user.email_confirmed %}
-                        <div style= "color:red" class="xsml-txt">Not Verified</div>
+                        <form method="post">
+                            {% csrf_token %}
+                            <input type='hidden' name='action' value='verify_email'>
+                            <input class="button" style="float: right; margin-top: 20px; width: 50%;" type="submit" name="Save" value="Re-send Verification Email" />
+                        </form>
+
                         {% else %}
                         <div style= "color:green" class="xsml-txt">Verified</div>
                         {% endif %}
@@ -51,7 +56,7 @@ My Profile
                             {% endfor %}
                             <input class="button" style="float: right; margin-top: 20px; width: 50%;" type="submit" name="Save" value="Change Password" />
                         </form>
-                        <ul class="messages" style="color:green">
+                        <ul class="messages" style="color:green; margin-top: 30px">
                                 {% for message in messages %}
                                 <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
                                 {% endfor %}
@@ -60,7 +65,7 @@ My Profile
                         <div>
                             <div><h3 style="margin-top: 100px; display: inline-block">Subscription :</h3></div>
                             {% if not curr_user.email_confirmed %}
-                            <div><label style="color:red">Please confirm your email</label></div>
+                            <div><label style="color:red">Email verification is required before purchasing a subscription</label></div>
                             {% elif not curr_user.is_subscribed %}
                             <div><label style="color:#4d79ff">Not Subscribed</label></div>
                             {% else %}

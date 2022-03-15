@@ -125,6 +125,7 @@ def my_profile(request):
     password_form = UserPasswordChangeForm(request.user, prefix='password_form')
     user = UserProfile.objects.get(user=request.user)
     issues = user.saved_issues.order_by("magazine")
+    user2 = request.user
 
     ctx['magazines'] = Magazine.objects.all()
     ctx['savedissues'] = issues.all()
@@ -132,6 +133,11 @@ def my_profile(request):
 
     if request.method == 'POST':
         action = request.POST['action']
+
+        if action == 'verify_email':
+            send_confirmation_email(user2, request)
+            messages.success(request, 'Email Sent')
+            return redirect(reverse('home:myprofile'))
 
         if action == 'edit_password':
             password_form = UserPasswordChangeForm(request.user, request.POST, prefix='password_form')
@@ -445,6 +451,7 @@ def send_confirmation_email(user, request):
 
 
 def confirm_email(request, uidb64, token):
+    ctx={}
     try:
         uid = force_text(urlsafe_base64_decode(uidb64))
         user = User.objects.get(pk=uid)
@@ -456,9 +463,10 @@ def confirm_email(request, uidb64, token):
         user2 = UserProfile.objects.get(user=user)
         user2.email_confirmed = True
         user2.save()
+        ctx['curr_user'] = user2
         return render(request, 'emailverifysuccess.html')
     else:
-        return render(request, 'emailverifyfail.html')
+        return render(request, 'emailverifyfail.html', ctx)
 
 
 
