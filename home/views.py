@@ -8,7 +8,7 @@ from django.contrib.auth.forms import PasswordChangeForm
 from django.template.defaulttags import register
 from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.urls import reverse
-from home.models import Magazine, UserProfile, Hashtag, MagazineIssue, DiscountCode
+from home.models import Magazine, UserProfile, Hashtag, MagazineIssue, DiscountCode, Order
 from home.forms import UserForm, UserProfileForm, UploadCodesFileForm, EmailChangeForm, CodesFileForm
 from datetime import datetime
 import random, string, secrets
@@ -20,6 +20,10 @@ from django.contrib.auth.forms import PasswordChangeForm
 from paypal.standard.forms import PayPalPaymentsForm
 from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
+from paypal.standard.models import ST_PP_COMPLETED
+from paypal.standard.ipn.signals import valid_ipn_received
+from django.dispatch import receiver
+from django.views.generic import TemplateView
 
 
 def is_mobile_device(request):
@@ -169,19 +173,7 @@ def membership(request):
     if request.user.is_authenticated:
         ctx['subscribed'] = UserProfile.objects.get(user=request.user).is_subscribed
     
-    host=request.get_host()
-	
-    paypal_dict={
-		'business':settings.PAYPAL_RECEIVER_EMAIL,
-		'amount':5.00,
-		'item_name':"Membership",
-		'invoice':1234,
-		'currency_code':'GBP',
-		#'notify_url': 'http://{}{}'.format(host,reverse('paypal-ipn')),
-		'return_url': 'http://{}{}'.format(host,home),
-		#'cancel_return': 'http://{}{}'.format(host,reverse('payment_cancelled')),
-	}
-    ctx['form']=PayPalPaymentsForm(initial=paypal_dict)
+    
     
     codes=DiscountCode.objects.all().count()
     ctx['codes']=codes
@@ -415,11 +407,46 @@ The Clò Team. """
     
 @csrf_exempt
 def payment_done(request):
-	return render(request, 'payment_done.html')
+	ctx={}
+	user = UserProfile.objects.get(user=request.user)
+	user.is_subscribed = True
+	user.save()
+	send_code(request)
+	
+	return render(request, 'payment_done.html', context=ctx)
 
 @csrf_exempt
 def payment_cancelled(request):
 	return render(request, 'payment_cancelled.html')
+
        
-    
-    
+@receiver(valid_ipn_received)
+def paypal_payment_received(sender, **kwargs):
+	ipn_obj=sender
+	if ipn_obj.payment_status==ST_PP_COMPLETED:
+		#check receiver is the right email
+		if ipn_obj.receiver_email!= settings.PAYPAL_RECEIVER_EMAIL :
+			return
+		
+		order=get_object_or_404(Order, id=ipn_obj.invoice)
+		
+		
+
+def process_membership(request):
+	ctx={}
+	host=request.get_host()
+	paypal_dict={
+		'business':settings.PAYPAL_RECEIVER_EMAIL,
+		'amount':5.00,
+		'item_name':"Membership",
+		#'invoice': DiscountCode.objects.all()[0],
+		'currency_code':'GBP',
+		'return_url': 'http://{}{}'.format(host,reverse('home:payment_done')) ,
+		'cancel_return': 'http://{}{}'.format(host,
+                                              reverse('home:payment_cancelled')),
+    		"sra": "1",                        # reattempt payment on payment error
+	}
+	ctx['form']=PayPalPaymentsForm(initial=paypal_dict, button_type="subscribe")
+	return render(request, 'process_membership.html',context=ctx)
+	
+

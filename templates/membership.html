@@ -54,9 +54,10 @@ Membership
 	  					
 	  					<center>
 	  					
-	  					<input class="button" style="text-align:center; margin:0 auto; background-color:#2F52E0; color:white;border-radius: 5px !important; width: 30%;" type="submit" name="Save" value="Purchase" />
-	  					<br></br>
-	  					{{ form.render }}
+	  					<a href="{% url 'home:process_membership' %}" class="btn btn-primary">
+	  					Purchase
+	  					</a>
+	  					
 	  					</center>
 	  					{% else %}
 	  					<center>
@@ -64,6 +65,10 @@ Membership
 						</center>
 						{% endif %}
 						
+						{% else %}
+						<p>Subscription:</p>
+						<p>Enabled: </p>
+						<p>Active: </p>
 	  					{% endif %}
 	  						  				
 	  				

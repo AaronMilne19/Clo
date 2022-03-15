@@ -21,4 +21,5 @@ urlpatterns = [
     path('email/', views.send_code, name="sendcode"),
     path('payment-done/', views.payment_done, name='payment_done'),
     path('payment-cancelled/', views.payment_cancelled, name='payment_cancelled'),
+    path('process-membership/',views.process_membership, name="process_membership"),
 ]
