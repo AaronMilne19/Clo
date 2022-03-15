@@ -32,9 +32,11 @@ function saved(issueName, value) {
             if (value === 0) {
                 button.classList.remove('selected');
                 button.innerHTML = "Add to My Magazines"
+                button.style.backgroundColor ="#E8E5E2";
             } else {
                 button.classList.add('selected');
                 button.innerHTML = "Remove from My Magazines"
+                button.style.backgroundColor = "lightgrey";
             }
         }
     }

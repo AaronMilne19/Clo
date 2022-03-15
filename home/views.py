@@ -105,8 +105,6 @@ def user_signup(request):
 
     ctx = {'user_form': user_form, 'profile_form': profile_form, 'registered': registered}
 
-
-
     return render(request, temp, context=ctx)
 
 
@@ -183,7 +181,8 @@ def magazine(request, id):
 
     ctx['this'] = mag
     ctx['magazines'] = Magazine.objects.all()
-    ctx['issues'] = MagazineIssue.objects.filter(magazine=mag)
+    ctx['issues'] = MagazineIssue.objects.filter(magazine=mag).order_by("-date")
+    ctx['latest_issue'] = MagazineIssue.objects.filter(magazine=mag).first()
 
     if is_mobile_device(request):
         temp = 'mobiletemplates/magazinemobile.html'
