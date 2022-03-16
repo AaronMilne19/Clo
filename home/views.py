@@ -8,11 +8,11 @@ from django.contrib.auth.forms import PasswordChangeForm
 from django.template.defaulttags import register
 from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.urls import reverse
-from home.models import Magazine, UserProfile, Hashtag, MagazineIssue, DiscountCode, Order
+from home.models import Magazine, UserProfile, Hashtag, MagazineIssue, DiscountCode
 from home.forms import UserForm, UserProfileForm, UploadCodesFileForm, EmailChangeForm, CodesFileForm
 from datetime import datetime
 import random, string, secrets
-
+import dateutil.relativedelta
 from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
@@ -24,6 +24,7 @@ from paypal.standard.models import ST_PP_COMPLETED
 from paypal.standard.ipn.signals import valid_ipn_received
 from django.dispatch import receiver
 from django.views.generic import TemplateView
+
 
 
 def is_mobile_device(request):
@@ -172,11 +173,14 @@ def membership(request):
 
     if request.user.is_authenticated:
         ctx['subscribed'] = UserProfile.objects.get(user=request.user).is_subscribed
-    
+        if ctx['subscribed']==True:
+    	    ctx['date_subscribed']=UserProfile.objects.get(user=request.user).date_subscribed
     
     
     codes=DiscountCode.objects.all().count()
     ctx['codes']=codes
+    
+    ctx['date_valid']=DiscountCode.objects.first().date_valid
     
     if codes==0:
     	ctx['countdown']="No codes left."
@@ -344,7 +348,7 @@ def gen_codes(amount):
     path = 'static/code_templates/' + time + '.csv'
     codes = []
     code_length = 16
-
+    
     with open(path, 'w+') as f:
         for i in range(int(amount)):
             #---This line of code has come from https://www.javatpoint.com/python-program-to-generate-a-random-string
@@ -407,19 +411,26 @@ The Clò Team. """
     
 @csrf_exempt
 def payment_done(request):
-	ctx={}
-	user = UserProfile.objects.get(user=request.user)
-	user.is_subscribed = True
-	user.save()
-	send_code(request)
 	
-	return render(request, 'payment_done.html', context=ctx)
+	user = UserProfile.objects.get(user=request.user)
+	
+	user.is_subscribed = True
+	user.date_subscribed=datetime.today()
+	
+	user.save()
+	
+	code=DiscountCode.objects.all()[0]
+	date = datetime.today()
+	
+	
+	send_code(request)
+	return render(request, 'payment_done.html')
 
 @csrf_exempt
 def payment_cancelled(request):
 	return render(request, 'payment_cancelled.html')
 
-       
+#cant test this unless app is published     
 @receiver(valid_ipn_received)
 def paypal_payment_received(sender, **kwargs):
 	ipn_obj=sender
@@ -428,7 +439,7 @@ def paypal_payment_received(sender, **kwargs):
 		if ipn_obj.receiver_email!= settings.PAYPAL_RECEIVER_EMAIL :
 			return
 		
-		order=get_object_or_404(Order, id=ipn_obj.invoice)
+		
 		
 		
 

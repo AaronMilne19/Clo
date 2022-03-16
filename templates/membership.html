@@ -65,10 +65,8 @@ Membership
 						</center>
 						{% endif %}
 						
-						{% else %}
-						<p>Subscription:</p>
-						<p>Enabled: </p>
-						<p>Active: </p>
+						
+						
 	  					{% endif %}
 	  						  				
 	  				
@@ -86,13 +84,12 @@ Membership
 
 		{% if subscribed %}
 		
-		<div class="col-sm-4 email-box" id="mainbox">
-			<div>
-				<a href="{% url 'home:email' %}" class="btn btn-primary">
-					Send your unique code to your email. 
-				</a>
-				
-			</div>
+		<div class="col-sm-4 pt-3 px-4 pe-4" >
+			
+				<p>Subscription:</p>
+				<p>Activated: {{ date_subscribed }} </p>
+				<p>Valid until: {{ date_valid }} </p>
+			
 		</div>
 		{% else %}
 		<div class="col-sm-4 pt-3 px-4 pe-4 border-end border-dark border-1 d-flex" id="mainbox">

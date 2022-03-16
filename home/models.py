@@ -3,6 +3,8 @@ from django.template.defaultfilters import slugify
 from django.core.validators import MinLengthValidator
 from django.contrib.auth.models import User
 import datetime
+import dateutil.relativedelta as dt
+
 
 
 class Magazine(models.Model):
@@ -51,7 +53,8 @@ class UserProfile(models.Model):
     saved_issues = models.ManyToManyField(MagazineIssue, related_name="saves")
     is_subscribed = models.BooleanField(default=False)
     has_code = models.BooleanField(default=False)
-
+    date_subscribed =  models.DateField(("Date"), default=datetime.date.today)
+    
     def __str__(self):
         return self.user.username
 
@@ -66,17 +69,8 @@ class Hashtag(models.Model):
 
 class DiscountCode(models.Model):
     code = models.CharField(max_length=16, validators=[MinLengthValidator(16)])
-
+    date_valid=models.DateTimeField(("Date"),default=datetime.date.today()+dt.relativedelta(months=1))
     def __str__(self):
         return self.code
         
-class Order(models.Model):
-	user=models.ForeignKey(User, on_delete=models.CASCADE)
-	date_created=models.DateTimeField(auto_now_add=True, null=True, blank=True)
-	date_valid=models.DateTimeField(null=True, blank=True)
-	conplete=models.BooleanField(default=False)
-	order_id=models.CharField(max_length=100, null=True)
-	
-	
-	def __str__(self):
-		return self.date_created
+
