@@ -7,3 +7,6 @@ sqlparse==0.4.2
 wincertstore==0.2
 django-paypal
 python-dateutil
+django-cors-headers==3.3.0
+six==1.16.0
+

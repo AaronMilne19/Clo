@@ -114,8 +114,9 @@
 .menuelement{
 
 	width: 100%;
-	border-top: solid black;
-	border-width: thin;
+	border-top-style: solid;
+	border-top-width: thin;
+	border-top-color: black;
 	padding-top: 0.6em;
 	padding-bottom:0.6em;
 	display: flex;
@@ -161,11 +162,11 @@
 
 
  input, .btn{
- 	border-radius: 0.2em !important;
- 	border-width:0.1em;
+ 	border: none;
 	width:80%;
 	clear:both;
-	background-color:#E8E5E2;
+	background-color: lightgrey;
+	 border-radius: 0.2em !important;
 
 }
 
@@ -176,6 +177,9 @@ input[type=submit]{
 	position:center;
 	min-width: max-content;
 }
+/*.all_mags{*/
+/*	text-align: center;*/
+/*}*/
 
 
 
@@ -230,24 +234,24 @@ input[type=submit]{
 
 /*Membership as a separate page*/
 
-#backbutton a{
+.backbutton a{
 	height: 100%;
 	width: 100%;
 	text-decoration: none ;
 	color: rgb(44,84,232);
 	text-underline: none ;
-	font-size: 1.4em !important;
+	font-size: 1.4em;
 	font-weight: 570;
 	size: inherit;
 	transition: 0.4s;
 }
 
 
-#backbutton {
-	border-bottom: solid black;
-	border-width: thin;
-	padding-top: 0.35em;
-	padding-bottom: 0.35em;
+.backbutton {
+	border-top: solid black;
+	border-top-width: thin;
+	padding-top: 0.6em;
+	padding-bottom: 0.6em;
 	width: 100%;
 	text-align: center;
 }
@@ -263,5 +267,212 @@ input[type=submit]{
 
 }
 
-/*My profile*/
+/*Magazine and issue*/
+
+.cover_image{
+	width: 100%;
+	padding: 1em;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+#magazine_title{
+	font-weight: 500;
+	width: 100%;
+	padding-left: 1em;
+	padding-right: 1em;
+	padding-bottom: 0.5em;
+	text-align: left;
+	max-height: max-content;
+	font-size: 1em;
+}
+
+.mag_and_issue_line{
+	border-top: black;
+	border-top-style: solid;
+	border-top-width: thin;
+	width: 100%;
+
+}
+
+.mag_or_issue_wrap{
+	padding: 1em;
+	padding-top: 0.5em;
+	width: 100%;
+	font-size: 0.8em;
+}
+
+.hashtags{
+	width: 100%;
+	text-align: center;
+	font-size: 0.8em;
+	color: grey;
+}
+
+.magazine_or_issue_list_link{
+	text-decoration: none;
+	color: unset;
+}
+
+.mag_and_issue_description{
+	text-align: left;
+	margin-top: 0.5em;
+	width: 100%;
+}
+
+.mag_and_issue_description p{
+	text-align: left;
+	margin-top: 0.5em;
+	width: 100%;
+	font-size: 0.8em;
+}
+
+#latest_issue{
+	margin-bottom: 0.5em;
+	display: flex;
+	justify-content: space-between;
+	flex-wrap: wrap;
+	margin-top: 2em;
+}
+
+
+.buy_buttons{
+	display: flex;
+	width: 100%;
+	justify-content: space-around;
+	flex-wrap: wrap;
+	align-items: center;
+	align-content: space-evenly;
+
+}
+
+.left_button{
+	font-size: 0.9em;
+    color: #fff;
+    background-color: #0d6efd;
+	padding: .25em .5em;
+	text-decoration: none;
+	margin-top: 0.5em;
+	border: solid #0d6efd;
+	border-width: 0.8px;
+}
+
+
+.right_button{
+	font-size: 0.9em;
+	padding: .25em .5em;
+	border: solid black;
+	border-width: 0.8px;
+	text-decoration: none;
+	color: black;
+	margin-top: 0.5em;
+
+}
+
+#magazine_menu_element{
+
+	padding-left: 0;
+	padding-right: 0;
+	margin-top: 1.5em;
+
+}
+
+#hidden_panel_issues{
+	max-height: 0;
+  	overflow: hidden;
+  	transition: max-height 0.4s ease-out;
+}
+
+#magazine_menu_wrap {
+	border-bottom-style: solid;
+	border-bottom-width: thin;
+	border-bottom-color: black;
+	width: 100%;
+
+}
+
+/*All magazines list*/
+
+.mag_list_element_wrap{
+	display: block;
+}
+
+.mag_list_element{
+	width: 100%;
+	display: flex;
+	justify-content: flex-start;
+}
+.mag_list_cover_image{
+	height: 7em;
+	margin: 1em;
+}
+
+.mag_list_text{
+	margin-top: 1em;
+	margin-right: 1em;
+	width: 100%;
+
+}
+
+
+.mag_list_line{
+	border-top: grey;
+	border-top-style: solid;
+	border-top-width: 2px;
+
+	margin-right: 1em;
+	margin-left: 1em;
+
+}
+#searchBar {
+	text-align: center;
+	border: none;
+	border-radius: 0.2em !important;
+	background-color: lightgrey;
+	margin-bottom: 1em;
+	margin-top: 1em;
+
+}
+/*Issue*/
+
+.issue_title_block{
+	display: flex;
+	justify-content: flex-start;
+	width: 100%;
+	padding-left: 1em;
+	padding-right: 1em;
+	padding-bottom: 0.5em;
+}
+
+#issue_title{
+	font-size: 0.8em;
+}
+
+.issue_title_block .save_issue{
+	height: max-content;
+	max-width: 27%;
+	font-size: 0.6em;
+	margin-left: auto;
+}
+
+.issue_title_block .favourite_mobile{
+	padding: 0.25em;
+	background-color: #E8E5E2;
+
+}
+
+#issue_back_button{
+	margin-top: 1.5em;
+	border-bottom: solid thin;
+	height: 3.2rem;
+	display: flex;
+	justify-content: center;
+}
+
+#issue_back_button a {
+	font-size: 0.8em;
+	align-self: center;
+	height: max-content;
+	width: max-content;
+}
 
