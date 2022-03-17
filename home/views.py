@@ -8,7 +8,7 @@ from django.contrib.auth.forms import PasswordChangeForm
 from django.template.defaulttags import register
 from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.urls import reverse
-from home.models import Magazine, UserProfile, Hashtag, MagazineIssue, DiscountCode
+from home.models import Magazine, UserProfile, Hashtag, MagazineIssue, DiscountCode, Membership
 from home.forms import UserForm, UserProfileForm, UploadCodesFileForm, EmailChangeForm, CodesFileForm
 from datetime import datetime
 import random, string, secrets
@@ -165,22 +165,37 @@ def my_profile(request):
 
     return render(request, temp, ctx)
 
-
+def renewMemberships(request):
+	memberships=Membership.objects.all()
+	if memberships.count()!=0:
+		if memberships[0].date_valid > datetime.now().date():
+			for membership in memberships:
+				user=membership.user
+				u=UserProfile.objects.get(user=user)
+				u.is_subscribed=False
+				u.has_code=False
+				u.save()
+			memberships.delete()
 
 def membership(request):
+    
+    renewMemberships(request)
+    
     ctx = {}
     ctx['magazines'] = Magazine.objects.all()
+    
+   
+    	
 
     if request.user.is_authenticated:
         ctx['subscribed'] = UserProfile.objects.get(user=request.user).is_subscribed
         if ctx['subscribed']==True:
     	    ctx['date_subscribed']=UserProfile.objects.get(user=request.user).date_subscribed
-    
+    	    ctx['date_valid']=Membership.objects.get(user=request.user).date_valid
     
     codes=DiscountCode.objects.all().count()
     ctx['codes']=codes
     
-    ctx['date_valid']=DiscountCode.objects.first().date_valid
     
     if codes==0:
     	ctx['countdown']="No codes left."
@@ -402,6 +417,10 @@ The Clò Team. """
         print(e)
         return HttpResponse("Oops! Something went wrong.")
 
+
+    memb=Membership(user=request.user, date_valid=code.date_valid,code=code.code)
+    memb.save() 
+    
     code.delete()
 
     user.has_code = True
@@ -416,12 +435,10 @@ def payment_done(request):
 	
 	user.is_subscribed = True
 	user.date_subscribed=datetime.today()
-	
 	user.save()
 	
 	code=DiscountCode.objects.all()[0]
 	date = datetime.today()
-	
 	
 	send_code(request)
 	return render(request, 'payment_done.html')
@@ -430,7 +447,7 @@ def payment_done(request):
 def payment_cancelled(request):
 	return render(request, 'payment_cancelled.html')
 
-#cant test this unless app is published     
+# will not receive an IPN from PayPal until application is publicaly accessible on the internet
 @receiver(valid_ipn_received)
 def paypal_payment_received(sender, **kwargs):
 	ipn_obj=sender

@@ -73,4 +73,9 @@ class DiscountCode(models.Model):
     def __str__(self):
         return self.code
         
+class Membership(models.Model):
+	user=models.OneToOneField(User, on_delete=models.CASCADE)
+	date_subscribed= models.DateField(("Date"),default=datetime.date.today)
+	date_valid=models.DateField(("Date"))
+	code=models.CharField(max_length=16, validators=[MinLengthValidator(16)])
 

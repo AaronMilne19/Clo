@@ -64,8 +64,11 @@ Membership
 							<p> Try again next month. </p>
 						</center>
 						{% endif %}
+						{% else %}
 						
-						
+						<p>Subscription:</p>
+				<p>Activated: {{ date_subscribed }} </p>
+				<p>Valid until: {{ date_valid }} </p>
 						
 	  					{% endif %}
 	  						  				
@@ -82,16 +85,9 @@ Membership
 	  		</div>
 		</div>
 
-		{% if subscribed %}
+		{% if not subscribed  %}
 		
-		<div class="col-sm-4 pt-3 px-4 pe-4" >
-			
-				<p>Subscription:</p>
-				<p>Activated: {{ date_subscribed }} </p>
-				<p>Valid until: {{ date_valid }} </p>
-			
-		</div>
-		{% else %}
+		
 		<div class="col-sm-4 pt-3 px-4 pe-4 border-end border-dark border-1 d-flex" id="mainbox">
 		<div style="margin-top:400px; margin-left:10px; margin-right:10px; margin-bottom:10px;" class="info-box">
 		<center> 
