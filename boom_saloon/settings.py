@@ -134,8 +134,9 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_DIR = os.path.join(BASE_DIR, 'static')
-STATIC_ROOT = STATIC_DIR
-#STATICFILES_DIRS = [STATIC_DIR, ]
+#These swap during deployment
+#STATIC_ROOT = STATIC_DIR
+STATICFILES_DIRS = [STATIC_DIR, ]
 
 # Media files
 
