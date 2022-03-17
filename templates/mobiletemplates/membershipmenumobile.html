@@ -16,7 +16,7 @@
 {#            Break instead of using padding or margin in the css file because - the max-height property doesn't include #}
 {#            them - faulty accordion menu#}
             <br>
-            Check you account details or view your saved magazine issues below.
+            Check you account details, your subscription or view your saved magazine issues below.
             <br>
         </p>
     </div>
@@ -31,6 +31,19 @@
     <div class="hiddenpanel">
         <div> {% include "mobiletemplates/myprofilemobile.html" %}</div>
     </div>
+
+
+    <div class="menuelement">
+        <img class="closeicondummy" src="{% static 'icon/close.svg' %}">
+            <a > My Subscription </a>
+        <img class="closeicon" src="{% static 'icon/close.svg' %}">
+
+    </div>
+
+    <div class="hiddenpanel">
+        <div> {% include "mobiletemplates/mysubscriptionmobile.html" %}</div>
+    </div>
+
 
     <div class="menuelement">
         <img class="closeicondummy" src="{% static 'icon/close.svg' %}">

@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+
+
+    <div id="subscription_wrap">
+        <div><h3 >Subscription :</h3></div>
+        {% if not curr_user.email_confirmed %}
+        <div><label style="color:red">Email verification is required before purchasing a subscription</label></div>
+        {% elif not curr_user.is_subscribed %}
+        <div><label style="color:#4d79ff">Not Subscribed</label></div>
+        {% else %}
+        <div style="color:#4d79ff"><p>Enabled <br> purchased 23-11-2021 <br> active 24-11-2021</p></div>
+        {% endif %}
+    </div>

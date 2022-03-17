@@ -166,7 +166,7 @@
 	width:80%;
 	clear:both;
 	background-color: lightgrey;
-	 border-radius: 0.2em !important;
+
 
 }
 
@@ -476,3 +476,32 @@ input[type=submit]{
 	width: max-content;
 }
 
+
+/*My profile*/
+
+.my_profile_button{
+	padding-right: 0.5em;
+	padding-left: 0.5em;
+	padding-top: 0.2em;
+	padding-bottom: 0.2em;
+
+}
+
+.textbox{
+	margin-bottom: 0.3em!important;
+}
+
+
+/*My subscription*/
+
+#subscription_wrap{
+	margin-bottom: 2em;
+	margin-top: 2em;
+}
+
+/*My magazines*/
+
+#my_magazines_wrap{
+	margin-bottom: 2em;
+	margin-top: 2em;
+}
