@@ -1,29 +1,29 @@
 from django import forms
 from django.contrib.auth.models import User
 from home.models import Magazine, UserProfile, MagazineIssue, Hashtag, UserProfile
+from django.contrib.auth.forms import PasswordChangeForm
 
 
 
 class UserForm(forms.ModelForm):
     email = forms.EmailField(required=True, widget=forms.widgets.TextInput(attrs={'placeholder': 'Email'}))
     username = forms.CharField(required=True, widget=forms.widgets.TextInput(attrs={'placeholder': 'Username'}))
-    password =forms.CharField(required=True,min_length=8, widget=forms.widgets.PasswordInput())
-    confirm_password =forms.CharField(required=True, widget=forms.widgets.PasswordInput())
-
+    password = forms.CharField(required=True, min_length=8, widget=forms.widgets.PasswordInput())
+    confirm_password = forms.CharField(required=True, widget=forms.widgets.PasswordInput())
 
     class Meta:
-        model=User
-        fields=('email','username','password')
-        
+        model = User
+        fields = ('email', 'username', 'password')
+
     def clean(self):
-        cleaned_data=super(UserForm, self).clean()
-        password=self.cleaned_data.get("password")
-        confirm_password=self.cleaned_data.get("confirm_password")
+        cleaned_data = super(UserForm, self).clean()
+        password = self.cleaned_data.get("password")
+        confirm_password = self.cleaned_data.get("confirm_password")
         user_email = self.cleaned_data.get('email')
 
-        if password!=confirm_password:
-            self.add_error("confirm_password","Passwords do not match.")
-           
+        if password != confirm_password:
+            self.add_error("confirm_password", "Passwords do not match.")
+
         if User.objects.filter(email=user_email):
             self.add_error('email', 'A user with this email already exists.')
 
@@ -31,50 +31,14 @@ class UserForm(forms.ModelForm):
 
 
 class UserProfileForm(forms.ModelForm):
-	class Meta:
-		model=UserProfile
-		fields=()
-
-
-class EmailChangeForm(forms.Form):
-    """
-    A form that lets a user change set their email while checking for a change in the
-    e-mail.
-    """
-    error_messages = {
-        'not_changed': "The email address is the same as the current one"
-    }
-
-    new_email1 = forms.EmailField(
-        label="Email address",
-        widget=forms.EmailInput,
-    )
-
-    def __init__(self, user, *args, **kwargs):
-        self.user = user
-        super(EmailChangeForm, self).__init__(*args, **kwargs)
-
-    def clean_new_email1(self):
-        old_email = self.user.email
-        new_email1 = self.cleaned_data.get('new_email1')
-        if new_email1 and old_email:
-            if new_email1 == old_email:
-                raise forms.ValidationError(
-                    self.error_messages['not_changed'],
-                    code='not_changed',
-                )
-        return new_email1
-
-    def save(self, commit=True):
-        email = self.cleaned_data["new_email1"]
-        self.user.email = email
-        if commit:
-            self.user.save()
-        return self.user
+    class Meta:
+        model = UserProfile
+        fields = ()
 
 
 class CodesFileForm(forms.Form):
-	amount = forms.IntegerField(required=True, min_value=1, max_value=500, widget=forms.widgets.NumberInput)
+    amount = forms.IntegerField(required=True, min_value=1, max_value=500, widget=forms.widgets.NumberInput)
+
 
 class UploadCodesFileForm(forms.Form):
     file = forms.FileField(required=True)
@@ -82,7 +46,7 @@ class UploadCodesFileForm(forms.Form):
     def clean(self):
         cleaned_data = super(UploadCodesFileForm, self).clean()
         file = cleaned_data.get('file')
-        
+
         if file:
             filename = file.name
             if filename.endswith('.csv') == False:
@@ -90,3 +54,23 @@ class UploadCodesFileForm(forms.Form):
                 raise forms.ValidationError("File selected is not a csv. Please ensure the correct file is selected")
 
         return file
+
+
+
+class UserPasswordChangeForm(PasswordChangeForm):
+    def __init__(self, *args, **kwargs):
+        super(PasswordChangeForm, self).__init__(*args, **kwargs)
+
+    old_password = forms.CharField(label='', widget=forms.PasswordInput(attrs={
+        'placeholder': 'Old Password',
+    }))
+
+    new_password1 = forms.CharField(label='', widget=forms.PasswordInput(attrs={
+        'placeholder': 'New Password',
+        }))
+
+    new_password2 = forms.CharField(label='', widget=forms.PasswordInput(attrs={
+        'placeholder': 'Confirm Password',
+    }))
+
+

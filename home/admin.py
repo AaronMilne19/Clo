@@ -1,6 +1,6 @@
 
 from django.contrib import admin
-from home.models import Magazine, UserProfile, MagazineIssue, Hashtag, DiscountCode
+from home.models import Magazine, UserProfile, MagazineIssue, Hashtag, DiscountCode, Membership
 
 
 
@@ -15,6 +15,7 @@ admin.site.register(MagazineIssue)
 admin.site.register(UserProfile)
 admin.site.register(Hashtag)
 admin.site.register(DiscountCode)
+admin.site.register(Membership)
 
 
 
