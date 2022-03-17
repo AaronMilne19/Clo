@@ -56,6 +56,7 @@ class UploadCodesFileForm(forms.Form):
         return file
 
 
+
 class UserPasswordChangeForm(PasswordChangeForm):
     def __init__(self, *args, **kwargs):
         super(PasswordChangeForm, self).__init__(*args, **kwargs)
@@ -71,4 +72,5 @@ class UserPasswordChangeForm(PasswordChangeForm):
     new_password2 = forms.CharField(label='', widget=forms.PasswordInput(attrs={
         'placeholder': 'Confirm Password',
     }))
+
 

@@ -8,7 +8,10 @@ from django.contrib.auth.forms import PasswordChangeForm, PasswordResetForm
 from django.template.defaulttags import register
 from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.urls import reverse
-from home.models import Magazine, UserProfile, Hashtag, MagazineIssue, DiscountCode
+from home.models import Magazine, UserProfile, Hashtag, MagazineIssue, DiscountCode, Membership
+from datetime import datetime
+import random, string, secrets
+import dateutil.relativedelta
 from home.forms import UserForm, UserProfileForm, UploadCodesFileForm, CodesFileForm, UserPasswordChangeForm
 from datetime import datetime
 import random, string, secrets
@@ -23,6 +26,14 @@ from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.sites.shortcuts import get_current_site
 from home.tokens import account_activation_token
+from paypal.standard.forms import PayPalPaymentsForm
+from django.conf import settings
+from django.views.decorators.csrf import csrf_exempt
+from paypal.standard.models import ST_PP_COMPLETED
+from paypal.standard.ipn.signals import valid_ipn_received
+from django.dispatch import receiver
+from django.views.generic import TemplateView
+
 
 
 def is_mobile_device(request):
@@ -159,14 +170,50 @@ def my_profile(request):
     return render(request, temp, ctx)
 
 
+def renewMemberships(request):
+	memberships=Membership.objects.all()
+	if memberships.count()!=0:
+		if memberships[0].date_valid < datetime.now().date():
+			for membership in memberships:
+				user=membership.user
+				u=UserProfile.objects.get(user=user)
+				u.is_subscribed=False
+				u.has_code=False
+				u.save()
+			memberships.delete()
+
+
 def membership(request):
+    
+    renewMemberships(request)
+    
     ctx = {}
     ctx['magazines'] = Magazine.objects.all()
+    
+   
+    	
 
     if request.user.is_authenticated:
         ctx['subscribed'] = UserProfile.objects.get(user=request.user).is_subscribed
+        if ctx['subscribed']==True:
+    	    ctx['date_subscribed']=UserProfile.objects.get(user=request.user).date_subscribed
+    	    ctx['date_valid']=Membership.objects.get(user=request.user).date_valid
+    
+    codes=DiscountCode.objects.all().count()
+    ctx['codes']=codes
+    
+    
+    if codes==0:
+    	ctx['countdown']="No codes left."
+    elif codes==1:
+    	ctx['countdown']="Only 1 code left."
+    else:
+    	ctx['countdown']="There are {} codes left.".format(codes)
+    
+
 
     return render(request, 'membership.html', context=ctx)
+
 
 
 @login_required
@@ -325,7 +372,7 @@ def gen_codes(amount):
     path = 'static/code_templates/' + time + '.csv'
     codes = []
     code_length = 16
-
+    
     with open(path, 'w+') as f:
         for i in range(int(amount)):
             # ---This line of code has come from https://www.javatpoint.com/python-program-to-generate-a-random-string
@@ -378,12 +425,68 @@ The Clò Team. """
         print(e)
         return HttpResponse("Oops! Something went wrong.")
 
+
+    memb=Membership(user=request.user,date_subscribed=datetime.today(), date_valid=code.date_valid,code=code.code)
+    memb.save()
+    HttpResponse("Membership should be created")
     code.delete()
 
     user.has_code = True
     user.save()
 
     return HttpResponseRedirect(reverse('home:membership'))
+
+    
+@csrf_exempt
+def payment_done(request):
+	
+	user = UserProfile.objects.get(user=request.user)
+	
+	user.is_subscribed = True
+	user.date_subscribed=datetime.today()
+	user.save()
+	
+	code=DiscountCode.objects.all()[0]
+	date = datetime.today()
+	
+	send_code(request)
+	return render(request, 'payment_done.html')
+
+@csrf_exempt
+def payment_cancelled(request):
+	return render(request, 'payment_cancelled.html')
+
+# will not receive an IPN from PayPal until application is publicaly accessible on the internet
+@receiver(valid_ipn_received)
+def paypal_payment_received(sender, **kwargs):
+	ipn_obj=sender
+	if ipn_obj.payment_status==ST_PP_COMPLETED:
+		#check receiver is the right email
+		if ipn_obj.receiver_email!= settings.PAYPAL_RECEIVER_EMAIL :
+			return
+		#payment_done code would be here
+		
+		
+		
+
+def process_membership(request):
+	ctx={}
+	host=request.get_host()
+	paypal_dict={
+		'business':settings.PAYPAL_RECEIVER_EMAIL,
+		'amount':5.00,
+		'item_name':"Membership",
+		#'invoice': DiscountCode.objects.all()[0],
+		'currency_code':'GBP',
+		'return_url': 'http://{}{}'.format(host,reverse('home:payment_done')) ,
+		'cancel_return': 'http://{}{}'.format(host,
+                                              reverse('home:payment_cancelled')),
+    		"sra": "1",                        # reattempt payment on payment error
+	}
+	ctx['form']=PayPalPaymentsForm(initial=paypal_dict, button_type="subscribe")
+	return render(request, 'process_membership.html',context=ctx)
+	
+
 
 
 def password_reset_request(request):

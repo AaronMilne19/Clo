@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'home',
+    'paypal.standard.ipn',
 ]
 
 MIDDLEWARE = [
@@ -144,6 +145,10 @@ MEDIA_DIR = os.path.join(BASE_DIR, 'media')
 MEDIA_ROOT = MEDIA_DIR
 MEDIA_URL = '/media/'
 
+
+PAYPAL_RECEIVER_EMAIL='sb-zesox14342247@business.example.com'
+PAYPAL_TEST=True
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
@@ -159,3 +164,4 @@ EMAIL_USE_TLS = True
 
 #token expiry time
 PASSWORD_RESET_TIMEOUT_DAYS = 1
+
