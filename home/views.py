@@ -168,7 +168,7 @@ def my_profile(request):
 def renewMemberships(request):
 	memberships=Membership.objects.all()
 	if memberships.count()!=0:
-		if memberships[0].date_valid > datetime.now().date():
+		if memberships[0].date_valid < datetime.now().date():
 			for membership in memberships:
 				user=membership.user
 				u=UserProfile.objects.get(user=user)
@@ -418,9 +418,9 @@ The Clò Team. """
         return HttpResponse("Oops! Something went wrong.")
 
 
-    memb=Membership(user=request.user, date_valid=code.date_valid,code=code.code)
-    memb.save() 
-    
+    memb=Membership(user=request.user,date_subscribed=datetime.today(), date_valid=code.date_valid,code=code.code)
+    memb.save()
+    HttpResponse("Membership should be created")
     code.delete()
 
     user.has_code = True
@@ -455,7 +455,7 @@ def paypal_payment_received(sender, **kwargs):
 		#check receiver is the right email
 		if ipn_obj.receiver_email!= settings.PAYPAL_RECEIVER_EMAIL :
 			return
-		
+		#payment_done code would be here
 		
 		
 		
