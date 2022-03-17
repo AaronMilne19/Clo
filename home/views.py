@@ -159,6 +159,12 @@ def my_profile(request):
                 return redirect(reverse('home:myprofile'))
 
     ctx['password_form'] = password_form
+    
+    if request.user.is_authenticated:
+        ctx['subscribed'] = UserProfile.objects.get(user=request.user).is_subscribed
+        if ctx['subscribed']==True:
+    	    ctx['date_subscribed']=UserProfile.objects.get(user=request.user).date_subscribed
+    	    ctx['date_valid']=Membership.objects.get(user=request.user).date_valid
 
     if is_mobile_device(request):
         # mobile
@@ -166,6 +172,7 @@ def my_profile(request):
     else:
         # desktop
         temp = 'myprofile.html'
+
 
     return render(request, temp, ctx)
 
@@ -190,9 +197,6 @@ def membership(request):
     ctx = {}
     ctx['magazines'] = Magazine.objects.all()
     
-   
-    	
-
     if request.user.is_authenticated:
         ctx['subscribed'] = UserProfile.objects.get(user=request.user).is_subscribed
         if ctx['subscribed']==True:
