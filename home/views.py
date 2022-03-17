@@ -460,14 +460,24 @@ def confirm_email(request, uidb64, token):
     except Exception as e:
         user = None
 
+    if is_mobile_device(request):
+        # mobile
+        tempfail = 'mobiletemplates/emailverifyfailmobile.html'
+        tempsuccess = 'mobiletemplates/emailverifysuccessmobile.html'
+    else:
+        # desktop
+        tempfail = 'emailverifyfail.html'
+        tempsuccess = 'emailverifysuccess.html'
+
+
     if user and account_activation_token.check_token(user, token):
         user2 = UserProfile.objects.get(user=user)
         user2.email_confirmed = True
         user2.save()
         ctx['curr_user'] = user2
-        return render(request, 'emailverifysuccess.html')
+        return render(request, tempsuccess)
     else:
-        return render(request, 'emailverifyfail.html', ctx)
+        return render(request, tempfail, ctx)
 
 
 
