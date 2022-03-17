@@ -366,7 +366,9 @@ def codes(request):
 
 
 def gen_codes(amount):
-    time = datetime.now().strftime("%d-%m-%Y %H%M%S")
+    time = datetime.now().strftime("%d-%m-%Y-%H%M%S")
+    #This path is what will work on the pythonanywhere deployment platform
+    #path = '/home/CloMagazines/boom_saloon/static/code_templates/' + time + '.csv'
     path = 'static/code_templates/' + time + '.csv'
     codes = []
     code_length = 16
@@ -378,7 +380,7 @@ def gen_codes(amount):
             f.write(code)
             codes.append(code)
 
-    return path, codes
+    return time, codes
 
 
 @login_required

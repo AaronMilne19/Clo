@@ -34,7 +34,7 @@ PASSWORD_HASHERS = (
 )
 
 ALLOWED_HOSTS = [
-    'aaronmilne19.pythonanywhere.com',
+    'clomagazines.pythonanywhere.com',
     '127.0.0.1',
     '130.209.251.90'
 ]
@@ -135,6 +135,8 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_DIR = os.path.join(BASE_DIR, 'static')
+#These swap during deployment
+#STATIC_ROOT = STATIC_DIR
 STATICFILES_DIRS = [STATIC_DIR, ]
 
 # Media files
