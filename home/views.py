@@ -197,14 +197,17 @@ def membership(request):
     ctx = {}
     ctx['magazines'] = Magazine.objects.all()
     
+
     if request.user.is_authenticated:
         ctx['subscribed'] = UserProfile.objects.get(user=request.user).is_subscribed
+        ctx['email_confirmed']=UserProfile.objects.get(user=request.user).email_confirmed
         if ctx['subscribed']==True:
     	    ctx['date_subscribed']=UserProfile.objects.get(user=request.user).date_subscribed
     	    ctx['date_valid']=Membership.objects.get(user=request.user).date_valid
     
     codes=DiscountCode.objects.all().count()
     ctx['codes']=codes
+    
     
     
     if codes==0:
