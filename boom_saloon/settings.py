@@ -34,7 +34,7 @@ PASSWORD_HASHERS = (
 )
 
 ALLOWED_HOSTS = [
-    'aaronmilne19.pythonanywhere.com',
+    'clomagazines.pythonanywhere.com',
     '127.0.0.1',
     '130.209.251.90'
 ]
@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'home',
+    'paypal.standard.ipn',
 ]
 
 MIDDLEWARE = [
@@ -134,6 +135,8 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_DIR = os.path.join(BASE_DIR, 'static')
+#These swap during deployment
+#STATIC_ROOT = STATIC_DIR
 STATICFILES_DIRS = [STATIC_DIR, ]
 
 # Media files
@@ -141,6 +144,10 @@ STATICFILES_DIRS = [STATIC_DIR, ]
 MEDIA_DIR = os.path.join(BASE_DIR, 'media')
 MEDIA_ROOT = MEDIA_DIR
 MEDIA_URL = '/media/'
+
+
+PAYPAL_RECEIVER_EMAIL='sb-zesox14342247@business.example.com'
+PAYPAL_TEST=True
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
@@ -157,3 +164,4 @@ EMAIL_USE_TLS = True
 
 #token expiry time
 PASSWORD_RESET_TIMEOUT_DAYS = 1
+

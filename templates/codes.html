@@ -68,7 +68,7 @@ Upload Codes
                 </form>
 
                 {% if codefile  %}
-                <a class="xsml-txt mb-3" href="/{{codefile}}" download>Download codes here</a>
+                <a class="xsml-txt mb-3" href="{% static 'code_templates/'|add:codefile|add:'.csv' %}" download>Download codes here</a>
                 {% endif %}
             </div>
 

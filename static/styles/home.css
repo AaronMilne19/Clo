@@ -107,7 +107,7 @@
     overflow: hidden;
     position:relative; 
     transition: max-height 100ms ease;
-    transition-delay:100ms !important;
+    transition-delay:50ms !important;
 }
 
 .accordion-item:target .answer {
@@ -166,20 +166,20 @@
 
 .favourite {
     height: 30px !important;
-    width: 100%;
-    transition: width ease 0.1s;
+    width: 180px%;
+    transition: width ease 0.3s;
 }
 
 .favourite:hover{
    background-color:gray !important;
-   transition: 0.1s ease;
+   transition: 0.1s background-color ease;
 }
 
 .selected {
     background-color: darkgray !important;
     color: #E8E5E2;
-    width: 100%;
-    transition: width ease 0.1s;
+    width: 200px;
+    
 }
 
 .issue-body {
