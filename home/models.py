@@ -54,6 +54,7 @@ class UserProfile(models.Model):
     has_code = models.BooleanField(default=False)
     date_subscribed =  models.DateField(("Date"), default=datetime.date.today)
     email_confirmed = models.BooleanField(default=False)
+    paid=models.BooleanField(default=False)
 
 
     def __str__(self):

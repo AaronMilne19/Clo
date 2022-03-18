@@ -224,6 +224,7 @@ def membership(request):
 		'item_name':"Membership",
 		#'invoice': DiscountCode.objects.all()[0],
 		'currency_code':'GBP',
+		'notify_url':'http://{}{}'.format(host, reverse('home:paypal-ipn')),
 		'return_url': 'http://{}{}'.format(host,reverse('home:payment_done')) ,
 		'cancel_return': 'http://{}{}'.format(host,
                                               reverse('home:payment_cancelled')),
@@ -462,17 +463,19 @@ The Clò Team. """
 def payment_done(request):
 	
 	user = UserProfile.objects.get(user=request.user)
-	
+	#if user.paid==True:
 	user.is_subscribed = True
 	user.date_subscribed=datetime.today()
 	user.save()
-	
+		
 	code=DiscountCode.objects.all()[0]
 	date = datetime.today()
-	
+		
 	send_code(request)
+	
 	return render(request, 'payment_done.html')
-
+#	else:
+#		return HttpResponseRedirect(reverse('home:payment_cancelled'))
 @csrf_exempt
 def payment_cancelled(request):
 	return render(request, 'payment_cancelled.html')
@@ -485,7 +488,8 @@ def paypal_payment_received(sender, **kwargs):
 		#check receiver is the right email
 		if ipn_obj.receiver_email!= settings.PAYPAL_RECEIVER_EMAIL :
 			return
-		#payment_done code would be here
+		user=UserProfile.objects.get(user=request.user)
+		user.paid=True
 		
 	
 
