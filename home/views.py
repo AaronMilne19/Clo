@@ -159,6 +159,12 @@ def my_profile(request):
                 return redirect(reverse('home:myprofile'))
 
     ctx['password_form'] = password_form
+    
+    if request.user.is_authenticated:
+        ctx['subscribed'] = UserProfile.objects.get(user=request.user).is_subscribed
+        if ctx['subscribed']==True:
+    	    ctx['date_subscribed']=UserProfile.objects.get(user=request.user).date_subscribed
+    	    ctx['date_valid']=Membership.objects.get(user=request.user).date_valid
 
     if is_mobile_device(request):
         # mobile
@@ -166,6 +172,7 @@ def my_profile(request):
     else:
         # desktop
         temp = 'myprofile.html'
+
 
     return render(request, temp, ctx)
 
@@ -190,11 +197,10 @@ def membership(request):
     ctx = {}
     ctx['magazines'] = Magazine.objects.all()
     
-   
-    	
 
     if request.user.is_authenticated:
         ctx['subscribed'] = UserProfile.objects.get(user=request.user).is_subscribed
+        ctx['email_confirmed']=UserProfile.objects.get(user=request.user).email_confirmed
         if ctx['subscribed']==True:
     	    ctx['date_subscribed']=UserProfile.objects.get(user=request.user).date_subscribed
     	    ctx['date_valid']=Membership.objects.get(user=request.user).date_valid
@@ -203,15 +209,34 @@ def membership(request):
     ctx['codes']=codes
     
     
+    
     if codes==0:
     	ctx['countdown']="No codes left."
     elif codes==1:
     	ctx['countdown']="Only 1 code left."
     else:
     	ctx['countdown']="There are {} codes left.".format(codes)
+    letters=string.ascii_letters
+    random_var=''.join(random.choice(letters) for i in range (20))
+    
+    host=request.get_host()
+    paypal_dict={
+		'business':settings.PAYPAL_RECEIVER_EMAIL,
+		'amount':5.00,
+		'item_name':"Membership",
+		#'invoice': DiscountCode.objects.all()[0],
+		'currency_code':'GBP',
+		'return_url': 'http://{}{}'.format(host, reverse('home:payment_done')),
+
+
+		'cancel_return': 'http://{}{}'.format(host,
+                                              reverse('home:payment_cancelled')),
+    		"sra": "1",                        # reattempt payment on payment error
+    }
+    ctx['form']=PayPalPaymentsForm(initial=paypal_dict, button_type="subscribe")
     
 
-
+	
     return render(request, 'membership.html', context=ctx)
 
 
@@ -428,6 +453,7 @@ The Clò Team. """
 
     memb=Membership(user=request.user,date_subscribed=datetime.today(), date_valid=code.date_valid,code=code.code)
     memb.save()
+    
     HttpResponse("Membership should be created")
     code.delete()
 
@@ -439,54 +465,29 @@ The Clò Team. """
     
 @csrf_exempt
 def payment_done(request):
-	
-	user = UserProfile.objects.get(user=request.user)
-	
-	user.is_subscribed = True
-	user.date_subscribed=datetime.today()
-	user.save()
-	
-	code=DiscountCode.objects.all()[0]
-	date = datetime.today()
-	
-	send_code(request)
-	return render(request, 'payment_done.html')
+
+	payerid=request.GET.get("PayerID")
+	if payerid==None:
+		return HttpResponseRedirect(reverse('home:membership'))
+	else:
+		user = UserProfile.objects.get(user=request.user)
+		#if user.paid==True:
+		user.is_subscribed = True
+		user.date_subscribed=datetime.today()
+		user.save()
+		
+		code=DiscountCode.objects.all()[0]
+		date = datetime.today()
+		
+		send_code(request)		
+		
+		
+		return render(request, 'payment_done.html')
+
 
 @csrf_exempt
 def payment_cancelled(request):
 	return render(request, 'payment_cancelled.html')
-
-# will not receive an IPN from PayPal until application is publicaly accessible on the internet
-@receiver(valid_ipn_received)
-def paypal_payment_received(sender, **kwargs):
-	ipn_obj=sender
-	if ipn_obj.payment_status==ST_PP_COMPLETED:
-		#check receiver is the right email
-		if ipn_obj.receiver_email!= settings.PAYPAL_RECEIVER_EMAIL :
-			return
-		#payment_done code would be here
-		
-		
-		
-
-def process_membership(request):
-	ctx={}
-	host=request.get_host()
-	paypal_dict={
-		'business':settings.PAYPAL_RECEIVER_EMAIL,
-		'amount':5.00,
-		'item_name':"Membership",
-		#'invoice': DiscountCode.objects.all()[0],
-		'currency_code':'GBP',
-		'return_url': 'http://{}{}'.format(host,reverse('home:payment_done')) ,
-		'cancel_return': 'http://{}{}'.format(host,
-                                              reverse('home:payment_cancelled')),
-    		"sra": "1",                        # reattempt payment on payment error
-	}
-	ctx['form']=PayPalPaymentsForm(initial=paypal_dict, button_type="subscribe")
-	return render(request, 'process_membership.html',context=ctx)
-	
-
 
 
 def password_reset_request(request):
