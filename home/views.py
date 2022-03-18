@@ -140,7 +140,8 @@ def user_signup(request):
 
     return render(request, temp, context=ctx)
 
-
+# Mobile version uses myprofile view to render as at seemed that this would require less duplicate code
+# - i.e. coping the functions for several views using differnt urls on desktop but renderd all on the same page for mobile
 @login_required
 def my_profile(request):
     ctx = {}
@@ -152,6 +153,25 @@ def my_profile(request):
     ctx['magazines'] = Magazine.objects.all()
     ctx['savedissues'] = issues.all()
     ctx['curr_user'] = user
+
+
+    if request.user.is_authenticated:
+        ctx['subscribed'] = UserProfile.objects.get(user=request.user).is_subscribed
+        if ctx['subscribed']==True:
+            ctx['date_subscribed']=UserProfile.objects.get(user=request.user).date_subscribed
+            ctx['date_valid']=Membership.objects.get(user=request.user).date_valid
+
+    codes=DiscountCode.objects.all().count()
+    ctx['codes']=codes
+
+
+    if codes==0:
+        ctx['countdown']="No codes left."
+    elif codes==1:
+        ctx['countdown']="Only 1 code left."
+    else:
+        ctx['countdown']="There are {} codes left.".format(codes)
+
 
     if request.method == 'POST':
         action = request.POST['action']
@@ -182,45 +202,45 @@ def my_profile(request):
 
 
 def renewMemberships(request):
-	memberships=Membership.objects.all()
-	if memberships.count()!=0:
-		if memberships[0].date_valid < datetime.now().date():
-			for membership in memberships:
-				user=membership.user
-				u=UserProfile.objects.get(user=user)
-				u.is_subscribed=False
-				u.has_code=False
-				u.save()
-			memberships.delete()
+    memberships=Membership.objects.all()
+    if memberships.count()!=0:
+        if memberships[0].date_valid < datetime.now().date():
+            for membership in memberships:
+                user=membership.user
+                u=UserProfile.objects.get(user=user)
+                u.is_subscribed=False
+                u.has_code=False
+                u.save()
+            memberships.delete()
 
 
 def membership(request):
-    
+
     renewMemberships(request)
-    
+
     ctx = {}
     ctx['magazines'] = Magazine.objects.all()
-    
-   
-    	
+
+
+
 
     if request.user.is_authenticated:
         ctx['subscribed'] = UserProfile.objects.get(user=request.user).is_subscribed
         if ctx['subscribed']==True:
-    	    ctx['date_subscribed']=UserProfile.objects.get(user=request.user).date_subscribed
-    	    ctx['date_valid']=Membership.objects.get(user=request.user).date_valid
-    
+            ctx['date_subscribed']=UserProfile.objects.get(user=request.user).date_subscribed
+            ctx['date_valid']=Membership.objects.get(user=request.user).date_valid
+
     codes=DiscountCode.objects.all().count()
     ctx['codes']=codes
-    
-    
+
+
     if codes==0:
-    	ctx['countdown']="No codes left."
+        ctx['countdown']="No codes left."
     elif codes==1:
-    	ctx['countdown']="Only 1 code left."
+        ctx['countdown']="Only 1 code left."
     else:
-    	ctx['countdown']="There are {} codes left.".format(codes)
-    
+        ctx['countdown']="There are {} codes left.".format(codes)
+
 
 
     return render(request, 'membership.html', context=ctx)
@@ -418,7 +438,7 @@ def gen_codes(amount):
     path = 'static/code_templates/' + time + '.csv'
     codes = []
     code_length = 16
-    
+
     with open(path, 'w+') as f:
         for i in range(int(amount)):
             # ---This line of code has come from https://www.javatpoint.com/python-program-to-generate-a-random-string
@@ -482,56 +502,64 @@ The Clò Team. """
 
     return HttpResponseRedirect(reverse('home:membership'))
 
-    
+
 @csrf_exempt
 def payment_done(request):
-	
-	user = UserProfile.objects.get(user=request.user)
-	
-	user.is_subscribed = True
-	user.date_subscribed=datetime.today()
-	user.save()
-	
-	code=DiscountCode.objects.all()[0]
-	date = datetime.today()
-	
-	send_code(request)
-	return render(request, 'payment_done.html')
+
+
+    if is_mobile_device(request):
+        # mobile
+        temp = 'mobiletemplates/payment_done_mobile.html'
+    else:
+        # desktop
+        temp = 'payment_done.html'
+
+    user = UserProfile.objects.get(user=request.user)
+
+    user.is_subscribed = True
+    user.date_subscribed=datetime.today()
+    user.save()
+
+    code=DiscountCode.objects.all()[0]
+    date = datetime.today()
+
+    send_code(request)
+    return render(request, temp)
 
 @csrf_exempt
 def payment_cancelled(request):
-	return render(request, 'payment_cancelled.html')
+    return render(request, 'payment_cancelled.html')
 
 # will not receive an IPN from PayPal until application is publicaly accessible on the internet
 @receiver(valid_ipn_received)
 def paypal_payment_received(sender, **kwargs):
-	ipn_obj=sender
-	if ipn_obj.payment_status==ST_PP_COMPLETED:
-		#check receiver is the right email
-		if ipn_obj.receiver_email!= settings.PAYPAL_RECEIVER_EMAIL :
-			return
-		#payment_done code would be here
-		
-		
-		
+    ipn_obj=sender
+    if ipn_obj.payment_status==ST_PP_COMPLETED:
+        #check receiver is the right email
+        if ipn_obj.receiver_email!= settings.PAYPAL_RECEIVER_EMAIL :
+            return
+        #payment_done code would be here
+
+
+
 
 def process_membership(request):
-	ctx={}
-	host=request.get_host()
-	paypal_dict={
-		'business':settings.PAYPAL_RECEIVER_EMAIL,
-		'amount':5.00,
-		'item_name':"Membership",
-		#'invoice': DiscountCode.objects.all()[0],
-		'currency_code':'GBP',
-		'return_url': 'http://{}{}'.format(host,reverse('home:payment_done')) ,
-		'cancel_return': 'http://{}{}'.format(host,
+    ctx={}
+    host=request.get_host()
+    paypal_dict={
+        'business':settings.PAYPAL_RECEIVER_EMAIL,
+        'amount':5.00,
+        'item_name':"Membership",
+        #'invoice': DiscountCode.objects.all()[0],
+        'currency_code':'GBP',
+        'return_url': 'http://{}{}'.format(host,reverse('home:payment_done')) ,
+        'cancel_return': 'http://{}{}'.format(host,
                                               reverse('home:payment_cancelled')),
-    		"sra": "1",                        # reattempt payment on payment error
-	}
-	ctx['form']=PayPalPaymentsForm(initial=paypal_dict, button_type="subscribe")
-	return render(request, 'process_membership.html',context=ctx)
-	
+            "sra": "1",                        # reattempt payment on payment error
+    }
+    ctx['form']=PayPalPaymentsForm(initial=paypal_dict, button_type="subscribe")
+    return render(request, 'process_membership.html',context=ctx)
+
 
 
 

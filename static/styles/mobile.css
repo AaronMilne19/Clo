@@ -499,9 +499,21 @@ input[type=submit]{
 
 /*My subscription*/
 
-#subscription_wrap{
+#subscription_wrap_top{
 	margin-bottom: 2em;
 	margin-top: 2em;
+}
+
+#membership_wrap_bottom{
+	text-align: center;
+	margin-left: 1em;
+	margin-right: 1em;
+	margin-bottom: 2em;
+}
+
+#subscription_text{
+
+	margin-bottom: 1em;
 }
 
 /*My magazines*/
