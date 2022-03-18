@@ -226,7 +226,8 @@ def membership(request):
 		'item_name':"Membership",
 		#'invoice': DiscountCode.objects.all()[0],
 		'currency_code':'GBP',
-		'return_url': 'http://{}{}'.format(host,reverse('home:payment_done')),
+		'return_url': 'http://{}{}'.format(host, reverse('home:payment_done')),
+
 
 		'cancel_return': 'http://{}{}'.format(host,
                                               reverse('home:payment_cancelled')),
