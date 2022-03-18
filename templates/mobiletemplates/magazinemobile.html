@@ -54,7 +54,7 @@
                     <strike>Full Price &#163 {{latest_issue.price}}</strike></a>
 
             {% else %}
-                <a href="{% url 'home:membership' %}" type="button" class="left_button" >
+                <a href="{% url 'home:myprofile' %}" type="button" class="left_button" >
                     Subscriber Price &#163 {{latest_issue.discounted_price}}</a>
                 <a href="{{this.link_to_publishers_site}}" type="button" class="right_button">
                     Full Price &#163 {{latest_issue.price}}</a>
