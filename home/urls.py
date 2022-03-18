@@ -29,6 +29,6 @@ urlpatterns = [
     path('payment-cancelled/', views.payment_cancelled, name='payment_cancelled'),
     path('confirm_email/<uidb64>/<token>/', views.confirm_email, name='activate'),
     path('verify_email/', views.send_confirmation_email, name="sendvemail"),
-    path('paypal/', include('paypal.standard.ipn.urls')),
+    path('paypal/', include('paypal.standard.ipn.urls'), name='paypal-ipn'),
 
 ]
