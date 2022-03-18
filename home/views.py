@@ -216,9 +216,23 @@ def membership(request):
     	ctx['countdown']="Only 1 code left."
     else:
     	ctx['countdown']="There are {} codes left.".format(codes)
+    	
+    host=request.get_host()
+    paypal_dict={
+		'business':settings.PAYPAL_RECEIVER_EMAIL,
+		'amount':5.00,
+		'item_name':"Membership",
+		#'invoice': DiscountCode.objects.all()[0],
+		'currency_code':'GBP',
+		'return_url': 'http://{}{}'.format(host,reverse('home:payment_done')) ,
+		'cancel_return': 'http://{}{}'.format(host,
+                                              reverse('home:payment_cancelled')),
+    		"sra": "1",                        # reattempt payment on payment error
+    }
+    ctx['form']=PayPalPaymentsForm(initial=paypal_dict, button_type="subscribe")
     
 
-
+	
     return render(request, 'membership.html', context=ctx)
 
 
@@ -473,25 +487,6 @@ def paypal_payment_received(sender, **kwargs):
 			return
 		#payment_done code would be here
 		
-		
-		
-
-def process_membership(request):
-	ctx={}
-	host=request.get_host()
-	paypal_dict={
-		'business':settings.PAYPAL_RECEIVER_EMAIL,
-		'amount':5.00,
-		'item_name':"Membership",
-		#'invoice': DiscountCode.objects.all()[0],
-		'currency_code':'GBP',
-		'return_url': 'http://{}{}'.format(host,reverse('home:payment_done')) ,
-		'cancel_return': 'http://{}{}'.format(host,
-                                              reverse('home:payment_cancelled')),
-    		"sra": "1",                        # reattempt payment on payment error
-	}
-	ctx['form']=PayPalPaymentsForm(initial=paypal_dict, button_type="subscribe")
-	return render(request, 'process_membership.html',context=ctx)
 	
 
 
