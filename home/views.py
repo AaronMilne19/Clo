@@ -7,7 +7,7 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.forms import PasswordChangeForm, PasswordResetForm
 from django.template.defaulttags import register
 from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from home.models import Magazine, UserProfile, Hashtag, MagazineIssue, DiscountCode
 from home.forms import UserForm, UserProfileForm, UploadCodesFileForm, CodesFileForm, UserPasswordChangeForm
 from datetime import datetime
@@ -23,6 +23,7 @@ from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.sites.shortcuts import get_current_site
 from home.tokens import account_activation_token
+from django.contrib.auth import views as auth_views
 
 
 def is_mobile_device(request):
@@ -217,6 +218,41 @@ def issue(request, id, slug):
     return render(request, temp, context=ctx)
 
 
+
+
+
+def password_reset_done(request):
+    if is_mobile_device(request):
+        temp = 'mobiletemplates/password_reset_done_mobile.html'
+    else:
+        temp = 'resetpassword/password_reset_done.html'
+
+    return auth_views.PasswordResetDoneView.as_view(template_name=temp)(request)
+
+
+
+def password_reset_complete(request):
+    if is_mobile_device(request):
+        temp = 'mobiletemplates/password_reset_complete_mobile.html'
+    else:
+        temp = 'resetpassword/password_reset_complete.html'
+
+    return auth_views.PasswordResetCompleteView.as_view(template_name=temp)(request)
+
+
+
+def password_reset_confirm(request):
+    if is_mobile_device(request):
+        temp = 'mobiletemplates/password_reset_confirm_mobile.html'
+    else:
+        temp = 'resetpassword/password_reset_confirm.html'
+
+    return auth_views.PasswordResetConfirmView.as_view(template_name=temp,
+                                                       success_url=reverse_lazy('home:password_reset_complete'))(request)
+
+
+
+
 @login_required
 def mymags(request):
     ctx = {}
@@ -385,6 +421,12 @@ The Clò Team. """
 
 
 def password_reset_request(request):
+
+    if is_mobile_device(request):
+        temp_password_reset = 'mobiletemplates/password_reset_mobile.html'
+    else:
+        temp_password_reset = "resetpassword/password_reset.html"
+
     if request.method == "POST":
         password_reset_form = PasswordResetForm(request.POST)
         if password_reset_form.is_valid():
@@ -420,7 +462,7 @@ def password_reset_request(request):
 
     password_reset_form = PasswordResetForm()
 
-    return render(request=request, template_name="resetpassword/password_reset.html",
+    return render(request=request, template_name=temp_password_reset,
                   context={"password_reset_form": password_reset_form})
 
 
