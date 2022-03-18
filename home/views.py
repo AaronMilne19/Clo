@@ -464,19 +464,22 @@ The Clò Team. """
     
 @csrf_exempt
 def payment_done(request):
-	
-	user = UserProfile.objects.get(user=request.user)
-	#if user.paid==True:
-	user.is_subscribed = True
-	user.date_subscribed=datetime.today()
-	user.save()
+	payerid=request.GET.get("PayerID")
+	if payerid==None:
+		return HttpResponseRedirect(reverse('home:home'))
+	else:
+		user = UserProfile.objects.get(user=request.user)
+		#if user.paid==True:
+		user.is_subscribed = True
+		user.date_subscribed=datetime.today()
+		user.save()
+			
+		code=DiscountCode.objects.all()[0]
+		date = datetime.today()
+			
+		send_code(request)
 		
-	code=DiscountCode.objects.all()[0]
-	date = datetime.today()
-		
-	send_code(request)
-	
-	HttpResponseRedirect(reverse('home:home'))
+		return render(request, 'payment_done.html')
 #	else:
 #		return HttpResponseRedirect(reverse('home:payment_cancelled'))
 @csrf_exempt
