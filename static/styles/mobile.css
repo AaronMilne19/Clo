@@ -176,7 +176,7 @@
 
 input[type=submit]{
 	width:20%;
-	background-color:#2F52E0;
+	background-color:rgb(47, 82, 224);
 	color:white;
 	position:center;
 	min-width: max-content;
@@ -242,7 +242,7 @@ input[type=submit]{
 	height: 100%;
 	width: 100%;
 	text-decoration: none ;
-	color: rgb(44,84,232);
+	color: rgb(47, 82, 224);
 	text-underline: none ;
 	font-size: 1.4em;
 	font-weight: 570;
@@ -353,11 +353,11 @@ input[type=submit]{
 .left_button{
 	font-size: 0.9em;
     color: #fff;
-    background-color: #0d6efd;
+    background-color: rgb(47, 82, 224);
 	padding: .25em .5em;
 	text-decoration: none;
 	margin-top: 0.5em;
-	border: solid #0d6efd;
+	border: solid rgb(47, 82, 224);
 	border-width: 0.8px;
 }
 
@@ -462,6 +462,7 @@ input[type=submit]{
 .issue_title_block .favourite_mobile{
 	padding: 0.25em;
 	background-color: #E8E5E2;
+	transition: ease 0.4s;
 
 }
 
@@ -508,4 +509,20 @@ input[type=submit]{
 #my_magazines_wrap{
 	margin-bottom: 2em;
 	margin-top: 2em;
+}
+
+
+/*Reset Password*/
+
+.basic_button{
+
+	font-size: 0.9em;
+    color: #fff;
+    background-color: rgb(47, 82, 224);
+	padding: .25em .5em;
+	text-decoration: none;
+	margin-top: 0.5em;
+
+
+
 }

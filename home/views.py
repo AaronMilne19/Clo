@@ -57,6 +57,14 @@ def home(request):
 
 
 def user_login(request):
+
+    if is_mobile_device(request):
+        # mobile
+        temp = 'mobiletemplates/login_separate_page_mobile.html'
+    else:
+        # desktop
+        temp = "login.html"
+
     # if HTTP POST pull relevant info
     if request.method == 'POST':
         username = request.POST.get('username')
@@ -73,7 +81,7 @@ def user_login(request):
             print("Invalid login details: {0}, {1}.".format(username, password))
             return HttpResponse("Invalid login details supplied.")
 
-    return render(request, "login.html", {})
+    return render(request, temp, {})
 
 
 def user_signup(request):
