@@ -216,7 +216,9 @@ def membership(request):
     	ctx['countdown']="Only 1 code left."
     else:
     	ctx['countdown']="There are {} codes left.".format(codes)
-    	
+    letters=string.ascii_letters
+    random_var=''.join(random.choice(letters) for i in range (20))
+    
     host=request.get_host()
     paypal_dict={
 		'business':settings.PAYPAL_RECEIVER_EMAIL,
@@ -224,8 +226,9 @@ def membership(request):
 		'item_name':"Membership",
 		#'invoice': DiscountCode.objects.all()[0],
 		'currency_code':'GBP',
-		'notify_url':'http://{}{}'.format(host, reverse('home:paypal-ipn')),
-		'return_url': 'http://{}{}'.format(host,reverse('home:payment_done')) ,
+		#'notify_url':'http://{}{}'.format(host, reverse('home:paypal-ipn')),
+		'return_url':'http://{}{}'.format(host,
+                                              reverse('home:payment_done')),
 		'cancel_return': 'http://{}{}'.format(host,
                                               reverse('home:payment_cancelled')),
     		"sra": "1",                        # reattempt payment on payment error
@@ -473,26 +476,12 @@ def payment_done(request):
 		
 	send_code(request)
 	
-	return render(request, 'payment_done.html')
+	HttpResponseRedirect(reverse('home:home'))
 #	else:
 #		return HttpResponseRedirect(reverse('home:payment_cancelled'))
 @csrf_exempt
 def payment_cancelled(request):
 	return render(request, 'payment_cancelled.html')
-
-# will not receive an IPN from PayPal until application is publicaly accessible on the internet
-@receiver(valid_ipn_received)
-def paypal_payment_received(sender, **kwargs):
-	ipn_obj=sender
-	if ipn_obj.payment_status==ST_PP_COMPLETED:
-		#check receiver is the right email
-		if ipn_obj.receiver_email!= settings.PAYPAL_RECEIVER_EMAIL :
-			return
-		user=UserProfile.objects.get(user=request.user)
-		user.paid=True
-		
-	
-
 
 
 def password_reset_request(request):
