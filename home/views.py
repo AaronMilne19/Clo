@@ -226,7 +226,7 @@ def membership(request):
 		'item_name':"Membership",
 		#'invoice': DiscountCode.objects.all()[0],
 		'currency_code':'GBP',
-		'return_url': payment_done(request),
+		'return_url': 'http://{}{}'.format(host,reverse('home:payment_done')),
 
 		'cancel_return': 'http://{}{}'.format(host,
                                               reverse('home:payment_cancelled')),
@@ -452,6 +452,7 @@ The Clò Team. """
 
     memb=Membership(user=request.user,date_subscribed=datetime.today(), date_valid=code.date_valid,code=code.code)
     memb.save()
+    
     HttpResponse("Membership should be created")
     code.delete()
 
@@ -473,11 +474,12 @@ def payment_done(request):
 		user.is_subscribed = True
 		user.date_subscribed=datetime.today()
 		user.save()
-			
+		
 		code=DiscountCode.objects.all()[0]
 		date = datetime.today()
-			
-		send_code(request)
+		
+		send_code(request)		
+		
 		
 		return render(request, 'payment_done.html')
 
