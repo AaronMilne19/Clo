@@ -466,7 +466,7 @@ The Clò Team. """
 def payment_done(request):
 	payerid=request.GET.get("PayerID")
 	if payerid==None:
-		return HttpResponseRedirect(reverse('home:home'))
+		return HttpResponseRedirect(reverse('home:membership'))
 	else:
 		user = UserProfile.objects.get(user=request.user)
 		#if user.paid==True:
@@ -480,8 +480,7 @@ def payment_done(request):
 		send_code(request)
 		
 		return render(request, 'payment_done.html')
-#	else:
-#		return HttpResponseRedirect(reverse('home:payment_cancelled'))
+
 @csrf_exempt
 def payment_cancelled(request):
 	return render(request, 'payment_cancelled.html')
