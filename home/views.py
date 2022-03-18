@@ -226,9 +226,9 @@ def membership(request):
 		'item_name':"Membership",
 		#'invoice': DiscountCode.objects.all()[0],
 		'currency_code':'GBP',
-		#'notify_url':'http://{}{}'.format(host, reverse('home:paypal-ipn')),
-		'return_url':'http://{}{}'.format(host,
-                                              reverse('home:payment_done')),
+		'notify_url':'http://{}{}'.format(host, reverse('home:paypal-ipn')),
+		'return_url': payment_done(request),
+
 		'cancel_return': 'http://{}{}'.format(host,
                                               reverse('home:payment_cancelled')),
     		"sra": "1",                        # reattempt payment on payment error
@@ -464,6 +464,7 @@ The Clò Team. """
     
 @csrf_exempt
 def payment_done(request):
+
 	payerid=request.GET.get("PayerID")
 	if payerid==None:
 		return HttpResponseRedirect(reverse('home:membership'))
@@ -480,6 +481,7 @@ def payment_done(request):
 		send_code(request)
 		
 		return render(request, 'payment_done.html')
+
 
 @csrf_exempt
 def payment_cancelled(request):
