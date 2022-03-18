@@ -226,7 +226,6 @@ def membership(request):
 		'item_name':"Membership",
 		#'invoice': DiscountCode.objects.all()[0],
 		'currency_code':'GBP',
-		'notify_url':'http://{}{}'.format(host, reverse('home:paypal-ipn')),
 		'return_url': payment_done(request),
 
 		'cancel_return': 'http://{}{}'.format(host,
