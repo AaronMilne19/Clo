@@ -33,7 +33,7 @@ My Profile
                         <form method="post">
                             {% csrf_token %}
                             <input type='hidden' name='action' value='verify_email'>
-                            <input class="button" style="float: right; margin-top: 20px; width: 50%;" type="submit" name="Save" value="Re-send Verification Email" />
+                            <input class="button" style="float: right; margin-top: 20px; width: 250px;" type="submit" name="Save" value="Re-send Verification Email" />
                         </form>
 
                         {% else %}
@@ -54,7 +54,7 @@ My Profile
                             </div>
                             {% endif %}
                             {% endfor %}
-                            <input class="button" style="float: right; margin-top: 20px; width: 50%;" type="submit" name="Save" value="Change Password" />
+                            <input class="button" style="float: right; margin-top: 20px; width: 250px;" type="submit" name="Save" value="Change Password" />
                         </form>
                         <ul class="messages" style="color:green; margin-top: 30px">
                                 {% for message in messages %}
