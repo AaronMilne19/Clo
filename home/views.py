@@ -225,7 +225,7 @@ def membership(request):
 		#'invoice': DiscountCode.objects.all()[0],
 		'currency_code':'GBP',
 		'notify_url':'http://{}{}'.format(host, reverse('home:paypal-ipn')),
-		'return_url': 'http://{}{}'.format(host,reverse('home:payment_done')) ,
+		'return_url': payment_done(request),
 		'cancel_return': 'http://{}{}'.format(host,
                                               reverse('home:payment_cancelled')),
     		"sra": "1",                        # reattempt payment on payment error
@@ -463,7 +463,6 @@ The Clò Team. """
 def payment_done(request):
 	
 	user = UserProfile.objects.get(user=request.user)
-	#if user.paid==True:
 	user.is_subscribed = True
 	user.date_subscribed=datetime.today()
 	user.save()
@@ -473,25 +472,11 @@ def payment_done(request):
 		
 	send_code(request)
 	
-	return render(request, 'payment_done.html')
-#	else:
-#		return HttpResponseRedirect(reverse('home:payment_cancelled'))
+	return HttpResponseRedirect(reverse('home:membership'))
+
 @csrf_exempt
 def payment_cancelled(request):
 	return render(request, 'payment_cancelled.html')
-
-# will not receive an IPN from PayPal until application is publicaly accessible on the internet
-@receiver(valid_ipn_received)
-def paypal_payment_received(sender, **kwargs):
-	ipn_obj=sender
-	if ipn_obj.payment_status==ST_PP_COMPLETED:
-		#check receiver is the right email
-		if ipn_obj.receiver_email!= settings.PAYPAL_RECEIVER_EMAIL :
-			return
-		user=UserProfile.objects.get(user=request.user)
-		user.paid=True
-		
-	
 
 
 
