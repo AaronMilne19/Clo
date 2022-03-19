@@ -22,7 +22,7 @@
 
     <div class="mag_and_issue_line"></div>
 
-    <div class="mag_or_issue_wrap">
+    <div id="magazine_wrap" class="mag_or_issue_wrap">
         <div class="hashtags">
             {% for hashtag in this.hashtag_set.all %}
             {{ hashtag }}, &#160
@@ -54,7 +54,7 @@
                     <strike>Full Price &#163 {{latest_issue.price}}</strike></a>
 
             {% else %}
-                <a href="{% url 'home:membership' %}" type="button" class="left_button" >
+                <a href="{% url 'home:myprofile' %}" type="button" class="left_button" >
                     Subscriber Price &#163 {{latest_issue.discounted_price}}</a>
                 <a href="{{this.link_to_publishers_site}}" type="button" class="right_button">
                     Full Price &#163 {{latest_issue.price}}</a>

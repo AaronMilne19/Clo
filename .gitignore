@@ -1,5 +1,6 @@
 #ab
-
+#media files
+media/
 # Django migrations
 migrations/
 

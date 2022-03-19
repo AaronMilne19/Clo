@@ -70,6 +70,10 @@
 }
 
 
+#dont_have_an_account_text{
+	margin-top: 2em;
+}
+
 /*Homepage*/
 
 
@@ -166,13 +170,13 @@
 	width:80%;
 	clear:both;
 	background-color: lightgrey;
-	 border-radius: 0.2em !important;
+
 
 }
 
 input[type=submit]{
 	width:20%;
-	background-color:#2F52E0;
+	background-color:rgb(47, 82, 224);
 	color:white;
 	position:center;
 	min-width: max-content;
@@ -238,7 +242,7 @@ input[type=submit]{
 	height: 100%;
 	width: 100%;
 	text-decoration: none ;
-	color: rgb(44,84,232);
+	color: rgb(47, 82, 224);
 	text-underline: none ;
 	font-size: 1.4em;
 	font-weight: 570;
@@ -349,11 +353,11 @@ input[type=submit]{
 .left_button{
 	font-size: 0.9em;
     color: #fff;
-    background-color: #0d6efd;
+    background-color: rgb(47, 82, 224);
 	padding: .25em .5em;
 	text-decoration: none;
 	margin-top: 0.5em;
-	border: solid #0d6efd;
+	border: solid rgb(47, 82, 224);
 	border-width: 0.8px;
 }
 
@@ -378,9 +382,9 @@ input[type=submit]{
 }
 
 #hidden_panel_issues{
-	max-height: 0;
+	/*max-height: 0;*/
   	overflow: hidden;
-  	transition: max-height 0.4s ease-out;
+  	/*transition: max-height 0.4s ease-out;*/
 }
 
 #magazine_menu_wrap {
@@ -458,6 +462,7 @@ input[type=submit]{
 .issue_title_block .favourite_mobile{
 	padding: 0.25em;
 	background-color: #E8E5E2;
+	transition: ease 0.4s;
 
 }
 
@@ -476,3 +481,70 @@ input[type=submit]{
 	width: max-content;
 }
 
+
+/*My profile*/
+
+.my_profile_button{
+	padding-right: 0.5em;
+	padding-left: 0.5em;
+	padding-top: 0.2em;
+	padding-bottom: 0.2em;
+
+}
+
+.textbox{
+	margin-bottom: 0.3em!important;
+}
+
+
+/*My subscription*/
+
+#subscription_wrap_top{
+	margin-bottom: 2em;
+	margin-top: 2em;
+}
+
+#membership_wrap_bottom{
+	text-align: center;
+	margin-left: 1em;
+	margin-right: 1em;
+	margin-bottom: 2em;
+}
+
+#subscription_text{
+
+	margin-bottom: 1em;
+}
+
+/*My magazines*/
+
+#my_magazines_wrap{
+	margin-bottom: 2em;
+	margin-top: 2em;
+}
+
+
+/*Reset Password*/
+
+.basic_button{
+
+	font-size: 0.9em;
+    color: #fff;
+    background-color: rgb(47, 82, 224);
+	padding: .25em .5em;
+	text-decoration: none;
+	margin-top: 0.5em;
+
+
+
+}
+
+/*payment*/
+
+#payment_cancelled{
+	margin-right: 1em;
+	margin-left: 1em;
+	text-align: center;
+	margin-top: 2em;
+
+}
