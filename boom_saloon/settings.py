@@ -145,9 +145,11 @@ MEDIA_DIR = os.path.join(BASE_DIR, 'media')
 MEDIA_ROOT = MEDIA_DIR
 MEDIA_URL = '/media/'
 
-
+#change email to clo.magazines@gmail.com
 PAYPAL_RECEIVER_EMAIL='sb-zesox14342247@business.example.com'
+#change to false to not use sandbox
 PAYPAL_TEST=True
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
@@ -159,7 +161,8 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'clo.magazines@gmail.com'
-#EMAIL_HOST_PASSWORD = REDACTED
+EMAIL_HOST_PASSWORD = 'CloMagazines2022'
+
 EMAIL_USE_TLS = True
 
 #token expiry time

@@ -50,23 +50,33 @@ Membership
 	  				<br />
 	  				{% if user.is_authenticated %}
 	  					{% if subscribed == False %}
+	  				
 	  					{% if codes != 0 %}
+	  						{% if email_confirmed %}
 	  					
 	  					<center>
-	  					
-	  					<a href="{% url 'home:process_membership' %}" class="btn btn-primary">
-	  					Purchase
-	  					</a>
+	  					<div style="color:#2F52E0;">
+	  					<p>Subscribe using PayPal</p>
+	  					</div>
+
+{{ form.render }}
+
 	  					
 	  					</center>
+	  						{% else %}
+	  						<center>
+	  						<p> Please verify your email before subscribing.</p>
+	  						</center>
+	  						{% endif %}
 	  					{% else %}
 	  					<center>
 							<p> Try again next month. </p>
 						</center>
 						{% endif %}
+						
 						{% else %}
 						<h4>Subscription:</h4>
-						<div style="color: #2F52E0; position:relative;bottom:0;left:30px;margin-top:30px;">
+						<div style="color: #2F52E0;bottom:0;left:30px;margin-top:30px;max-width:100%;overflow-x:hidden;">
 						
 				<p>Activated: {{ date_subscribed }} </p>
 				<p>Valid until: {{ date_valid }} </p>

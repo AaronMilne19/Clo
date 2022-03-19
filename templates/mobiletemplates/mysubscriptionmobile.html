@@ -38,11 +38,10 @@
 	  					{% if subscribed == False %}
 	  					{% if codes != 0 %}
 
+                            <p>Subscribe using PayPal</p>
 
 
-	  					<a href="{% url 'home:process_membership' %}" class="btn btn-primary">
-	  					Purchase
-	  					</a>
+                            <p>{{ form.render }} </p>
 
 
 	  					{% else %}
