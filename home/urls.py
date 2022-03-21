@@ -3,6 +3,7 @@ from home import views
 from django.contrib.auth import views as auth_views
 
 
+
 app_name = 'home'
 
 urlpatterns = [
@@ -19,15 +20,14 @@ urlpatterns = [
     path('membership/', views.membership, name="membership"),
     path('staff/', views.staff, name="staff"),
     path('codes/', views.codes, name='codes'),
-    path('password_reset/done/', auth_views.PasswordResetDoneView.as_view(template_name='resetpassword/password_reset_done.html'), name='password_reset_done'),
+    path('password_reset/done/', views.password_reset_done, name='password_reset_done'),
     path("password_reset", views.password_reset_request, name="password_reset"),
     path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(template_name="resetpassword/password_reset_confirm.html", success_url=reverse_lazy(
         'home:password_reset_complete')), name='password_reset_confirm'),
-    path('reset/done/', auth_views.PasswordResetCompleteView.as_view(template_name='resetpassword/password_reset_complete.html'), name='password_reset_complete'),
+    path('reset/done/', views.password_reset_complete, name='password_reset_complete'),
     path('email/', views.send_code, name="sendcode"),
     path('payment-done/', views.payment_done, name='payment_done'),
     path('payment-cancelled/', views.payment_cancelled, name='payment_cancelled'),
-    path('process-membership/',views.process_membership, name="process_membership"),
     path('confirm_email/<uidb64>/<token>/', views.confirm_email, name='activate'),
     path('verify_email/', views.send_confirmation_email, name="sendvemail"),
 

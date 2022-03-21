@@ -7,11 +7,13 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.forms import PasswordChangeForm, PasswordResetForm
 from django.template.defaulttags import register
 from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
-from django.urls import reverse
+
+from django.urls import reverse, reverse_lazy
 from home.models import Magazine, UserProfile, Hashtag, MagazineIssue, DiscountCode, Membership
 from datetime import datetime
 import random, string, secrets
 import dateutil.relativedelta
+
 from home.forms import UserForm, UserProfileForm, UploadCodesFileForm, CodesFileForm, UserPasswordChangeForm
 from datetime import datetime
 import random, string, secrets
@@ -26,6 +28,7 @@ from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.sites.shortcuts import get_current_site
 from home.tokens import account_activation_token
+from django.contrib.auth import views as auth_views
 from paypal.standard.forms import PayPalPaymentsForm
 from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
@@ -67,6 +70,14 @@ def home(request):
 
 
 def user_login(request):
+
+    if is_mobile_device(request):
+        # mobile
+        temp = 'mobiletemplates/login_separate_page_mobile.html'
+    else:
+        # desktop
+        temp = "login.html"
+
     # if HTTP POST pull relevant info
     if request.method == 'POST':
         username = request.POST.get('username')
@@ -83,7 +94,7 @@ def user_login(request):
             print("Invalid login details: {0}, {1}.".format(username, password))
             return HttpResponse("Invalid login details supplied.")
 
-    return render(request, "login.html", {})
+    return render(request, temp, {})
 
 
 def user_signup(request):
@@ -129,7 +140,8 @@ def user_signup(request):
 
     return render(request, temp, context=ctx)
 
-
+# Mobile version uses myprofile view to render as at seemed that this would require less duplicate code
+# - i.e. coping the functions for several views using differnt urls on desktop but renderd all on the same page for mobile
 @login_required
 def my_profile(request):
     ctx = {}
@@ -141,6 +153,41 @@ def my_profile(request):
     ctx['magazines'] = Magazine.objects.all()
     ctx['savedissues'] = issues.all()
     ctx['curr_user'] = user
+
+
+    if request.user.is_authenticated:
+        ctx['subscribed'] = UserProfile.objects.get(user=request.user).is_subscribed
+        if ctx['subscribed']==True:
+            ctx['date_subscribed']=UserProfile.objects.get(user=request.user).date_subscribed
+            ctx['date_valid']=Membership.objects.get(user=request.user).date_valid
+
+    codes=DiscountCode.objects.all().count()
+    ctx['codes']=codes
+
+
+    if codes==0:
+        ctx['countdown']="No codes left."
+    elif codes==1:
+        ctx['countdown']="Only 1 code left."
+    else:
+        ctx['countdown']="There are {} codes left.".format(codes)
+
+    host = request.get_host()
+    paypal_dict={
+        'business':settings.PAYPAL_RECEIVER_EMAIL,
+        'amount':5.00,
+        'item_name':"Membership",
+        #'invoice': DiscountCode.objects.all()[0],
+        'currency_code':'GBP',
+        'return_url': 'http://{}{}'.format(host, reverse('home:payment_done')),
+
+
+        'cancel_return': 'http://{}{}'.format(host,
+                                              reverse('home:payment_cancelled')),
+            "sra": "1",                        # reattempt payment on payment error
+    }
+    ctx['form']=PayPalPaymentsForm(initial=paypal_dict, button_type="subscribe")
+
 
     if request.method == 'POST':
         action = request.POST['action']
@@ -159,6 +206,12 @@ def my_profile(request):
                 return redirect(reverse('home:myprofile'))
 
     ctx['password_form'] = password_form
+    
+    if request.user.is_authenticated:
+        ctx['subscribed'] = UserProfile.objects.get(user=request.user).is_subscribed
+        if ctx['subscribed']==True:
+            ctx['date_subscribed']=UserProfile.objects.get(user=request.user).date_subscribed
+            ctx['date_valid']=Membership.objects.get(user=request.user).date_valid
 
     if is_mobile_device(request):
         # mobile
@@ -167,48 +220,67 @@ def my_profile(request):
         # desktop
         temp = 'myprofile.html'
 
+
     return render(request, temp, ctx)
 
 
 def renewMemberships(request):
-	memberships=Membership.objects.all()
-	if memberships.count()!=0:
-		if memberships[0].date_valid < datetime.now().date():
-			for membership in memberships:
-				user=membership.user
-				u=UserProfile.objects.get(user=user)
-				u.is_subscribed=False
-				u.has_code=False
-				u.save()
-			memberships.delete()
+    memberships=Membership.objects.all()
+    if memberships.count()!=0:
+        if memberships[0].date_valid < datetime.now().date():
+            for membership in memberships:
+                user=membership.user
+                u=UserProfile.objects.get(user=user)
+                u.is_subscribed=False
+                u.has_code=False
+                u.save()
+            memberships.delete()
 
 
 def membership(request):
-    
+
     renewMemberships(request)
-    
+
     ctx = {}
     ctx['magazines'] = Magazine.objects.all()
     
-   
-    	
 
     if request.user.is_authenticated:
         ctx['subscribed'] = UserProfile.objects.get(user=request.user).is_subscribed
+        ctx['email_confirmed']=UserProfile.objects.get(user=request.user).email_confirmed
         if ctx['subscribed']==True:
-    	    ctx['date_subscribed']=UserProfile.objects.get(user=request.user).date_subscribed
-    	    ctx['date_valid']=Membership.objects.get(user=request.user).date_valid
-    
+            ctx['date_subscribed']=UserProfile.objects.get(user=request.user).date_subscribed
+            ctx['date_valid']=Membership.objects.get(user=request.user).date_valid
+
     codes=DiscountCode.objects.all().count()
     ctx['codes']=codes
     
     
+    
     if codes==0:
-    	ctx['countdown']="No codes left."
+        ctx['countdown']="No codes left."
     elif codes==1:
-    	ctx['countdown']="Only 1 code left."
+        ctx['countdown']="Only 1 code left."
     else:
-    	ctx['countdown']="There are {} codes left.".format(codes)
+        ctx['countdown']="There are {} codes left.".format(codes)
+    letters=string.ascii_letters
+    random_var=''.join(random.choice(letters) for i in range (20))
+    
+    host=request.get_host()
+    paypal_dict={
+        'business':settings.PAYPAL_RECEIVER_EMAIL,
+        'amount':5.00,
+        'item_name':"Membership",
+        #'invoice': DiscountCode.objects.all()[0],
+        'currency_code':'GBP',
+        'return_url': 'http://{}{}'.format(host, reverse('home:payment_done')),
+
+
+        'cancel_return': 'http://{}{}'.format(host,
+                                              reverse('home:payment_cancelled')),
+            "sra": "1",                        # reattempt payment on payment error
+    }
+    ctx['form']=PayPalPaymentsForm(initial=paypal_dict, button_type="subscribe")
     
 
 
@@ -262,6 +334,41 @@ def issue(request, id, slug):
         temp = 'issue.html'
 
     return render(request, temp, context=ctx)
+
+
+
+
+
+def password_reset_done(request):
+    if is_mobile_device(request):
+        temp = 'mobiletemplates/password_reset_done_mobile.html'
+    else:
+        temp = 'resetpassword/password_reset_done.html'
+
+    return auth_views.PasswordResetDoneView.as_view(template_name=temp)(request)
+
+
+
+def password_reset_complete(request):
+    if is_mobile_device(request):
+        temp = 'mobiletemplates/password_reset_complete_mobile.html'
+    else:
+        temp = 'resetpassword/password_reset_complete.html'
+
+    return auth_views.PasswordResetCompleteView.as_view(template_name=temp)(request)
+
+
+
+def password_reset_confirm(request):
+    if is_mobile_device(request):
+        temp = 'mobiletemplates/password_reset_confirm_mobile.html'
+    else:
+        temp = 'resetpassword/password_reset_confirm.html'
+
+    return auth_views.PasswordResetConfirmView.as_view(template_name=temp,
+                                                       success_url=reverse_lazy('home:password_reset_complete'))(request)
+
+
 
 
 @login_required
@@ -372,7 +479,7 @@ def gen_codes(amount):
     path = 'static/code_templates/' + time + '.csv'
     codes = []
     code_length = 16
-    
+
     with open(path, 'w+') as f:
         for i in range(int(amount)):
             # ---This line of code has come from https://www.javatpoint.com/python-program-to-generate-a-random-string
@@ -428,6 +535,7 @@ The Clò Team. """
 
     memb=Membership(user=request.user,date_subscribed=datetime.today(), date_valid=code.date_valid,code=code.code)
     memb.save()
+    
     HttpResponse("Membership should be created")
     code.delete()
 
@@ -436,60 +544,54 @@ The Clò Team. """
 
     return HttpResponseRedirect(reverse('home:membership'))
 
-    
+
 @csrf_exempt
 def payment_done(request):
-	
-	user = UserProfile.objects.get(user=request.user)
-	
-	user.is_subscribed = True
-	user.date_subscribed=datetime.today()
-	user.save()
-	
-	code=DiscountCode.objects.all()[0]
-	date = datetime.today()
-	
-	send_code(request)
-	return render(request, 'payment_done.html')
+
+
+    if is_mobile_device(request):
+        # mobile
+        temp_done = 'mobiletemplates/payment_done_mobile.html'
+        temp_reverse_membership = 'home:myprofile'
+    else:
+        # desktop
+        temp_reverse_membership = 'home:membership'
+        temp_done = 'payment_done.html'
+
+
+
+
+    payerid=request.GET.get("PayerID")
+    if payerid==None:
+        return HttpResponseRedirect(reverse(temp_reverse_membership))
+    else:
+        user = UserProfile.objects.get(user=request.user)
+        #if user.paid==True:
+        user.is_subscribed = True
+        user.date_subscribed=datetime.today()
+        user.save()
+
+        code=DiscountCode.objects.all()[0]
+        date = datetime.today()
+
+        send_code(request)
+
+
+        return render(request, temp_done)
+
 
 @csrf_exempt
 def payment_cancelled(request):
-	return render(request, 'payment_cancelled.html')
-
-# will not receive an IPN from PayPal until application is publicaly accessible on the internet
-@receiver(valid_ipn_received)
-def paypal_payment_received(sender, **kwargs):
-	ipn_obj=sender
-	if ipn_obj.payment_status==ST_PP_COMPLETED:
-		#check receiver is the right email
-		if ipn_obj.receiver_email!= settings.PAYPAL_RECEIVER_EMAIL :
-			return
-		#payment_done code would be here
-		
-		
-		
-
-def process_membership(request):
-	ctx={}
-	host=request.get_host()
-	paypal_dict={
-		'business':settings.PAYPAL_RECEIVER_EMAIL,
-		'amount':5.00,
-		'item_name':"Membership",
-		#'invoice': DiscountCode.objects.all()[0],
-		'currency_code':'GBP',
-		'return_url': 'http://{}{}'.format(host,reverse('home:payment_done')) ,
-		'cancel_return': 'http://{}{}'.format(host,
-                                              reverse('home:payment_cancelled')),
-    		"sra": "1",                        # reattempt payment on payment error
-	}
-	ctx['form']=PayPalPaymentsForm(initial=paypal_dict, button_type="subscribe")
-	return render(request, 'process_membership.html',context=ctx)
-	
-
+    return render(request, 'payment_cancelled.html')
 
 
 def password_reset_request(request):
+
+    if is_mobile_device(request):
+        temp_password_reset = 'mobiletemplates/password_reset_mobile.html'
+    else:
+        temp_password_reset = "resetpassword/password_reset.html"
+
     if request.method == "POST":
         password_reset_form = PasswordResetForm(request.POST)
         if password_reset_form.is_valid():
@@ -525,7 +627,7 @@ def password_reset_request(request):
 
     password_reset_form = PasswordResetForm()
 
-    return render(request=request, template_name="resetpassword/password_reset.html",
+    return render(request=request, template_name=temp_password_reset,
                   context={"password_reset_form": password_reset_form})
 
 
@@ -565,14 +667,24 @@ def confirm_email(request, uidb64, token):
     except Exception as e:
         user = None
 
+    if is_mobile_device(request):
+        # mobile
+        tempfail = 'mobiletemplates/emailverifyfailmobile.html'
+        tempsuccess = 'mobiletemplates/emailverifysuccessmobile.html'
+    else:
+        # desktop
+        tempfail = 'emailverifyfail.html'
+        tempsuccess = 'emailverifysuccess.html'
+
+
     if user and account_activation_token.check_token(user, token):
         user2 = UserProfile.objects.get(user=user)
         user2.email_confirmed = True
         user2.save()
         ctx['curr_user'] = user2
-        return render(request, 'emailverifysuccess.html')
+        return render(request, tempsuccess)
     else:
-        return render(request, 'emailverifyfail.html', ctx)
+        return render(request, tempfail, ctx)
 
 
 

@@ -1,12 +1,25 @@
 
-<br>
-<div id="ask_to_login_after_membership_clicked">
-    <b>Please Log in or Register first</b>
-</div>
+<!DOCTYPE html>
+{% extends 'mobiletemplates/basemobile.html' %}
+{% load static %}
 
+{% block css %}
+<link rel="stylesheet" type="text/css" href="/static/styles/home.css">
+{% endblock %}
+
+{% block title %}
+Login separate page - mobile
+{% endblock %}
+
+
+
+{% block content %}
 
 <div class="basic_form">
-
+            <br>
+            <br>
+            <br>
+            <p>Please Log In</p>
 			<form id="login_form" method="post" action="{%url 'home:login' %}">
 				{% csrf_token %}
 
@@ -22,15 +35,8 @@
 			</form>
             <a class = "sml-txt basic_link" href="{% url 'home:password_reset' %}">Forgot Password?</a>
 
-			<div>
-
-			<p id="dont_have_an_account_text">Don't have an account?</p>
-			<a class="basic_link" href="{% url 'home:signup' %}">Sign Up</a>
-
-			</div>
 
 </div>
 
 
-
-
+{% endblock %}

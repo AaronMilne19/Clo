@@ -33,7 +33,7 @@ My Profile
                         <form method="post">
                             {% csrf_token %}
                             <input type='hidden' name='action' value='verify_email'>
-                            <input class="button" style="float: right; margin-top: 20px; width: 50%;" type="submit" name="Save" value="Re-send Verification Email" />
+                            <input class="button" style="float: right; margin-top: 20px; width: 250px;" type="submit" name="Save" value="Re-send Verification Email" />
                         </form>
 
                         {% else %}
@@ -54,7 +54,7 @@ My Profile
                             </div>
                             {% endif %}
                             {% endfor %}
-                            <input class="button" style="float: right; margin-top: 20px; width: 50%;" type="submit" name="Save" value="Change Password" />
+                            <input class="button" style="float: right; margin-top: 20px; width: 250px;" type="submit" name="Save" value="Change Password" />
                         </form>
                         <ul class="messages" style="color:green; margin-top: 30px">
                                 {% for message in messages %}
@@ -69,7 +69,11 @@ My Profile
                             {% elif not curr_user.is_subscribed %}
                             <div><label style="color:#4d79ff">Not Subscribed</label></div>
                             {% else %}
-                            <div style="color:#4d79ff"><p>Enabled <br> purchased 23-11-2021 <br> active 24-11-2021</p></div>
+                            <div style="color: #2F52E0;bottom:0;left:30px;margin-top:30px;max-width:100%;overflow-x:hidden;">
+						
+				<p>Activated: {{ date_subscribed }} </p>
+				<p>Valid until: {{ date_valid }} </p>
+			</div>
                             {% endif %}
                         </div>
                     </div>
